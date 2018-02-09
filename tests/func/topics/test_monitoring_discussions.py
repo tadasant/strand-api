@@ -62,9 +62,11 @@ class TestMarkingDiscussionAsStale:
                                                 slack_user_factory, slack_event_factory, slack_app_request_factory):
         mark_stale_discussions_factory(num_periods=3, period_length=1.5)
 
-        original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=29, seconds=57)
+        original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=29, seconds=58)
         discussion = discussion_factory(time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
+        op_slack_user = slack_user_factory(user=discussion.topic.original_poster, slack_team=slack_channel.slack_team)
+
         user = user_factory(is_bot=True)
         slack_user = slack_user_factory(user=user)
         slack_event = slack_event_factory.build(ts=(original_time + timedelta(minutes=2)).timestamp())
@@ -92,7 +94,9 @@ class TestMarkingDiscussionAsStale:
                                                   'Authorization': f'Token {settings.SLACK_APP_VERIFICATION_TOKEN}'
                                               },
                                               data={'discussion_id': discussion.id,
+                                                    'original_poster_slack_user_id': op_slack_user.id,
                                                     'slack_channel_id': discussion.slack_channel.id,
+                                                    'slack_team_id': discussion.slack_channel.slack_team_id,
                                                     'status': discussion.status})
 
 
@@ -104,6 +108,7 @@ class TestClosingPendingClosedDiscussion:
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=31)
         discussion = discussion_factory(time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
+        op_slack_user = slack_user_factory(user=discussion.topic.original_poster, slack_team=slack_channel.slack_team)
 
         non_bot_user = user_factory(is_bot=False)
         non_bot_slack_user = slack_user_factory(user=non_bot_user)
@@ -148,7 +153,9 @@ class TestClosingPendingClosedDiscussion:
                                                   'Authorization': f'Token {settings.SLACK_APP_VERIFICATION_TOKEN}'
                                               },
                                               data={'discussion_id': discussion.id,
+                                                    'original_poster_slack_user_id': op_slack_user.id,
                                                     'slack_channel_id': discussion.slack_channel.id,
+                                                    'slack_team_id': discussion.slack_channel.slack_team_id,
                                                     'status': discussion.status})
 
     @pytest.mark.django_db
@@ -224,6 +231,8 @@ class TestClosingPendingClosedDiscussion:
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=31)
         discussion = discussion_factory(time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
+        op_slack_user = slack_user_factory(user=discussion.topic.original_poster, slack_team=slack_channel.slack_team)
+
         non_bot_user = user_factory(is_bot=False)
         non_bot_slack_user = slack_user_factory(user=non_bot_user)
         bot_user = user_factory(is_bot=True)
@@ -288,16 +297,19 @@ class TestClosingPendingClosedDiscussion:
                                                   'Authorization': f'Token {settings.SLACK_APP_VERIFICATION_TOKEN}'
                                               },
                                               data={'discussion_id': discussion.id,
+                                                    'original_poster_slack_user_id': op_slack_user.id,
                                                     'slack_channel_id': discussion.slack_channel.id,
+                                                    'slack_team_id': discussion.slack_channel.slack_team_id,
                                                     'status': discussion.status})
 
     @pytest.mark.django_db
     def test_does_get_closed_with_no_messages_ever(self, auto_close_pending_closed_discussion_factory,
                                                    auth_client, discussion_factory, slack_channel_factory,
-                                                   slack_app_request_factory):
+                                                   slack_app_request_factory, slack_user_factory):
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=31)
         discussion = discussion_factory(time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
+        op_slack_user = slack_user_factory(user=discussion.topic.original_poster, slack_team=slack_channel.slack_team)
 
         discussion.mark_as_stale()
         discussion.save()
@@ -323,5 +335,7 @@ class TestClosingPendingClosedDiscussion:
                                                   'Authorization': f'Token {settings.SLACK_APP_VERIFICATION_TOKEN}'
                                               },
                                               data={'discussion_id': discussion.id,
+                                                    'original_poster_slack_user_id': op_slack_user.id,
                                                     'slack_channel_id': discussion.slack_channel.id,
+                                                    'slack_team_id': discussion.slack_channel.slack_team_id,
                                                     'status': discussion.status})

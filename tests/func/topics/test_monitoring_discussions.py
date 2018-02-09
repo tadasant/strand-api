@@ -93,6 +93,7 @@ class TestMarkingDiscussionAsStale:
                                               },
                                               data={'discussion_id': discussion.id,
                                                     'slack_channel_id': discussion.slack_channel.id,
+                                                    'slack_team_id': discussion.slack_channel.slack_team_id,
                                                     'status': discussion.status})
 
 
@@ -149,6 +150,7 @@ class TestClosingPendingClosedDiscussion:
                                               },
                                               data={'discussion_id': discussion.id,
                                                     'slack_channel_id': discussion.slack_channel.id,
+                                                    'slack_team_id': discussion.slack_channel.slack_team_id,
                                                     'status': discussion.status})
 
     @pytest.mark.django_db
@@ -289,6 +291,7 @@ class TestClosingPendingClosedDiscussion:
                                               },
                                               data={'discussion_id': discussion.id,
                                                     'slack_channel_id': discussion.slack_channel.id,
+                                                    'slack_team_id': discussion.slack_channel.slack_team_id,
                                                     'status': discussion.status})
 
     @pytest.mark.django_db
@@ -324,4 +327,5 @@ class TestClosingPendingClosedDiscussion:
                                               },
                                               data={'discussion_id': discussion.id,
                                                     'slack_channel_id': discussion.slack_channel.id,
+                                                    'slack_team_id': discussion.slack_channel.slack_team_id,
                                                     'status': discussion.status})

@@ -7,7 +7,7 @@ from app.topics.models import Discussion, DiscussionStatus
 
 def post_discussion_to_slack_app(endpoint, discussion):
     payload = {'discussion_id': discussion.id, 'slack_channel_id': discussion.slack_channel.id,
-               'status': discussion.status}
+               'slack_team_id': discussion.slack_channel.slack_team_id, 'status': discussion.status}
     requests.post(endpoint, data=payload, headers={'Authorization': f'Token {settings.SLACK_APP_VERIFICATION_TOKEN}'})
 
 

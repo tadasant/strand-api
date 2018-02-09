@@ -62,7 +62,7 @@ class TestMarkingDiscussionAsStale:
                                                 slack_user_factory, slack_event_factory, slack_app_request_factory):
         mark_stale_discussions_factory(num_periods=3, period_length=1.5)
 
-        original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=29, seconds=57)
+        original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=29, seconds=58)
         discussion = discussion_factory(time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
         op_slack_user = slack_user_factory(user=discussion.topic.original_poster, slack_team=slack_channel.slack_team)

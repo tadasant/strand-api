@@ -50,11 +50,12 @@ const strandTheme = createMuiTheme({
 
 const propTypes = {
   uiHost: PropTypes.string.isRequired,
+  slackClientId: PropTypes.string.isRequired,
 };
 
 class Root extends Component {
   getChildContext() {
-    return {uiHost: this.props.uiHost};
+    return {uiHost: this.props.uiHost, slackClientId: this.props.slackClientId};
   }
 
   render() {
@@ -70,6 +71,7 @@ class Root extends Component {
 
 Root.childContextTypes = {
   uiHost: PropTypes.string,
+  slackClientId: PropTypes.string,
 };
 
 Root.propTypes = propTypes;

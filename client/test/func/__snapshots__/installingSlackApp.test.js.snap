@@ -166,7 +166,7 @@ exports[`installing slack app shows a success message when a user successfully i
           }
         }
       >
-        Successfully installed! The CodeClippy bot should have DM'd you with setup instructions.
+        Successfully installed! The Strand bot should have DM'd you with setup instructions.
       </h3>
     </Typography>
   </WithStyles(Typography)>

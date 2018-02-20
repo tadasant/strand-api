@@ -40,7 +40,7 @@ export const themePallete = {
   },
 };
 
-const codeClippyTheme = createMuiTheme({
+const strandTheme = createMuiTheme({
   typography: {
     fontFamily: 'Montserrat',
     // for some headers, use '\'Rajdhani\', sans-serif',
@@ -59,7 +59,7 @@ class Root extends Component {
 
   render() {
     return (
-      <MuiThemeProvider theme={codeClippyTheme}>
+      <MuiThemeProvider theme={strandTheme}>
         <BrowserRouter>
           <App/>
         </BrowserRouter>

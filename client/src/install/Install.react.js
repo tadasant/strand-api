@@ -71,12 +71,12 @@ class Install extends Component {
             spacing={16}>
             <Grid item>
               <Typography variant='display1' style={{color: 'rgba(0, 0, 0, 0.87)'}}>
-                Installing CodeClippy in Your Slack Workspace
+                Installing Strand in Your Slack Workspace
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant='body1'>
-                Text bla bla use CodeClippy in your own team to do XYZ. Make sure you are:
+                Text bla bla use Strand in your own team to do XYZ. Make sure you are:
               </Typography>
               <ul>
                 <li>Something</li>
@@ -100,7 +100,7 @@ class Install extends Component {
             <Grid item>
               <Typography variant='caption'>
                 Not an admin in your workspace?
-                Join <a target='_blank' rel='noopener noreferrer' href='https://www.codeclippy.com/get-started'>our
+                Join <a target='_blank' rel='noopener noreferrer' href='https://www.trystrand.com/get-started'>our
                 community</a> instead.
               </Typography>
             </Grid>

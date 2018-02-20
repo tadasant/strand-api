@@ -36,7 +36,7 @@ class Install extends Component {
     const params = queryString.parse(this.props.location.search);
     if (params.code) {
       this.setState(() => ({installingSlackApplication: true}), () => {
-        this.props.attemptInstall(params.code, process.env.SLACK_CLIENT_ID, this.redirectUri)
+        this.props.attemptInstall(params.code, this.context.slackClientId, this.redirectUri)
           .then(() => {
             this.setState(() => ({
               installingSlackApplication: false,
@@ -116,6 +116,7 @@ Install.propTypes = propTypes;
 
 Install.contextTypes = {
   uiHost: PropTypes.string.isRequired,
+  slackClientId: PropTypes.string.isRequired,
 };
 
 const attemptSlackInstallation = gql`

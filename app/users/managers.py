@@ -30,5 +30,4 @@ class CustomUserManager(UserManager):
 
         if self.model.objects.filter(alias=alias).exists():
             return self.generate_random_alias(4)
-        else:
-            return alias
+        return alias

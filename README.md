@@ -1,6 +1,6 @@
 # CodeClippy Portal
 
-[![CodeFactor](https://www.codefactor.io/repository/github/solutionloft/code-clippy-portal/badge)](https://www.codefactor.io/repository/github/solutionloft/code-clippy-portal)
+[![CodeFactor](https://www.codefactor.io/repository/github/solutionloft/strand-api/badge)](https://www.codefactor.io/repository/github/solutionloft/code-clippy-portal)
 
 
 ## Getting Started

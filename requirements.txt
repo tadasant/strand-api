@@ -55,6 +55,7 @@ pytest-mock==1.6.3
 pytest-pep8==1.0.6
 python-dateutil==2.6.1
 pytz==2017.3
+raven==6.5.0
 redis==2.10.6
 requests==2.18.4
 responses==0.8.1

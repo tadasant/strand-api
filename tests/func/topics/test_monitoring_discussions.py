@@ -20,7 +20,7 @@ class TestMarkingDiscussionAsStale:
         wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_stale, timeout=7)
 
         assert Discussion.objects.get(pk=discussion.id).is_stale
-        assert len(slack_app_request_factory.calls) == 0
+        assert not slack_app_request_factory.calls
 
     @pytest.mark.django_db(transaction=True)
     def test_does_not_become_stale_with_non_bot_message(self, mark_stale_discussions_factory, auth_client,
@@ -53,7 +53,7 @@ class TestMarkingDiscussionAsStale:
         wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_stale, timeout=5)
 
         assert not Discussion.objects.get(pk=discussion.id).is_stale
-        assert len(slack_app_request_factory.calls) == 0
+        assert not slack_app_request_factory.calls
 
     @pytest.mark.django_db()
     def test_does_become_stale_with_bot_message(self, mark_stale_discussions_factory, auth_client, discussion_factory,
@@ -203,7 +203,7 @@ class TestClosingPendingClosedDiscussion:
         wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_closed, timeout=5)
 
         assert not Discussion.objects.get(pk=discussion.id).is_closed
-        assert len(slack_app_request_factory.calls) == 0
+        assert not slack_app_request_factory.calls
 
     @pytest.mark.django_db
     def test_does_get_closed_with_bot_message(self, auto_close_pending_closed_discussion_factory,
@@ -250,7 +250,7 @@ class TestClosingPendingClosedDiscussion:
         response = auth_client.post('/graphql', {'query': mutation})
         assert response.status_code == 200
         assert not Discussion.objects.get(pk=discussion.id).is_closed
-        assert len(slack_app_request_factory.calls) == 0
+        assert not slack_app_request_factory.calls
 
         # New message sent
         slack_event = slack_event_factory(ts=datetime.now(pytz.UTC).timestamp())

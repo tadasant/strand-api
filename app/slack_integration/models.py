@@ -43,10 +43,7 @@ class SlackAgent(TimeStampedModel):
         return self.status == SlackAgentStatus.INITIATED.value
 
     def can_authenticate(self):
-        if self.slack_application_installation:
-            return True
-        else:
-            return False
+        return bool(self.slack_application_installation)
 
     @transition(status, source=[SlackAgentStatus.INITIATED.value, SlackAgentStatus.INACTIVE.value],
                 target=SlackAgentStatus.AUTHENTICATED.value, conditions=[can_authenticate])
@@ -54,10 +51,7 @@ class SlackAgent(TimeStampedModel):
         pass
 
     def can_activate(self):
-        if self.topic_channel_id:
-            return True
-        else:
-            return False
+        return bool(self.topic_channel_id)
 
     @transition(field=status, source=[SlackAgentStatus.AUTHENTICATED.value, SlackAgentStatus.PAUSED.value,
                                       SlackAgentStatus.INACTIVE.value, SlackAgentStatus.ACTIVE.value],
@@ -104,10 +98,7 @@ class SlackUser(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='slack_users')
 
     def can_close_discussion(self, discussion):
-        if self.is_admin or discussion.topic.original_poster == self.user:
-            return True
-        else:
-            return False
+        return self.is_admin or discussion.topic.original_poster == self.user
 
     def __str__(self):
         return f'{self.real_name or self.name}'

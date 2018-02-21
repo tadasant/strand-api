@@ -56,8 +56,7 @@ class Discussion(TimeStampedModel):
         last_non_bot_message = self.messages.filter(author__is_bot=False).order_by('time').last()
         if last_non_bot_message:
             return last_non_bot_message.time
-        else:
-            return self.time_start
+        return self.time_start
 
     @property
     def minutes_since_last_non_bot_message(self):
@@ -86,10 +85,7 @@ class Discussion(TimeStampedModel):
                                                          countdown=settings.AUTO_CLOSE_DELAY)
 
     def can_mark_as_stale(self):
-        if self.minutes_since_last_non_bot_message >= 30.0:
-            return True
-        else:
-            return False
+        return self.minutes_since_last_non_bot_message >= 30.0
 
     @transition(field=status, source=[DiscussionStatus.STALE.value, DiscussionStatus.PENDING_CLOSED.value],
                 target=DiscussionStatus.OPEN.value, custom={'button_name': 'Mark as Open'})

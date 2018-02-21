@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'app.groups',
     'app.topics',
     'app.slack_integration',
-    'app.dialogues'
+    'app.dialogues',
+    'raven.contrib.django.raven_compat',
 ]
 
 MIDDLEWARE = [

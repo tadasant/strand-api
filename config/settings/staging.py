@@ -10,7 +10,6 @@ DEBUG = True
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -37,7 +36,8 @@ SLACK_CLIENT_SECRET = os.environ['SLACK_CLIENT_SECRET']
 CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
 
 # Discussion Auto-Close Delay
-AUTO_CLOSE_DELAY = 300
+MIN_UNTIL_STALE = float(os.environ['MIN_UNTIL_STALE'])
+AUTO_CLOSE_DELAY = int(os.environ['AUTO_CLOSE_DELAY'])
 
 # Slack App Verification Token
 SLACK_APP_VERIFICATION_TOKEN = os.environ['SLACK_APP_VERIFICATION_TOKEN']

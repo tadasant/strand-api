@@ -88,7 +88,7 @@ class SlackUser(TimeStampedModel):
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
     real_name = models.CharField(max_length=255)
-    display_name = models.CharField(max_length=255)
+    display_name = models.CharField(max_length=255, null=True, blank=True)
     email = models.CharField(max_length=255, null=True)
     image_72 = models.CharField(max_length=255)
     is_bot = models.BooleanField(default=False)

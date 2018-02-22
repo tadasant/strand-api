@@ -21,18 +21,16 @@ elif os.environ.get('ENVIRONMENT') == 'TEST':
 else:
     from config.settings.development import *
 
+# Release version
+VERSION = '0.1.0'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '+-t%(!_0ue0g5f=&p-2=2me_oktk#l=eaz!t631(j+$nv0fjm)'
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -150,3 +148,11 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# Sentry
+# https://docs.sentry.io/clients/python/integrations/django/#setup
+if os.environ.get('RAVEN_DSN'):
+    RAVEN_CONFIG = {
+        'dsn': os.environ['RAVEN_DSN'],
+        'release': VERSION
+    }

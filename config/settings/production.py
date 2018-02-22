@@ -108,9 +108,3 @@ LOGGING = {
         },
     },
 }
-
-# Sentry
-# https://docs.sentry.io/clients/python/integrations/django/#setup
-RAVEN_CONFIG = {
-    'dsn': os.environ['RAVEN_DSN'],
-}

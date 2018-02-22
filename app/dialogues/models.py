@@ -43,7 +43,7 @@ def update_discussion_status_from_message(sender, instance=None, created=False, 
     a discussion as open if it is currently stale or
     pending closed.
     """
-    if created:
+    if created and not instance.author.is_bot:
         if instance.discussion.is_stale or instance.discussion.is_pending_closed:
             instance.discussion.mark_as_open()
             instance.discussion.save()
@@ -57,7 +57,7 @@ def update_discussion_status_from_reply(sender, instance=None, created=False, **
     a discussion as open if it is currently stale or
     pending closed.
     """
-    if created:
+    if created and not instance.author.is_bot:
         if instance.message.discussion.is_stale or instance.message.discussion.is_pending_closed:
             instance.message.discussion.mark_as_open()
             instance.message.discussion.save()

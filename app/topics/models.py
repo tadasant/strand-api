@@ -85,7 +85,7 @@ class Discussion(TimeStampedModel):
                                                          countdown=settings.AUTO_CLOSE_DELAY)
 
     def can_mark_as_stale(self):
-        return self.minutes_since_last_non_bot_message >= 30.0
+        return self.minutes_since_last_non_bot_message >= settings.MIN_UNTIL_STALE
 
     @transition(field=status, source=[DiscussionStatus.STALE.value, DiscussionStatus.PENDING_CLOSED.value],
                 target=DiscussionStatus.OPEN.value, custom={'button_name': 'Mark as Open'})

@@ -33,8 +33,9 @@ SLACK_CLIENT_SECRET = '6d9bb9189b347be559ee46159025b96c'
 # Celery
 CELERY_BROKER_URL = 'redis://localhost:6379'
 
-# Discussion Auto-Close Delay
-AUTO_CLOSE_DELAY = 300
+# Discussion settings
+MIN_UNTIL_STALE = 30.0
+AUTO_CLOSE_DELAY = 60
 
 SLACK_APP_VERIFICATION_TOKEN = 'anoTH3rRANDoMCOmbo'
 SLACK_APP_STALE_DISCUSSION_ENDPOINT = 'http://slackapp.com/stalediscussions'

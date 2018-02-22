@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from app.api.celery import celery_app
 from app.topics.models import Discussion, DiscussionStatus
 from app.slack_integration.wrappers import SlackAppClientWrapper
@@ -11,7 +13,7 @@ def mark_stale_discussions():
     """
     discussions = Discussion.objects.filter(status=DiscussionStatus.OPEN.value).all()
     for discussion in discussions:
-        if discussion.minutes_since_last_non_bot_message >= 30.0:
+        if discussion.minutes_since_last_non_bot_message >= settings.MIN_UNTIL_STALE:
             discussion.mark_as_stale()
             discussion.save()
             if discussion.slack_channel:

@@ -19,13 +19,13 @@ def mark_stale_discussions():
 
 
 @celery_app.task
-def auto_close_pending_closed_discussion(discussion_id, datetime_of_last_non_bot_message):
+def auto_close_pending_closed_discussion(discussion_id):
     """
     Task that closes discussion that's been set to PENDING CLOSED
     if there is no new activity for 5 additional minutes.
     """
     discussion = Discussion.objects.get(pk=discussion_id)
-    if datetime_of_last_non_bot_message == discussion.datetime_of_last_non_bot_message:
+    if discussion.is_pending_closed:
         discussion.mark_as_closed()
         discussion.save()
         if discussion.slack_channel:

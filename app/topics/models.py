@@ -81,7 +81,7 @@ class Discussion(TimeStampedModel):
         self.save()
 
         from app.topics.tasks import auto_close_pending_closed_discussion
-        auto_close_pending_closed_discussion.apply_async(args=[self.id, self.datetime_of_last_non_bot_message],
+        auto_close_pending_closed_discussion.apply_async(args=[self.id],
                                                          countdown=settings.AUTO_CLOSE_DELAY)
 
     def can_mark_as_stale(self):

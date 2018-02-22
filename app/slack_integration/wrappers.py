@@ -78,7 +78,7 @@ class SlackAppClientWrapper:
         payload = SlackAppClientWrapper._construct_slack_agent_payload(slack_agent)
 
         resp = requests.post(settings.SLACK_APP_SLACK_AGENT_ENDPOINT, json=payload, headers=headers)
-        assert resp.status_code == 200, resp.content
+        assert resp.status_code == 204, resp.content
 
     @staticmethod
     def put_slack_agent(slack_agent):
@@ -86,4 +86,4 @@ class SlackAppClientWrapper:
         payload = SlackAppClientWrapper._construct_slack_agent_payload(slack_agent)
 
         resp = requests.put(settings.SLACK_APP_SLACK_AGENT_ENDPOINT, json=payload, headers=headers)
-        assert resp.status_code == 200, resp.content
+        assert resp.status_code == 204, resp.content

@@ -81,11 +81,11 @@ class Discussion(TimeStampedModel):
         self.save()
 
         from app.topics.tasks import auto_close_pending_closed_discussion
-        auto_close_pending_closed_discussion.apply_async(args=[self.id, self.datetime_of_last_non_bot_message],
+        auto_close_pending_closed_discussion.apply_async(args=[self.id],
                                                          countdown=settings.AUTO_CLOSE_DELAY)
 
     def can_mark_as_stale(self):
-        return self.minutes_since_last_non_bot_message >= 30.0
+        return self.minutes_since_last_non_bot_message >= settings.MIN_UNTIL_STALE
 
     @transition(field=status, source=[DiscussionStatus.STALE.value, DiscussionStatus.PENDING_CLOSED.value],
                 target=DiscussionStatus.OPEN.value, custom={'button_name': 'Mark as Open'})

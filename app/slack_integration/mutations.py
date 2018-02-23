@@ -137,8 +137,7 @@ class AttemptSlackInstallationMutation(graphene.Mutation):
             # TODO: This shouldn't be unique. Or, we should do something similar for alias (e.g. common-name-2)
             group = Group.objects.create(name=team_info['name'])
             slack_agent = SlackAgent.objects.create(group=group)
-            slack_team = SlackTeam.objects.create(id=team_info['id'], defaults=dict(name=team_info['name'],
-                                                                                    slack_agent=slack_agent))
+            slack_team = SlackTeam.objects.create(id=team_info['id'], name=team_info['name'], slack_agent=slack_agent)
 
             try:
                 user = User.objects.get(email=user_info['profile'].get('email'))

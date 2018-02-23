@@ -102,11 +102,6 @@ class AttemptSlackInstallationMutation(graphene.Mutation):
             raise Exception(f'''Error accessing users.info: {response.get('error')}''')
         user_info = response.get('user')
 
-        group, _ = Group.objects.get_or_create(name=team_info['name'])
-        slack_agent, _ = SlackAgent.objects.get_or_create(group=group)
-        slack_team, _ = SlackTeam.objects.get_or_create(id=team_info['id'], defaults=dict(name=team_info['name'],
-                                                                                          slack_agent=slack_agent))
-
         slack_user = SlackUser(id=user_info['id'], name=user_info.get('name'),
                                first_name=user_info.get('first_name', ''),
                                last_name=user_info.get('last_name', ''),
@@ -115,18 +110,46 @@ class AttemptSlackInstallationMutation(graphene.Mutation):
                                email=user_info['profile'].get('email'),
                                image_72=user_info['profile'].get('image_72'),
                                is_bot=user_info.get('is_bot'), is_admin=user_info.get('is_admin'),
-                               slack_team=slack_team)
+                               slack_team_id=team_info['id'])
 
         try:
-            user = User.objects.get(email=user_info['profile'].get('email'))
-            slack_user.user = user
-            slack_user.save()
-        except User.DoesNotExist:
-            User.objects.create_user_from_slack_user(slack_user)
+            slack_team = SlackTeam.objects.get(pk=team_info['id'])
+            slack_team.name = team_info['name']
+            slack_team.save()
 
-        slack_agent.get_or_create_slack_application_installation_from_oauth(oauth_info)
-        slack_agent.authenticate()
-        slack_agent.save()
+            # TODO: Not a good design pattern. Teams can probably have duplicate names.
+            slack_team.slack_agent.group.name = team_info['name']
+            slack_team.slack_agent.group.save()
+
+            # TODO: A new install on an existing team can come from a new user. This could be cleaner.
+            try:
+                user = User.objects.get(email=user_info['profile'].get('email'))
+                slack_user.user = user
+                slack_user.save()
+            except User.DoesNotExist:
+                User.objects.create_user_from_slack_user(slack_user)
+
+            # TODO: This should delete/create not overwrite.
+            slack_team.slack_agent.get_or_create_slack_application_installation_from_oauth(oauth_info)
+            slack_team.slack_agent.authenticate()
+            slack_team.slack_agent.save()
+        except SlackTeam.DoesNotExist:
+            # TODO: This shouldn't be unique. Or, we should do something similar for alias (e.g. common-name-2)
+            group = Group.objects.create(name=team_info['name'])
+            slack_agent = SlackAgent.objects.create(group=group)
+            slack_team = SlackTeam.objects.create(id=team_info['id'], defaults=dict(name=team_info['name'],
+                                                                                    slack_agent=slack_agent))
+
+            try:
+                user = User.objects.get(email=user_info['profile'].get('email'))
+                slack_user.user = user
+                slack_user.save()
+            except User.DoesNotExist:
+                User.objects.create_user_from_slack_user(slack_user)
+
+            slack_agent.get_or_create_slack_application_installation_from_oauth(oauth_info)
+            slack_agent.authenticate()
+            slack_agent.save()
 
         return AttemptSlackInstallationMutation(slack_team=slack_team)
 

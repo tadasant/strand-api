@@ -27,7 +27,9 @@ class SlackAgent(TimeStampedModel):
 
     def get_or_create_slack_application_installation_from_oauth(self, oauth_info):
         slack_user = SlackUser.objects.get(id=oauth_info['user_id'])
-        installation, created = SlackApplicationInstallation.objects.get_or_create(slack_agent=self,
+        # TODO: The purpose of this is to overwrite slack application installations. In the future
+        # we probably want to delete and create (this could be done by moving the FK to Slack Agent.
+        installation, created = SlackApplicationInstallation.objects.get_or_create(slack_agent_id=self.pk,
                                                                                    defaults=dict(
                                                                                        access_token=oauth_info[
                                                                                            'access_token'],
@@ -54,8 +56,9 @@ class SlackAgent(TimeStampedModel):
     def can_authenticate(self):
         return bool(self.slack_application_installation)
 
-    @transition(status, source=[SlackAgentStatus.INITIATED.value, SlackAgentStatus.INACTIVE.value],
-                target=SlackAgentStatus.AUTHENTICATED.value, conditions=[can_authenticate])
+    # TODO: We should sync with state of installed slack application. When we do this, we can only authenticate
+    # from initiated and inactive.
+    @transition(status, source='*', target=SlackAgentStatus.AUTHENTICATED.value, conditions=[can_authenticate])
     def authenticate(self):
         pass
 

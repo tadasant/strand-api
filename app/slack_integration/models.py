@@ -27,7 +27,7 @@ class SlackAgent(TimeStampedModel):
 
     def get_or_create_slack_application_installation_from_oauth(self, oauth_info):
         slack_user = SlackUser.objects.get(id=oauth_info['user_id'])
-        installation, created = SlackApplicationInstallation.objects.get_or_create(slack_agent=self,
+        installation, created = SlackApplicationInstallation.objects.get_or_create(slack_agent_id=self.pk,
                                                                                    defaults=dict(
                                                                                        access_token=oauth_info[
                                                                                            'access_token'],

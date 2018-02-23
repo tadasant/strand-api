@@ -28,7 +28,7 @@ ENABLE_GRAPHIQL = True
 CSRF_COOKIE_SECURE = False
 
 # Slack credentials
-SLACK_CLIENT_SECRET = '6d9bb9189b347be559ee46159025b96c'
+SLACK_CLIENT_SECRET = '6d78f8dc3bb99ce00bb172ef662a8389'
 
 # Celery
 CELERY_BROKER_URL = 'redis://localhost:6379'
@@ -38,9 +38,9 @@ MIN_UNTIL_STALE = 30.0
 AUTO_CLOSE_DELAY = 60
 
 SLACK_APP_VERIFICATION_TOKEN = 'anoTH3rRANDoMCOmbo'
-SLACK_APP_STALE_DISCUSSION_ENDPOINT = 'http://slackapp.com/stalediscussions'
-SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT = 'http://slackapp.com/autocloseddiscussions'
-SLACK_APP_SLACK_AGENT_ENDPOINT = 'http://slackapp.com/slackagents'
+SLACK_APP_STALE_DISCUSSION_ENDPOINT = 'https://localhost:4000/portal/discussions/stale'
+SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT = 'http://localhost:4000/portal/discussions/closed'
+SLACK_APP_SLACK_AGENT_ENDPOINT = 'http://localhost:4000/portal/slackagents'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -48,6 +48,5 @@ STATIC_URL = '/static/'
 
 # CORS
 # https://github.com/ottoyiu/django-cors-headers
-CORS_ORIGIN_WHITELIST = (
-    'localhost:5000',
-)
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_PREFLIGHT_MAX_AGE = 0

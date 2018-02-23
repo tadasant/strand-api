@@ -25,18 +25,27 @@ class SlackAgent(TimeStampedModel):
     status = FSMField(default=SlackAgentStatus.INITIATED.value, protected=True)
     topic_channel_id = models.CharField(max_length=255, blank=True, null=True)
 
-    def create_slack_application_installation_from_oauth(self, oauth_info):
+    def get_or_create_slack_application_installation_from_oauth(self, oauth_info):
         slack_user = SlackUser.objects.get(id=oauth_info['user_id'])
-        slack_application_installation = SlackApplicationInstallation.objects.create(slack_agent=self,
-                                                                                     access_token=oauth_info[
-                                                                                         'access_token'],
-                                                                                     scope=oauth_info['scope'],
-                                                                                     installer=slack_user,
-                                                                                     bot_user_id=oauth_info['bot'][
-                                                                                         'bot_user_id'],
-                                                                                     bot_access_token=oauth_info[
-                                                                                         'bot']['bot_access_token'])
-        return slack_application_installation
+        installation, created = SlackApplicationInstallation.objects.get_or_create(slack_agent=self,
+                                                                                   defaults=dict(
+                                                                                       access_token=oauth_info[
+                                                                                           'access_token'],
+                                                                                       scope=oauth_info['scope'],
+                                                                                       installer=slack_user,
+                                                                                       bot_user_id=oauth_info[
+                                                                                           'bot']['bot_user_id'],
+                                                                                       bot_access_token=oauth_info[
+                                                                                           'bot']['bot_access_token']))
+        if not created:
+            installation.access_token = oauth_info['access_token']
+            installation.scope = oauth_info['scope']
+            installation.installer = slack_user
+            installation.bot_user_id = oauth_info['bot']['bot_user_id']
+            installation.bot_access_token = oauth_info['bot']['bot_access_token']
+            installation.save()
+
+        return installation
 
     @property
     def is_initiated(self):

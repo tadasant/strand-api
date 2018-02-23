@@ -103,8 +103,9 @@ class AttemptSlackInstallationMutation(graphene.Mutation):
         user_info = response.get('user')
 
         group, _ = Group.objects.get_or_create(name=team_info['name'])
-        slack_agent = SlackAgent.objects.create(group=group)
-        slack_team = SlackTeam.objects.create(id=team_info['id'], name=team_info['name'], slack_agent=slack_agent)
+        slack_agent, _ = SlackAgent.objects.get_or_create(group=group)
+        slack_team, _ = SlackTeam.objects.get_or_create(id=team_info['id'], defaults=dict(name=team_info['name'],
+                                                                                          slack_agent=slack_agent))
 
         slack_user = SlackUser(id=user_info['id'], name=user_info.get('name'),
                                first_name=user_info.get('first_name', ''),
@@ -123,7 +124,7 @@ class AttemptSlackInstallationMutation(graphene.Mutation):
         except User.DoesNotExist:
             User.objects.create_user_from_slack_user(slack_user)
 
-        slack_agent.create_slack_application_installation_from_oauth(oauth_info)
+        slack_agent.get_or_create_slack_application_installation_from_oauth(oauth_info)
         slack_agent.authenticate()
         slack_agent.save()
 

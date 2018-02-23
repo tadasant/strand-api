@@ -28,7 +28,7 @@ ENABLE_GRAPHIQL = True
 CSRF_COOKIE_SECURE = False
 
 # Slack credentials
-SLACK_CLIENT_SECRET = '6d9bb9189b347be559ee46159025b96c'
+SLACK_CLIENT_SECRET = '6d78f8dc3bb99ce00bb172ef662a8389'
 
 # Celery
 CELERY_BROKER_URL = 'redis://localhost:6379'
@@ -48,6 +48,5 @@ STATIC_URL = '/static/'
 
 # CORS
 # https://github.com/ottoyiu/django-cors-headers
-CORS_ORIGIN_WHITELIST = (
-    'localhost:5000',
-)
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_PREFLIGHT_MAX_AGE = 0

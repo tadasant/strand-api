@@ -18,4 +18,4 @@ class TestDiscussionModel:
         message_time = datetime.now(tz=pytz.UTC) - timedelta(days=1, minutes=30)
         message_factory(author=user, time=message_time, discussion=discussion)
 
-        assert discussion.minutes_since_last_non_bot_message >= (60*24 + 30)
+        assert discussion.minutes_since_last_non_bot_message >= ((60*24) + 30)

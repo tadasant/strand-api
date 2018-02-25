@@ -9,9 +9,9 @@ class TestDiscussionModel:
     @pytest.mark.django_db
     def test_minutes_since_last_non_bot_message(self, user_factory, message_factory, discussion_factory):
         """
-        Given: The database has been created.
-        When: A user is created without an email.
-        Then: No constraint is violated.
+        Given: A discussion's last non-bot message is over a day old.
+        When: The minutes_since_last_non_bot_message is computed.
+        Then: The minutes > 1440.
         """
         discussion = discussion_factory()
         user = user_factory(is_bot=False)

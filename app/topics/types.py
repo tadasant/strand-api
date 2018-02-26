@@ -26,7 +26,7 @@ class TagInputType(graphene.InputObjectType):
 class TopicInputType(graphene.InputObjectType):
     title = graphene.String(required=True)
     description = graphene.String(required=True)
-    is_anonymous = graphene.Boolean()
+    is_private = graphene.Boolean()
     original_poster_id = graphene.Int(required=True)
     group_id = graphene.Int()
     tags = graphene.List(TagInputType)
@@ -41,7 +41,7 @@ class DiscussionInputType(graphene.InputObjectType):
 class TopicAndTagsInputType(graphene.InputObjectType):
     title = graphene.String(required=True)
     description = graphene.String(required=True)
-    is_anonymous = graphene.Boolean()
+    is_private = graphene.Boolean()
     original_poster_id = graphene.Int(required=True)
 
 

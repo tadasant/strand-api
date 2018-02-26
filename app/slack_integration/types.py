@@ -186,7 +186,7 @@ class CloseDiscussionFromSlackInputType(graphene.InputObjectType):
 class TopicFromSlackInputType(graphene.InputObjectType):
     title = graphene.String(required=True)
     description = graphene.String(required=True)
-    is_anonymous = graphene.Boolean()
+    is_private = graphene.Boolean()
     original_poster_slack_user_id = graphene.String(required=True)
     tags = graphene.List(TagInputType)
 
@@ -194,6 +194,6 @@ class TopicFromSlackInputType(graphene.InputObjectType):
 class UserAndTopicFromSlackInputType(graphene.InputObjectType):
     title = graphene.String(required=True)
     description = graphene.String(required=True)
-    is_anonymous = graphene.Boolean()
+    is_private = graphene.Boolean()
     original_poster_slack_user = graphene.Field(UserFromSlackInputType)
     tags = graphene.List(TagInputType)

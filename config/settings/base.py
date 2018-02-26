@@ -17,7 +17,7 @@ if os.environ.get('ENVIRONMENT') == 'PROD':
 elif os.environ.get('ENVIRONMENT') == 'STAGING':
     from config.settings.staging import *
 elif os.environ.get('ENVIRONMENT') == 'DEVELOPMENT':
-    from config.settings.dev
+    from config.settings.development import *
 elif os.environ.get('ENVIRONMENT') == 'TEST':
     from config.settings.testing import *
 else:

@@ -60,8 +60,10 @@ class Discussion(TimeStampedModel):
 
     @property
     def minutes_since_last_non_bot_message(self):
-        time_delta = timezone.now() - self.datetime_of_last_non_bot_message
-        minutes = round(time_delta.seconds / 60, 2)
+        minutes = (
+                round(((timezone.now() - self.datetime_of_last_non_bot_message).seconds / 60), 2) +
+                ((timezone.now() - self.datetime_of_last_non_bot_message).days * 24 * 60)
+        )
         return minutes
 
     @property

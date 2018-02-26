@@ -3,10 +3,9 @@ import pytest
 
 class TestCreateMessageFromSlack:
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, discussion_factory, slack_channel_factory, user_factory, slack_user_factory,
+    def test_unauthenticated(self, client, slack_channel_factory, user_factory, slack_user_factory,
                              slack_event_factory, message_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         user = user_factory()
         slack_user = slack_user_factory(user=user)
 
@@ -34,10 +33,9 @@ class TestCreateMessageFromSlack:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_slack_user(self, auth_client, discussion_factory, slack_channel_factory, user_factory,
+    def test_invalid_slack_user(self, auth_client, slack_channel_factory, user_factory,
                                 slack_user_factory, slack_event_factory, message_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         user = user_factory()
         slack_user = slack_user_factory.build(user=user)
 
@@ -65,10 +63,9 @@ class TestCreateMessageFromSlack:
         assert response.json()['errors'][0]['message'] == 'User matching query does not exist.'
 
     @pytest.mark.django_db
-    def test_invalid_slack_channel(self, auth_client, discussion_factory, slack_channel_factory, user_factory,
+    def test_invalid_slack_channel(self, auth_client, slack_channel_factory, user_factory,
                                    slack_user_factory, slack_event_factory, message_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory.build(discussion=discussion)
+        slack_channel = slack_channel_factory.build()
         user = user_factory()
         slack_user = slack_user_factory(user=user)
 
@@ -98,7 +95,7 @@ class TestCreateMessageFromSlack:
     @pytest.mark.django_db
     def test_valid(self, auth_client, discussion_factory, slack_channel_factory, user_factory,
                    slack_user_factory, slack_event_factory, message_factory):
-        discussion = discussion_factory()
+        discussion = discussion_factory(topic__is_private=False)
         slack_channel = slack_channel_factory(discussion=discussion)
         user = user_factory()
         slack_user = slack_user_factory(user=user)

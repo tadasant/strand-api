@@ -5,13 +5,13 @@ class TestCreateDiscussion:
 
     @pytest.mark.django_db
     def test_unauthenticated(self, client, topic_factory, discussion_factory):
-        topic = topic_factory()
+        topic = topic_factory(is_private=False)
         discussion = discussion_factory.build()
 
         mutation = f'''
           mutation {{
             createDiscussion(input: {{timeStart: "{discussion.time_start}", timeEnd: "{discussion.time_end}",
-                                   topicId: {topic.id}}}) {{
+                                      topicId: {topic.id}}}) {{
               discussion {{
                 topic {{
                   id
@@ -28,7 +28,7 @@ class TestCreateDiscussion:
 
     @pytest.mark.django_db
     def test_valid(self, auth_client, topic_factory, discussion_factory):
-        topic = topic_factory()
+        topic = topic_factory(is_private=False)
         discussion = discussion_factory.build()
 
         mutation = f'''

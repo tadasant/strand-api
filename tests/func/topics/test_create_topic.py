@@ -7,7 +7,7 @@ class TestCreateTopic:
     def test_unauthenticated(self, client, topic_factory, user_factory, group_factory):
         group = group_factory()
         user = user_factory()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
@@ -31,7 +31,7 @@ class TestCreateTopic:
     def test_valid(self, auth_client, topic_factory, user_factory, group_factory):
         group = group_factory()
         user = user_factory()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
@@ -55,7 +55,7 @@ class TestCreateTopic:
                                    tag_factory):
         group = group_factory()
         user = user_factory()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
         tag_one = tag_factory.build()
         tag_two = tag_factory.build()
 

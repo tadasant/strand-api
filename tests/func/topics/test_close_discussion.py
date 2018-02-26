@@ -5,7 +5,7 @@ class TestCloseDiscussion:
 
     @pytest.mark.django_db
     def test_unauthenticated(self, client, discussion_factory):
-        discussion = discussion_factory()
+        discussion = discussion_factory(topic__is_private=False)
 
         mutation = f'''
           mutation {{
@@ -24,7 +24,7 @@ class TestCloseDiscussion:
 
     @pytest.mark.django_db
     def test_invalid_discussion(self, auth_client, discussion_factory):
-        discussion = discussion_factory()
+        discussion = discussion_factory(topic__is_private=False)
 
         mutation = f'''
           mutation {{
@@ -43,7 +43,7 @@ class TestCloseDiscussion:
 
     @pytest.mark.django_db
     def test_valid(self, auth_client, discussion_factory):
-        discussion = discussion_factory()
+        discussion = discussion_factory(topic__is_private=False)
 
         mutation = f'''
           mutation {{

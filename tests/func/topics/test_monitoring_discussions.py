@@ -15,7 +15,7 @@ class TestMarkingDiscussionAsStale:
         mark_stale_discussions_factory(num_periods=3, period_length=1.5)
 
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=29, seconds=58)
-        discussion = discussion_factory(time_start=original_time)
+        discussion = discussion_factory(topic__is_private=False, time_start=original_time)
 
         wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_stale, timeout=7)
 
@@ -30,7 +30,7 @@ class TestMarkingDiscussionAsStale:
         mark_stale_discussions_factory(num_periods=3, period_length=1.5)
 
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=29, seconds=58)
-        discussion = discussion_factory(time_start=original_time)
+        discussion = discussion_factory(topic__is_private=False, time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
         user = user_factory(is_bot=False)
         slack_user = slack_user_factory(user=user)
@@ -62,7 +62,7 @@ class TestMarkingDiscussionAsStale:
         mark_stale_discussions_factory(num_periods=3, period_length=1.5)
 
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=29, seconds=57)
-        discussion = discussion_factory(time_start=original_time)
+        discussion = discussion_factory(topic__is_private=False, time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
         user = user_factory(is_bot=True)
         slack_user = slack_user_factory(user=user)
@@ -96,7 +96,7 @@ class TestClosingPendingClosedDiscussion:
                              slack_channel_factory, message_factory, user_factory, slack_user_factory,
                              slack_event_factory, slack_app_request_factory):
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=31)
-        discussion = discussion_factory(time_start=original_time)
+        discussion = discussion_factory(topic__is_private=False, time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
 
         non_bot_user = user_factory(is_bot=False)
@@ -146,7 +146,7 @@ class TestClosingPendingClosedDiscussion:
                                                       message_factory, user_factory, slack_user_factory,
                                                       slack_event_factory, slack_app_request_factory):
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=31)
-        discussion = discussion_factory(time_start=original_time)
+        discussion = discussion_factory(topic__is_private=False, time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
         non_bot_user = user_factory(is_bot=False)
         non_bot_slack_user = slack_user_factory(user=non_bot_user)
@@ -211,7 +211,7 @@ class TestClosingPendingClosedDiscussion:
                                               message_factory, user_factory, slack_user_factory,
                                               slack_event_factory, slack_app_request_factory):
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=31)
-        discussion = discussion_factory(time_start=original_time)
+        discussion = discussion_factory(topic__is_private=False, time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
         non_bot_user = user_factory(is_bot=False)
         non_bot_slack_user = slack_user_factory(user=non_bot_user)
@@ -280,7 +280,7 @@ class TestClosingPendingClosedDiscussion:
                                                    auth_client, discussion_factory, slack_channel_factory,
                                                    slack_app_request_factory):
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=31)
-        discussion = discussion_factory(time_start=original_time)
+        discussion = discussion_factory(topic__is_private=False, time_start=original_time)
         slack_channel = slack_channel_factory(discussion=discussion)
 
         discussion.mark_as_stale()

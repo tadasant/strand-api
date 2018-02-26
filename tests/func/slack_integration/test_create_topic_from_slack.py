@@ -8,7 +8,7 @@ class TestCreateTopicFromSlack:
         slack_user = slack_user_factory()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
@@ -40,7 +40,7 @@ class TestCreateTopicFromSlack:
         slack_user = slack_user_factory.build()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
@@ -72,7 +72,7 @@ class TestCreateTopicFromSlack:
         slack_user = slack_user_factory()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{

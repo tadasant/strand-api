@@ -1,15 +1,15 @@
 from enum import Enum
 
 from django.db import models
-from django_fsm import FSMField, transition
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django_fsm import FSMField, transition
 from model_utils.models import TimeStampedModel
 
-from app.topics.models import Discussion
-from app.users.models import User
 from app.groups.models import Group
 from app.slack_integration.wrappers import SlackAppClientWrapper
+from app.topics.models import Discussion
+from app.users.models import User
 
 
 class SlackAgentStatus(Enum):
@@ -141,22 +141,6 @@ class SlackChannel(TimeStampedModel):
 
 class SlackEvent(TimeStampedModel):
     ts = models.CharField(max_length=255)
-
-
-@receiver(post_save, sender=SlackApplicationInstallation)
-def post_save_slack_application_installation(sender, instance=None, created=False, **kwargs):
-    """Update Slack Agent on Slack App
-
-    If this is triggered by a new application installation, then it will be ignored. This is
-    because a new application installation would translate to a new status on the Slack Agent
-    and result in two requests being sent. Instead we reserve POST requests for Slack Agent on
-    pre-save when the status is changing from INITIATED to AUTHENTICATED.
-
-    If this is triggered by updates to an existing installation, then the request will be a
-    PUT. In the future, we will need to handle deletes.
-    """
-    if not created:
-        SlackAppClientWrapper.put_slack_agent(instance.slack_agent)
 
 
 @receiver(pre_save, sender=SlackAgent)

@@ -1,15 +1,15 @@
 from enum import Enum
 
 from django.db import models
-from django_fsm import FSMField, transition
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django_fsm import FSMField, transition
 from model_utils.models import TimeStampedModel
 
-from app.topics.models import Discussion
-from app.users.models import User
 from app.groups.models import Group
 from app.slack_integration.wrappers import SlackAppClientWrapper
+from app.topics.models import Discussion
+from app.users.models import User
 
 
 class SlackAgentStatus(Enum):

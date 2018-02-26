@@ -6,6 +6,7 @@ from app.dialogues.models import Message, Reply
 def get_user(context):
     try:
         token_authentication = TokenAuthentication()
+        # Will return None and raise TypeError if no auth header present
         user, token = token_authentication.authenticate(context)
     except TypeError:
         return None

@@ -12,9 +12,9 @@ class TestCreateTopic:
         mutation = f'''
           mutation {{
             createTopic(input: {{title: "{topic.title}", description: "{topic.description}",
-                                    isAnonymous: {str(topic.is_anonymous).lower()},
-                                    originalPosterId: {user.id},
-                                    groupId: {str(group.id)}}}) {{
+                                 isPrivate: {str(topic.is_private).lower()},
+                                 originalPosterId: {user.id},
+                                 groupId: {str(group.id)}}}) {{
               topic {{
                 title
               }}
@@ -36,9 +36,9 @@ class TestCreateTopic:
         mutation = f'''
           mutation {{
             createTopic(input: {{title: "{topic.title}", description: "{topic.description}",
-                                    isAnonymous: {str(topic.is_anonymous).lower()},
-                                    originalPosterId: {user.id},
-                                    groupId: {str(group.id)}}}) {{
+                                 isPrivate: {str(topic.is_private).lower()},
+                                 originalPosterId: {user.id},
+                                 groupId: {str(group.id)}}}) {{
               topic {{
                 title
               }}
@@ -62,13 +62,13 @@ class TestCreateTopic:
         mutation = f'''
           mutation {{
             createTopic(input: {{title: "{topic.title}", description: "{topic.description}",
-                                    isAnonymous: {str(topic.is_anonymous).lower()},
-                                    originalPosterId: {user.id},
-                                    groupId: {str(group.id)},
-                                    tags: [
-                                      {{name: "{tag_one.name}"}},
-                                      {{name: "{tag_two.name}"}}
-                                    ]}}) {{
+                                 isPrivate: {str(topic.is_private).lower()},
+                                 originalPosterId: {user.id},
+                                 groupId: {str(group.id)},
+                                 tags: [
+                                   {{name: "{tag_one.name}"}},
+                                   {{name: "{tag_two.name}"}}
+                                 ]}}) {{
               topic {{
                 title
                 tags {{

@@ -13,13 +13,13 @@ class TestCreateTopicFromSlack:
         mutation = f'''
           mutation {{
             createTopicFromSlack(input: {{title: "{topic.title}",
-                                             description: "{topic.description}",
-                                             isAnonymous: {str(topic.is_anonymous).lower()},
-                                             originalPosterSlackUserId: "{slack_user.id}",
-                                             tags: [
-                                               {{name: "{tag_one.name}"}},
-                                               {{name: "{tag_two.name}"}}
-                                             ]}}) {{
+                                          description: "{topic.description}",
+                                          isPrivate: {str(topic.is_private).lower()},
+                                          originalPosterSlackUserId: "{slack_user.id}",
+                                          tags: [
+                                            {{name: "{tag_one.name}"}},
+                                            {{name: "{tag_two.name}"}}
+                                          ]}}) {{
               topic {{
                 title
                 tags {{
@@ -45,13 +45,13 @@ class TestCreateTopicFromSlack:
         mutation = f'''
           mutation {{
             createTopicFromSlack(input: {{title: "{topic.title}",
-                                             description: "{topic.description}",
-                                             isAnonymous: {str(topic.is_anonymous).lower()},
-                                             originalPosterSlackUserId: "{slack_user.id}",
-                                             tags: [
-                                               {{name: "{tag_one.name}"}},
-                                               {{name: "{tag_two.name}"}}
-                                             ]}}) {{
+                                          description: "{topic.description}",
+                                          isPrivate: {str(topic.is_private).lower()},
+                                          originalPosterSlackUserId: "{slack_user.id}",
+                                          tags: [
+                                            {{name: "{tag_one.name}"}},
+                                            {{name: "{tag_two.name}"}}
+                                          ]}}) {{
               topic {{
                 title
                 tags {{
@@ -77,13 +77,13 @@ class TestCreateTopicFromSlack:
         mutation = f'''
           mutation {{
             createTopicFromSlack(input: {{title: "{topic.title}",
-                                             description: "{topic.description}",
-                                             isAnonymous: {str(topic.is_anonymous).lower()},
-                                             originalPosterSlackUserId: "{slack_user.id}",
-                                             tags: [
-                                               {{name: "{tag_one.name}"}},
-                                               {{name: "{tag_two.name}"}}
-                                             ]}}) {{
+                                          description: "{topic.description}",
+                                          isPrivate: {str(topic.is_private).lower()},
+                                          originalPosterSlackUserId: "{slack_user.id}",
+                                          tags: [
+                                            {{name: "{tag_one.name}"}},
+                                            {{name: "{tag_two.name}"}}
+                                          ]}}) {{
               topic {{
                 title
                 tags {{

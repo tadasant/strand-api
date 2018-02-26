@@ -1,9 +1,8 @@
 import os
-import json
 
 # Prevent HTTP Host header attacks
 # https://docs.djangoproject.com/en/2.0/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['docker.for.mac.localhost', 'localhost']
+ALLOWED_HOSTS = ['strand-api-development.us-east-1.elasticbeanstalk.com', 'development.api.trystrand.com']
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -11,40 +10,55 @@ DEBUG = True
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-DB_CREDENTIALS = json.load(open(os.path.join(BASE_DIR, 'db.config.json'), 'r'))
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DB_CREDENTIALS['NAME'],
-        'USER': DB_CREDENTIALS['USER'],
-        'PASSWORD': DB_CREDENTIALS['PASSWORD'],
-        'HOST': DB_CREDENTIALS['HOST'],
-        'PORT': DB_CREDENTIALS['PORT']
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASSWORD'],
+        'HOST': os.environ['DB_HOST'],
+        'PORT': os.environ['DB_PORT']
     }
 }
 
 ENABLE_GRAPHIQL = True
-CSRF_COOKIE_SECURE = False
+
+# SSL/HTTPS
+# https://docs.djangoproject.com/en/2.0/topics/security/
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
 
 # Slack credentials
-SLACK_CLIENT_SECRET = '6d78f8dc3bb99ce00bb172ef662a8389'
+SLACK_CLIENT_SECRET = os.environ['SLACK_CLIENT_SECRET']
 
 # Celery
-CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
 
-# Discussion settings
-MIN_UNTIL_STALE = 30.0
-AUTO_CLOSE_DELAY = 60
+# Discussion Auto-Close Delay
+MIN_UNTIL_STALE = float(os.environ['MIN_UNTIL_STALE'])
+AUTO_CLOSE_DELAY = int(os.environ['AUTO_CLOSE_DELAY'])
 
-SLACK_APP_VERIFICATION_TOKEN = 'anoTH3rRANDoMCOmbo'
-SLACK_APP_STALE_DISCUSSION_ENDPOINT = 'https://localhost:4000/portal/discussions/stale'
-SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT = 'http://localhost:4000/portal/discussions/closed'
-SLACK_APP_SLACK_AGENT_ENDPOINT = 'http://localhost:4000/portal/slackagents'
+# Slack App Verification Token
+SLACK_APP_VERIFICATION_TOKEN = os.environ['SLACK_APP_VERIFICATION_TOKEN']
+SLACK_APP_STALE_DISCUSSION_ENDPOINT = os.environ['SLACK_APP_STALE_DISCUSSION_ENDPOINT']
+SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT = os.environ['SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT']
+SLACK_APP_SLACK_AGENT_ENDPOINT = os.environ['SLACK_APP_SLACK_AGENT_ENDPOINT']
+
+# django-storages
+# http://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-STATIC_URL = '/static/'
+
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # CORS
 # https://github.com/ottoyiu/django-cors-headers

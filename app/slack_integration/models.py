@@ -143,22 +143,6 @@ class SlackEvent(TimeStampedModel):
     ts = models.CharField(max_length=255)
 
 
-@receiver(post_save, sender=SlackApplicationInstallation)
-def post_save_slack_application_installation(sender, instance=None, created=False, **kwargs):
-    """Update Slack Agent on Slack App
-
-    If this is triggered by a new application installation, then it will be ignored. This is
-    because a new application installation would translate to a new status on the Slack Agent
-    and result in two requests being sent. Instead we reserve POST requests for Slack Agent on
-    pre-save when the status is changing from INITIATED to AUTHENTICATED.
-
-    If this is triggered by updates to an existing installation, then the request will be a
-    PUT. In the future, we will need to handle deletes.
-    """
-    if not created:
-        SlackAppClientWrapper.put_slack_agent(instance.slack_agent)
-
-
 @receiver(pre_save, sender=SlackAgent)
 def pre_save_slack_agent(sender, instance=None, update_fields=None, **kwargs):
     """Create or update Slack Agent on Slack App

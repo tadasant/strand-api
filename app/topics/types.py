@@ -2,7 +2,7 @@ import graphene
 from graphene_django.types import DjangoObjectType
 
 from app.topics.models import Topic, Discussion, Tag
-from app.api.authorization import check_topic_authorization, check_discussion_authorization
+from app.api.authorization import check_topic_authorization
 
 
 class TopicType(DjangoObjectType):
@@ -46,27 +46,27 @@ class DiscussionType(DjangoObjectType):
         only_fields = ('id', 'time_start', 'time_end', 'status', 'topic', 'participants',)
 
     # TODO: Move to object-level permissions
-    @check_discussion_authorization
+    @check_topic_authorization
     def resolve_id(self, info):
         return self.id
 
-    @check_discussion_authorization
+    @check_topic_authorization
     def resolve_time_start(self, info):
         return self.time_start
 
-    @check_discussion_authorization
+    @check_topic_authorization
     def resolve_time_end(self, info):
         return self.time_end
 
-    @check_discussion_authorization
+    @check_topic_authorization
     def resolve_status(self, info):
         return self.status
 
-    @check_discussion_authorization
+    @check_topic_authorization
     def resolve_topic(self, info):
         return self.topic
 
-    @check_discussion_authorization
+    @check_topic_authorization
     def resolve_participants(self, info):
         return self.participants
 

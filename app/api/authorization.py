@@ -1,4 +1,6 @@
 from rest_framework.authentication import TokenAuthentication
+from app.topics.models import Topic, Discussion
+from app.dialogues.models import Message, Reply
 
 
 def get_user(context):
@@ -35,55 +37,13 @@ def check_topic_authorization(resolve_function):
     def wrapper(self, info, **kwargs):
         user = get_user(info.context)
 
-        if not self.is_private:
+        if isinstance(self, Topic) and not self.is_private:
             return resolve_function(self, info, **kwargs)
-        elif user and user.is_superuser:
+        elif isinstance(self, Discussion) and not self.topic.is_private:
             return resolve_function(self, info, **kwargs)
-        else:
-            return None
-    return wrapper
-
-
-def check_discussion_authorization(resolve_function):
-    """
-    Performs authorization checks for discussions.
-    """
-    def wrapper(self, info, **kwargs):
-        user = get_user(info.context)
-
-        if not self.topic.is_private:
+        elif isinstance(self, Message) and not self.discussion.topic.is_private:
             return resolve_function(self, info, **kwargs)
-        elif user and user.is_superuser:
-            return resolve_function(self, info, **kwargs)
-        else:
-            return None
-    return wrapper
-
-
-def check_message_authorization(resolve_function):
-    """
-    Performs authorization checks for messages.
-    """
-    def wrapper(self, info, **kwargs):
-        user = get_user(info.context)
-
-        if not self.discussion.topic.is_private:
-            return resolve_function(self, info, **kwargs)
-        elif user and user.is_superuser:
-            return resolve_function(self, info, **kwargs)
-        else:
-            return None
-    return wrapper
-
-
-def check_reply_authorization(resolve_function):
-    """
-    Performs authorization checks for replies.
-    """
-    def wrapper(self, info, **kwargs):
-        user = get_user(info.context)
-
-        if not self.message.discussion.topic.is_private:
+        elif isinstance(self, Reply) and not self.message.discussion.topic.is_private:
             return resolve_function(self, info, **kwargs)
         elif user and user.is_superuser:
             return resolve_function(self, info, **kwargs)

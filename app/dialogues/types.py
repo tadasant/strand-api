@@ -8,7 +8,7 @@ from app.api.authorization import check_topic_authorization
 class MessageType(DjangoObjectType):
     class Meta:
         model = Message
-        only_fields = ('id', 'text', 'discussion', 'author', 'time', 'origin_slack_event',)
+        only_fields = ('id', 'text', 'discussion', 'author', 'time',)
 
     # TODO: Move to object-level permissions
     @check_topic_authorization
@@ -30,10 +30,6 @@ class MessageType(DjangoObjectType):
     @check_topic_authorization
     def resolve_time(self, info):
         return self.time
-
-    @check_topic_authorization
-    def resolve_origin_slack_event(self, info):
-        return self.origin_slack_event
 
 
 class ReplyType(DjangoObjectType):

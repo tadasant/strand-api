@@ -19,9 +19,6 @@ class TestCreateMessageFromSlack:
                                             originSlackEventTs: "{slack_event.ts}"}}) {{
               message {{
                 text
-                originSlackEvent {{
-                  ts
-                }}
               }}
             }}
           }}
@@ -49,9 +46,6 @@ class TestCreateMessageFromSlack:
                                             originSlackEventTs: "{slack_event.ts}"}}) {{
               message {{
                 text
-                originSlackEvent {{
-                  ts
-                }}
               }}
             }}
           }}
@@ -79,9 +73,6 @@ class TestCreateMessageFromSlack:
                                             originSlackEventTs: "{slack_event.ts}"}}) {{
               message {{
                 text
-                originSlackEvent {{
-                  ts
-                }}
               }}
             }}
           }}
@@ -112,9 +103,6 @@ class TestCreateMessageFromSlack:
                 author {{
                   id
                 }}
-                originSlackEvent {{
-                  ts
-                }}
                 discussion {{
                   id
                   participants {{
@@ -131,7 +119,5 @@ class TestCreateMessageFromSlack:
         assert response.json()['data']['createMessageFromSlack']['message']['author']['id'] == \
             str(slack_user.user.id)
         assert response.json()['data']['createMessageFromSlack']['message']['discussion']['id'] == str(discussion.id)
-        assert response.json()['data']['createMessageFromSlack']['message']['originSlackEvent']['ts'] == \
-            str(slack_event.ts)
         assert {'id': str(user.id)} in response.json()['data']['createMessageFromSlack']['message']['discussion'][
             'participants']

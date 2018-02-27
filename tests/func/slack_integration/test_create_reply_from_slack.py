@@ -10,14 +10,14 @@ class TestCreateReplyFromSlack:
     def test_unauthenticated(self, client, slack_channel_factory, slack_event_factory,
                              slack_user_factory, message_factory, reply_factory):
         slack_channel = slack_channel_factory(discussion__topic__is_private=False)
-        message_slack_event = slack_event_factory()
-        reply_slack_event = slack_event_factory()
         message_slack_user = slack_user_factory()
-        reply_slack_user = slack_user_factory()
         message = message_factory(discussion=slack_channel.discussion,
-                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
+        message_slack_event = slack_event_factory(message=message)
+
+        reply_slack_user = slack_user_factory()
         reply = reply_factory.build(message=message, author=reply_slack_user.user)
+        reply_slack_event = slack_event_factory.build()
 
         mutation = f'''
           mutation {{
@@ -47,14 +47,15 @@ class TestCreateReplyFromSlack:
                                    slack_user_factory, message_factory, reply_factory):
         discussion = discussion_factory(topic__is_private=False)
         slack_channel = slack_channel_factory.build()
-        message_slack_event = slack_event_factory()
-        reply_slack_event = slack_event_factory()
+
         message_slack_user = slack_user_factory()
-        reply_slack_user = slack_user_factory()
         message = message_factory(discussion=discussion,
-                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
+        message_slack_event = slack_event_factory(message=message)
+
+        reply_slack_user = slack_user_factory()
         reply = reply_factory.build(message=message, author=reply_slack_user.user)
+        reply_slack_event = slack_event_factory.build()
 
         mutation = f'''
           mutation {{
@@ -83,14 +84,15 @@ class TestCreateReplyFromSlack:
     def test_invalid_slack_user(self, auth_client, slack_channel_factory, slack_event_factory,
                                 slack_user_factory, message_factory, reply_factory):
         slack_channel = slack_channel_factory(discussion__topic__is_private=False)
-        message_slack_event = slack_event_factory()
-        reply_slack_event = slack_event_factory()
+
         message_slack_user = slack_user_factory()
-        reply_slack_user = slack_user_factory.build()
         message = message_factory(discussion=slack_channel.discussion,
-                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
+        message_slack_event = slack_event_factory(message=message)
+
+        reply_slack_user = slack_user_factory.build()
         reply = reply_factory.build(message=message, author=reply_slack_user.user)
+        reply_slack_event = slack_event_factory.build()
 
         mutation = f'''
           mutation {{
@@ -120,20 +122,20 @@ class TestCreateReplyFromSlack:
                                                 slack_event_factory, slack_user_factory,
                                                 message_factory, reply_factory):
         slack_channel = slack_channel_factory(discussion__topic__is_private=False)
-        message_slack_event = slack_event_factory()
-        wrong_message_slack_event = slack_event_factory()
-        reply_slack_event = slack_event_factory()
+
         message_slack_user = slack_user_factory()
-        reply_slack_user = slack_user_factory()
         message = message_factory(discussion=slack_channel.discussion,
-                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
+        message_slack_event = slack_event_factory.build()
+
+        reply_slack_user = slack_user_factory()
         reply = reply_factory.build(message=message, author=reply_slack_user.user)
+        reply_slack_event = slack_event_factory.build()
 
         mutation = f'''
           mutation {{
             createReplyFromSlack(input: {{text: "{reply.text}",
-                                          messageOriginSlackEventTs: "{wrong_message_slack_event.ts}",
+                                          messageOriginSlackEventTs: "{message_slack_event.ts}",
                                           slackChannelId: "{slack_channel.id}",
                                           slackUserId: "{reply_slack_user.id}",
                                           originSlackEventTs: "{reply_slack_event.ts}"}}) {{
@@ -157,14 +159,15 @@ class TestCreateReplyFromSlack:
     def test_valid(self, auth_client, slack_channel_factory, slack_event_factory, slack_user_factory,
                    message_factory, reply_factory):
         slack_channel = slack_channel_factory(discussion__topic__is_private=False)
-        message_slack_event = slack_event_factory()
-        reply_slack_event = slack_event_factory()
+
         message_slack_user = slack_user_factory()
-        reply_slack_user = slack_user_factory()
         message = message_factory(discussion=slack_channel.discussion,
-                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
+        message_slack_event = slack_event_factory(message=message)
+
+        reply_slack_user = slack_user_factory()
         reply = reply_factory.build(message=message, author=reply_slack_user.user)
+        reply_slack_event = slack_event_factory.build()
 
         mutation = f'''
           mutation {{

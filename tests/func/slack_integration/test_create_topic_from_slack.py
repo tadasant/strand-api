@@ -8,18 +8,18 @@ class TestCreateTopicFromSlack:
         slack_user = slack_user_factory()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
             createTopicFromSlack(input: {{title: "{topic.title}",
-                                             description: "{topic.description}",
-                                             isAnonymous: {str(topic.is_anonymous).lower()},
-                                             originalPosterSlackUserId: "{slack_user.id}",
-                                             tags: [
-                                               {{name: "{tag_one.name}"}},
-                                               {{name: "{tag_two.name}"}}
-                                             ]}}) {{
+                                          description: "{topic.description}",
+                                          isPrivate: {str(topic.is_private).lower()},
+                                          originalPosterSlackUserId: "{slack_user.id}",
+                                          tags: [
+                                            {{name: "{tag_one.name}"}},
+                                            {{name: "{tag_two.name}"}}
+                                          ]}}) {{
               topic {{
                 title
                 tags {{
@@ -40,18 +40,18 @@ class TestCreateTopicFromSlack:
         slack_user = slack_user_factory.build()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
             createTopicFromSlack(input: {{title: "{topic.title}",
-                                             description: "{topic.description}",
-                                             isAnonymous: {str(topic.is_anonymous).lower()},
-                                             originalPosterSlackUserId: "{slack_user.id}",
-                                             tags: [
-                                               {{name: "{tag_one.name}"}},
-                                               {{name: "{tag_two.name}"}}
-                                             ]}}) {{
+                                          description: "{topic.description}",
+                                          isPrivate: {str(topic.is_private).lower()},
+                                          originalPosterSlackUserId: "{slack_user.id}",
+                                          tags: [
+                                            {{name: "{tag_one.name}"}},
+                                            {{name: "{tag_two.name}"}}
+                                          ]}}) {{
               topic {{
                 title
                 tags {{
@@ -72,18 +72,18 @@ class TestCreateTopicFromSlack:
         slack_user = slack_user_factory()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
             createTopicFromSlack(input: {{title: "{topic.title}",
-                                             description: "{topic.description}",
-                                             isAnonymous: {str(topic.is_anonymous).lower()},
-                                             originalPosterSlackUserId: "{slack_user.id}",
-                                             tags: [
-                                               {{name: "{tag_one.name}"}},
-                                               {{name: "{tag_two.name}"}}
-                                             ]}}) {{
+                                          description: "{topic.description}",
+                                          isPrivate: {str(topic.is_private).lower()},
+                                          originalPosterSlackUserId: "{slack_user.id}",
+                                          tags: [
+                                            {{name: "{tag_one.name}"}},
+                                            {{name: "{tag_two.name}"}}
+                                          ]}}) {{
               topic {{
                 title
                 tags {{

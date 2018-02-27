@@ -5,7 +5,7 @@ class TestCloseDiscussionFromSlack:
 
     @pytest.mark.django_db
     def test_unauthenticated(self, client, discussion_factory, slack_channel_factory, slack_user_factory):
-        discussion = discussion_factory()
+        discussion = discussion_factory(topic__is_private=False)
         slack_user = slack_user_factory(is_admin=True)
         slack_channel = slack_channel_factory(discussion=discussion)
 
@@ -27,7 +27,7 @@ class TestCloseDiscussionFromSlack:
 
     @pytest.mark.django_db
     def test_invalid_slack_channel(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory):
-        discussion = discussion_factory()
+        discussion = discussion_factory(topic__is_private=False)
         slack_user = slack_user_factory(is_admin=True)
         slack_channel = slack_channel_factory.build(discussion=discussion)
 
@@ -48,11 +48,9 @@ class TestCloseDiscussionFromSlack:
         assert response.json()['errors'][0]['message'] == 'Discussion matching query does not exist.'
 
     @pytest.mark.django_db
-    def test_invalid_user(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory,
-                          topic_factory):
+    def test_invalid_user(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory):
         slack_user = slack_user_factory(is_admin=False)
-        topic = topic_factory()
-        discussion = discussion_factory(topic=topic)
+        discussion = discussion_factory(topic__is_private=False)
         slack_channel = slack_channel_factory(discussion=discussion)
 
         mutation = f'''
@@ -73,11 +71,9 @@ class TestCloseDiscussionFromSlack:
         assert response.json()['errors'][0]['message'] == 'Slack user does not have permission to close discussion'
 
     @pytest.mark.django_db
-    def test_valid_op(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory,
-                      topic_factory):
+    def test_valid_op(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory):
         slack_user = slack_user_factory()
-        topic = topic_factory(original_poster=slack_user.user)
-        discussion = discussion_factory(topic=topic)
+        discussion = discussion_factory(topic__is_private=False, topic__original_poster=slack_user.user)
         slack_channel = slack_channel_factory(discussion=discussion)
 
         mutation = f'''
@@ -98,7 +94,7 @@ class TestCloseDiscussionFromSlack:
 
     @pytest.mark.django_db
     def test_valid_admin(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory):
-        discussion = discussion_factory()
+        discussion = discussion_factory(topic__is_private=False)
         slack_user = slack_user_factory(is_admin=True)
         slack_channel = slack_channel_factory(discussion=discussion)
 

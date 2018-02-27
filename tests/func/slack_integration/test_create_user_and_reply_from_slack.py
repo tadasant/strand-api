@@ -5,11 +5,10 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_unauthenticated(self, client, message_factory, reply_factory, slack_event_factory,
-                             discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+                             slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+        message = message_factory(origin_slack_event=message_slack_event, discussion=slack_channel.discussion)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
@@ -56,11 +55,10 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_invalid_slack_user(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                                discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory.build(discussion=discussion)
+                                slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+        message = message_factory(origin_slack_event=message_slack_event, discussion=slack_channel.discussion)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
@@ -107,11 +105,10 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_invalid_slack_team(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                                discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory.build(discussion=discussion)
+                                slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+        message = message_factory(origin_slack_event=message_slack_event, discussion=slack_channel.discussion)
         slack_team = slack_team_factory.build()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
@@ -159,11 +156,10 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_invalid_slack_channel(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                                   discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory.build(discussion=discussion)
+                                   slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory.build()
         message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+        message = message_factory(origin_slack_event=message_slack_event)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
@@ -210,11 +206,10 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_invalid_message(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                             discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+                             slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         message_slack_event = slack_event_factory.build()
-        message = message_factory.build(origin_slack_event=message_slack_event, discussion=discussion)
+        message = message_factory.build(origin_slack_event=message_slack_event, discussion=slack_channel.discussion)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
@@ -261,11 +256,10 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_valid(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                   discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+                   slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+        message = message_factory(origin_slack_event=message_slack_event, discussion=slack_channel.discussion)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()

@@ -4,18 +4,17 @@ import pytest
 class TestCreateReplyFromSlack:
 
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, discussion_factory, slack_channel_factory, slack_event_factory,
+    def test_unauthenticated(self, client, slack_channel_factory, slack_event_factory,
                              slack_user_factory, message_factory, reply_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         message_slack_event = slack_event_factory()
         reply_slack_event = slack_event_factory()
         message_slack_user = slack_user_factory()
         reply_slack_user = slack_user_factory()
-        message = message_factory(discussion=discussion, origin_slack_event=message_slack_event,
+        message = message_factory(discussion=slack_channel.discussion,
+                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event,
-                                    author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{
@@ -43,16 +42,16 @@ class TestCreateReplyFromSlack:
     @pytest.mark.django_db
     def test_invalid_slack_channel(self, auth_client, discussion_factory, slack_channel_factory, slack_event_factory,
                                    slack_user_factory, message_factory, reply_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory.build(discussion=discussion)
+        discussion = discussion_factory(topic__is_private=False)
+        slack_channel = slack_channel_factory.build()
         message_slack_event = slack_event_factory()
         reply_slack_event = slack_event_factory()
         message_slack_user = slack_user_factory()
         reply_slack_user = slack_user_factory()
-        message = message_factory(discussion=discussion, origin_slack_event=message_slack_event,
+        message = message_factory(discussion=discussion,
+                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event,
-                                    author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{
@@ -78,18 +77,17 @@ class TestCreateReplyFromSlack:
         assert response.json()['errors'][0]['message'] == 'Message matching query does not exist.'
 
     @pytest.mark.django_db
-    def test_invalid_slack_user(self, auth_client, discussion_factory, slack_channel_factory, slack_event_factory,
+    def test_invalid_slack_user(self, auth_client, slack_channel_factory, slack_event_factory,
                                 slack_user_factory, message_factory, reply_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         message_slack_event = slack_event_factory()
         reply_slack_event = slack_event_factory()
         message_slack_user = slack_user_factory()
         reply_slack_user = slack_user_factory.build()
-        message = message_factory(discussion=discussion, origin_slack_event=message_slack_event,
+        message = message_factory(discussion=slack_channel.discussion,
+                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event,
-                                    author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{
@@ -115,20 +113,19 @@ class TestCreateReplyFromSlack:
         assert response.json()['errors'][0]['message'] == 'User matching query does not exist.'
 
     @pytest.mark.django_db
-    def test_create_invalid_message_slack_event(self, auth_client, discussion_factory, slack_channel_factory,
-                                                slack_event_factory, slack_user_factory, message_factory,
-                                                reply_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+    def test_create_invalid_message_slack_event(self, auth_client, slack_channel_factory,
+                                                slack_event_factory, slack_user_factory,
+                                                message_factory, reply_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         message_slack_event = slack_event_factory()
         wrong_message_slack_event = slack_event_factory()
         reply_slack_event = slack_event_factory()
         message_slack_user = slack_user_factory()
         reply_slack_user = slack_user_factory()
-        message = message_factory(discussion=discussion, origin_slack_event=message_slack_event,
+        message = message_factory(discussion=slack_channel.discussion,
+                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event,
-                                    author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{
@@ -154,19 +151,17 @@ class TestCreateReplyFromSlack:
         assert response.json()['errors'][0]['message'] == 'Message matching query does not exist.'
 
     @pytest.mark.django_db
-    def test_valid(self, auth_client, discussion_factory, slack_channel_factory,
-                   slack_event_factory, slack_user_factory, message_factory,
-                   reply_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+    def test_valid(self, auth_client, slack_channel_factory, slack_event_factory, slack_user_factory,
+                   message_factory, reply_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
         message_slack_event = slack_event_factory()
         reply_slack_event = slack_event_factory()
         message_slack_user = slack_user_factory()
         reply_slack_user = slack_user_factory()
-        message = message_factory(discussion=discussion, origin_slack_event=message_slack_event,
+        message = message_factory(discussion=slack_channel.discussion,
+                                  origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event,
-                                    author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{

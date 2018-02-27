@@ -21,7 +21,7 @@ class Topic(TimeStampedModel):
     title = models.CharField(max_length=255)
     description = models.TextField()
 
-    is_anonymous = models.BooleanField(default=False)
+    is_private = models.BooleanField(default=True)
 
     original_poster = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name='topics')
     group = models.ForeignKey(to=Group, on_delete=models.SET_NULL, null=True)

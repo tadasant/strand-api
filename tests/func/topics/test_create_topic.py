@@ -7,14 +7,14 @@ class TestCreateTopic:
     def test_unauthenticated(self, client, topic_factory, user_factory, group_factory):
         group = group_factory()
         user = user_factory()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
             createTopic(input: {{title: "{topic.title}", description: "{topic.description}",
-                                    isAnonymous: {str(topic.is_anonymous).lower()},
-                                    originalPosterId: {user.id},
-                                    groupId: {str(group.id)}}}) {{
+                                 isPrivate: {str(topic.is_private).lower()},
+                                 originalPosterId: {user.id},
+                                 groupId: {str(group.id)}}}) {{
               topic {{
                 title
               }}
@@ -31,14 +31,14 @@ class TestCreateTopic:
     def test_valid(self, auth_client, topic_factory, user_factory, group_factory):
         group = group_factory()
         user = user_factory()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
             createTopic(input: {{title: "{topic.title}", description: "{topic.description}",
-                                    isAnonymous: {str(topic.is_anonymous).lower()},
-                                    originalPosterId: {user.id},
-                                    groupId: {str(group.id)}}}) {{
+                                 isPrivate: {str(topic.is_private).lower()},
+                                 originalPosterId: {user.id},
+                                 groupId: {str(group.id)}}}) {{
               topic {{
                 title
               }}
@@ -55,20 +55,20 @@ class TestCreateTopic:
                                    tag_factory):
         group = group_factory()
         user = user_factory()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
         tag_one = tag_factory.build()
         tag_two = tag_factory.build()
 
         mutation = f'''
           mutation {{
             createTopic(input: {{title: "{topic.title}", description: "{topic.description}",
-                                    isAnonymous: {str(topic.is_anonymous).lower()},
-                                    originalPosterId: {user.id},
-                                    groupId: {str(group.id)},
-                                    tags: [
-                                      {{name: "{tag_one.name}"}},
-                                      {{name: "{tag_two.name}"}}
-                                    ]}}) {{
+                                 isPrivate: {str(topic.is_private).lower()},
+                                 originalPosterId: {user.id},
+                                 groupId: {str(group.id)},
+                                 tags: [
+                                   {{name: "{tag_one.name}"}},
+                                   {{name: "{tag_two.name}"}}
+                                 ]}}) {{
               topic {{
                 title
                 tags {{

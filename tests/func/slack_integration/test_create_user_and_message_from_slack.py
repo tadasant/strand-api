@@ -10,7 +10,7 @@ class TestCreateUserAndMessageFromSlack:
         slack_event = slack_event_factory.build()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         message = message_factory.build()
-        slack_channel = slack_channel_factory()
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
 
         mutation = f'''
           mutation {{
@@ -49,7 +49,7 @@ class TestCreateUserAndMessageFromSlack:
         slack_event = slack_event_factory.build()
         slack_user = slack_user_factory(slack_team=slack_team)
         message = message_factory.build()
-        slack_channel = slack_channel_factory()
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
 
         mutation = f'''
           mutation {{
@@ -87,7 +87,7 @@ class TestCreateUserAndMessageFromSlack:
         slack_event = slack_event_factory.build()
         slack_user = slack_user_factory.build()
         message = message_factory.build()
-        slack_channel = slack_channel_factory()
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
 
         mutation = f'''
           mutation {{
@@ -167,7 +167,7 @@ class TestCreateUserAndMessageFromSlack:
         slack_event = slack_event_factory.build()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         message = message_factory.build()
-        slack_channel = slack_channel_factory()
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
 
         mutation = f'''
           mutation {{

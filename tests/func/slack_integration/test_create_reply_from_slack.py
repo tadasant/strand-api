@@ -1,3 +1,6 @@
+from datetime import datetime
+import pytz
+
 import pytest
 
 
@@ -14,7 +17,7 @@ class TestCreateReplyFromSlack:
         message = message_factory(discussion=slack_channel.discussion,
                                   origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{
@@ -51,7 +54,7 @@ class TestCreateReplyFromSlack:
         message = message_factory(discussion=discussion,
                                   origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{
@@ -87,7 +90,7 @@ class TestCreateReplyFromSlack:
         message = message_factory(discussion=slack_channel.discussion,
                                   origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{
@@ -125,7 +128,7 @@ class TestCreateReplyFromSlack:
         message = message_factory(discussion=slack_channel.discussion,
                                   origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{
@@ -161,7 +164,7 @@ class TestCreateReplyFromSlack:
         message = message_factory(discussion=slack_channel.discussion,
                                   origin_slack_event=message_slack_event,
                                   author=message_slack_user.user)
-        reply = reply_factory.build(message=message, origin_slack_event=reply_slack_event, author=reply_slack_user.user)
+        reply = reply_factory.build(message=message, author=reply_slack_user.user)
 
         mutation = f'''
           mutation {{
@@ -171,9 +174,7 @@ class TestCreateReplyFromSlack:
                                           slackUserId: "{reply_slack_user.id}",
                                           originSlackEventTs: "{reply_slack_event.ts}"}}) {{
               reply {{
-                originSlackEvent {{
-                  ts
-                }}
+                time
                 message {{
                   author {{
                     id
@@ -191,8 +192,8 @@ class TestCreateReplyFromSlack:
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
-        assert response.json()['data']['createReplyFromSlack']['reply']['originSlackEvent']['ts'] == \
-            str(reply_slack_event.ts)
+        assert response.json()['data']['createReplyFromSlack']['reply']['time'] == \
+            datetime.fromtimestamp(int(reply_slack_event.ts), tz=pytz.utc).isoformat()
         assert response.json()['data']['createReplyFromSlack']['reply']['message']['author']['id'] == \
             str(message.author.id)
         assert {'id': str(reply_slack_user.user.id)} in response.json()['data']['createReplyFromSlack']['reply'][

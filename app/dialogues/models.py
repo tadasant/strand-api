@@ -25,8 +25,6 @@ class Reply(TimeStampedModel):
     message = models.ForeignKey(to=Message, on_delete=models.CASCADE, related_name='replies')
     author = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name='replies')
     time = models.DateTimeField()
-    origin_slack_event = models.OneToOneField(to=SlackEvent, on_delete=models.SET_NULL, related_name='reply',
-                                              blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Replies'

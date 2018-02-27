@@ -232,25 +232,30 @@ class CreateReplyFromSlackMutation(graphene.Mutation):
     class Arguments:
         input = ReplyFromSlackInputType(required=True)
 
-    slack_event = graphene.Field(SlackEventType)
     reply = graphene.Field(ReplyType)
 
     @check_authorization
     def mutate(self, info, input):
-        slack_event = SlackEvent.objects.create(ts=input.pop('origin_slack_event_ts'))
+        # TODO: Only get from 'time' key once SLA supports
+        if input.get('origin_slack_event_ts'):
+            time = datetime.fromtimestamp(int(input.pop('origin_slack_event_ts').split('.')[0]))
+        elif input.get('time'):
+            time = input.pop('time')
+        else:
+            time = datetime.utcnow()
+
         message = Message.objects.get(origin_slack_event__ts=input['message_origin_slack_event_ts'],
                                       discussion__slack_channel__id=input['slack_channel_id'])
         author = User.objects.get(slack_users__id=input['slack_user_id'])
 
-        time = datetime.fromtimestamp(int(slack_event.ts.split('.')[0]))
-        reply_validator = ReplyValidator(data=dict(text=input['text'], message_id=message.id, author_id=author.id,
-                                                   origin_slack_event_id=slack_event.id, time=time))
+        reply_validator = ReplyValidator(data=dict(text=input['text'], message_id=message.id,
+                                                   author_id=author.id, time=time))
         reply_validator.is_valid(raise_exception=True)
         reply = reply_validator.save()
 
         message.discussion.participants.add(author)
 
-        return CreateReplyFromSlackMutation(slack_event=slack_event, reply=reply)
+        return CreateReplyFromSlackMutation(reply=reply)
 
 
 class CreateUserAndReplyFromSlackMutation(graphene.Mutation):
@@ -274,13 +279,18 @@ class CreateUserAndReplyFromSlackMutation(graphene.Mutation):
         except User.DoesNotExist:
             user = User.objects.create_user_from_slack_user(slack_user)
 
-        slack_event = SlackEvent.objects.create(ts=input.pop('origin_slack_event_ts'))
+        # TODO: Only get from 'time' key once SLA supports
+        if input.get('origin_slack_event_ts'):
+            time = datetime.fromtimestamp(int(input.pop('origin_slack_event_ts').split('.')[0]))
+        elif input.get('time'):
+            time = input.pop('time')
+        else:
+            time = datetime.utcnow()
+
         message = Message.objects.get(origin_slack_event__ts=input['message_origin_slack_event_ts'],
                                       discussion__slack_channel__id=input['slack_channel_id'])
-
-        time = datetime.fromtimestamp(int(slack_event.ts.split('.')[0]))
-        reply_validator = ReplyValidator(data=dict(text=input['text'], time=time, author_id=user.id,
-                                                   message_id=message.id, origin_slack_event_id=slack_event.id))
+        reply_validator = ReplyValidator(data=dict(text=input['text'], time=time,
+                                                   author_id=user.id, message_id=message.id))
         reply_validator.is_valid(raise_exception=True)
         reply = reply_validator.save()
 

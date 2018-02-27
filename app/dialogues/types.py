@@ -39,7 +39,7 @@ class MessageType(DjangoObjectType):
 class ReplyType(DjangoObjectType):
     class Meta:
         model = Reply
-        only_fields = ('id', 'text', 'message', 'author', 'time', 'origin_slack_event',)
+        only_fields = ('id', 'text', 'message', 'author', 'time',)
 
     # TODO: Move to object-level permissions
     @check_topic_authorization
@@ -61,10 +61,6 @@ class ReplyType(DjangoObjectType):
     @check_topic_authorization
     def resolve_time(self, info):
         return self.time
-
-    @check_topic_authorization
-    def resolve_origin_slack_event(self, info):
-        return self.origin_slack_event
 
 
 class MessageInputType(graphene.InputObjectType):

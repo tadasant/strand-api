@@ -28,13 +28,10 @@ class MessageValidator(serializers.ModelSerializer):
 class ReplyValidator(serializers.ModelSerializer):
     message_id = serializers.PrimaryKeyRelatedField(queryset=Message.objects.all(), source='message')
     author_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='author')
-    origin_slack_event_id = serializers.PrimaryKeyRelatedField(queryset=SlackEvent.objects.all(),
-                                                               source='origin_slack_event',
-                                                               required=False)
 
     class Meta:
         model = Reply
-        fields = ('id', 'text', 'message_id', 'author_id', 'time', 'origin_slack_event_id')
+        fields = ('id', 'text', 'message_id', 'author_id', 'time')
 
     def validate(self, data):
         if Message.objects.get(pk=data.get('message').id).discussion.is_closed:

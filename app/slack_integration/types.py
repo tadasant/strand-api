@@ -126,7 +126,10 @@ class MessageFromSlackInputType(graphene.InputObjectType):
 
 class ReplyFromSlackInputType(graphene.InputObjectType):
     message_origin_slack_event_ts = graphene.String(required=True)
-    origin_slack_event_ts = graphene.String(required=True)
+    # TODO: Remove once SLA removes
+    origin_slack_event_ts = graphene.String()
+    # TODO: Make required once SLA adds
+    time = graphene.String()
     slack_channel_id = graphene.String(required=True)
     slack_user_id = graphene.String(required=True)
     text = graphene.String(required=True)
@@ -167,7 +170,10 @@ class UserAndMessageFromSlackInputType(graphene.InputObjectType):
 class UserAndReplyFromSlackInputType(graphene.InputObjectType):
     slack_user = graphene.Field(UserFromSlackInputType)
     message_origin_slack_event_ts = graphene.String(required=True)
-    origin_slack_event_ts = graphene.String(required=True)
+    # TODO: Remove once SLA removes
+    origin_slack_event_ts = graphene.String()
+    # TODO: Make required once SLA adds
+    time = graphene.String()
     slack_channel_id = graphene.String(required=True)
     text = graphene.String(required=True)
 

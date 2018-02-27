@@ -102,5 +102,9 @@ class TopicAndTagsInputType(graphene.InputObjectType):
     original_poster_id = graphene.Int(required=True)
 
 
+class MarkDiscussionAsPendingClosedInputType(graphene.InputObjectType):
+    id = graphene.Int()
+
+
 class CloseDiscussionInputType(graphene.InputObjectType):
     id = graphene.Int()

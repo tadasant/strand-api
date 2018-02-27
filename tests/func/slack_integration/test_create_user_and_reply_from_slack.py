@@ -12,7 +12,7 @@ class TestCreateUserAndReplyFromSlack:
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -30,7 +30,7 @@ class TestCreateUserAndReplyFromSlack:
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
                                                  messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -62,7 +62,7 @@ class TestCreateUserAndReplyFromSlack:
         slack_team = slack_team_factory()
         slack_user = slack_user_factory(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -80,7 +80,7 @@ class TestCreateUserAndReplyFromSlack:
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
                                                  messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -112,7 +112,7 @@ class TestCreateUserAndReplyFromSlack:
         slack_team = slack_team_factory.build()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -130,7 +130,7 @@ class TestCreateUserAndReplyFromSlack:
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
                                                  messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -163,7 +163,7 @@ class TestCreateUserAndReplyFromSlack:
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -181,7 +181,7 @@ class TestCreateUserAndReplyFromSlack:
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
                                                  messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -213,7 +213,7 @@ class TestCreateUserAndReplyFromSlack:
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -231,7 +231,7 @@ class TestCreateUserAndReplyFromSlack:
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
                                                  messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -263,7 +263,7 @@ class TestCreateUserAndReplyFromSlack:
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -281,7 +281,7 @@ class TestCreateUserAndReplyFromSlack:
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
                                                  messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{

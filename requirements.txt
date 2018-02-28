@@ -17,6 +17,7 @@ django-fsm==2.6.0
 django-fsm-admin==1.2.4
 django-model-utils==3.1.1
 django-storages==1.6.5
+django-waffle==0.13.0
 djangorestframework==3.7.7
 docutils==0.14
 ephem==3.7.6.0

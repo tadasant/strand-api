@@ -59,7 +59,7 @@ class TopicFactory(factory.DjangoModelFactory):
 
     title = factory.Faker('sentence')
     description = factory.Faker('sentence')
-    is_anonymous = factory.Faker('pybool')
+    is_private = factory.Faker('pybool')
 
     original_poster = factory.SubFactory(UserFactory)
     group = factory.SubFactory(GroupFactory)
@@ -117,6 +117,7 @@ class SlackEventFactory(factory.DjangoModelFactory):
     class Meta:
         model = SlackEvent
 
+    message = factory.SubFactory(MessageFactory)
     ts = factory.Faker('unix_time')
 
 

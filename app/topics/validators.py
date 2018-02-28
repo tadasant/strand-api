@@ -19,7 +19,7 @@ class TopicValidator(serializers.ModelSerializer):
 
     class Meta:
         model = Topic
-        fields = ('title', 'description', 'is_anonymous', 'original_poster_id', 'group_id')
+        fields = ('title', 'description', 'is_private', 'original_poster_id', 'group_id')
 
 
 class DiscussionValidator(serializers.ModelSerializer):

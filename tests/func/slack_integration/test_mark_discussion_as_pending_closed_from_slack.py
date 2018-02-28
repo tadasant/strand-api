@@ -4,10 +4,8 @@ import pytest
 class TestMarkDiscussionAsPendingClosedFromSlack:
 
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, topic_factory, discussion_factory, slack_channel_factory):
-        topic = topic_factory()
-        discussion = discussion_factory(topic=topic, status='STALE')
-        slack_channel = slack_channel_factory(discussion=discussion)
+    def test_unauthenticated(self, client, slack_channel_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False, discussion__status='STALE')
 
         mutation = f'''
           mutation {{
@@ -24,9 +22,8 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_slack_channel(self, auth_client, topic_factory, discussion_factory, slack_channel_factory):
-        topic = topic_factory()
-        discussion = discussion_factory(topic=topic, status='STALE')
+    def test_invalid_slack_channel(self, auth_client, discussion_factory, slack_channel_factory):
+        discussion = discussion_factory(topic__is_private=False, status='STALE')
         slack_channel = slack_channel_factory.build(discussion=discussion)
 
         mutation = f'''
@@ -45,10 +42,8 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
         assert response.json()['errors'][0]['message'] == 'Discussion matching query does not exist.'
 
     @pytest.mark.django_db
-    def test_invalid_discussion_state(self, auth_client, topic_factory, discussion_factory, slack_channel_factory):
-        topic = topic_factory()
-        discussion = discussion_factory(topic=topic, status='OPEN')
-        slack_channel = slack_channel_factory(discussion=discussion)
+    def test_invalid_discussion_state(self, auth_client, slack_channel_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False, discussion__status='OPEN')
 
         mutation = f'''
           mutation {{
@@ -67,11 +62,9 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
                                                           "'mark_as_pending_closed'"
 
     @pytest.mark.django_db
-    def test_valid(self, auth_client, topic_factory, discussion_factory, slack_channel_factory,
-                   auto_close_pending_closed_discussion_factory, slack_app_request_factory):
-        topic = topic_factory()
-        discussion = discussion_factory(topic=topic, status='STALE')
-        slack_channel = slack_channel_factory(discussion=discussion)
+    def test_valid(self, auth_client, slack_channel_factory, auto_close_pending_closed_discussion_factory,
+                   slack_app_request_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False, discussion__status='STALE')
 
         mutation = f'''
           mutation {{

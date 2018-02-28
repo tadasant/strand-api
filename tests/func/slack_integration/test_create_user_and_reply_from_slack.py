@@ -5,15 +5,14 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_unauthenticated(self, client, message_factory, reply_factory, slack_event_factory,
-                             discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
-        message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+                             slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
+        message = message_factory(discussion=slack_channel.discussion)
+        message_slack_event = slack_event_factory(message=message)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -30,8 +29,8 @@ class TestCreateUserAndReplyFromSlack:
                                                    isAdmin: {str(slack_user.is_admin).lower()},
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
-                                                 messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 messageOriginSlackEventTs: "{message_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -56,15 +55,14 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_invalid_slack_user(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                                discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory.build(discussion=discussion)
-        message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+                                slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
+        message = message_factory(discussion=slack_channel.discussion)
+        message_slack_event = slack_event_factory(message=message)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -81,8 +79,8 @@ class TestCreateUserAndReplyFromSlack:
                                                    isAdmin: {str(slack_user.is_admin).lower()},
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
-                                                 messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 messageOriginSlackEventTs: "{message_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -107,15 +105,14 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_invalid_slack_team(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                                discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory.build(discussion=discussion)
-        message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+                                slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
+        message = message_factory(discussion=slack_channel.discussion)
+        message_slack_event = slack_event_factory(message=message)
         slack_team = slack_team_factory.build()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -132,8 +129,8 @@ class TestCreateUserAndReplyFromSlack:
                                                    isAdmin: {str(slack_user.is_admin).lower()},
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
-                                                 messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 messageOriginSlackEventTs: "{message_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -159,15 +156,14 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_invalid_slack_channel(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                                   discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory.build(discussion=discussion)
-        message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+                                   slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory.build()
+        message = message_factory()
+        message_slack_event = slack_event_factory(message=message)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -184,8 +180,8 @@ class TestCreateUserAndReplyFromSlack:
                                                    isAdmin: {str(slack_user.is_admin).lower()},
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
-                                                 messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 messageOriginSlackEventTs: "{message_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -210,15 +206,14 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_invalid_message(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                             discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
+                             slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
+        message = message_factory.build(discussion=slack_channel.discussion)
         message_slack_event = slack_event_factory.build()
-        message = message_factory.build(origin_slack_event=message_slack_event, discussion=discussion)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -235,8 +230,8 @@ class TestCreateUserAndReplyFromSlack:
                                                    isAdmin: {str(slack_user.is_admin).lower()},
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
-                                                 messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 messageOriginSlackEventTs: "{message_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{
@@ -261,15 +256,14 @@ class TestCreateUserAndReplyFromSlack:
 
     @pytest.mark.django_db
     def test_valid(self, auth_client, message_factory, reply_factory, slack_event_factory,
-                   discussion_factory, slack_channel_factory, slack_user_factory, slack_team_factory):
-        discussion = discussion_factory()
-        slack_channel = slack_channel_factory(discussion=discussion)
-        message_slack_event = slack_event_factory()
-        message = message_factory(origin_slack_event=message_slack_event, discussion=discussion)
+                   slack_channel_factory, slack_user_factory, slack_team_factory):
+        slack_channel = slack_channel_factory(discussion__topic__is_private=False)
+        message = message_factory(discussion=slack_channel.discussion)
+        message_slack_event = slack_event_factory(message=message)
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build(slack_team=slack_team)
         reply_slack_event = slack_event_factory.build()
-        reply = reply_factory.build(origin_slack_event=reply_slack_event, message=message)
+        reply = reply_factory.build(message=message)
 
         mutation = f'''
           mutation {{
@@ -286,8 +280,8 @@ class TestCreateUserAndReplyFromSlack:
                                                    isAdmin: {str(slack_user.is_admin).lower()},
                                                    slackTeamId: "{slack_user.slack_team.id}"
                                                  }},
-                                                 messageOriginSlackEventTs: "{reply.message.origin_slack_event.ts}",
-                                                 originSlackEventTs: "{reply.origin_slack_event.ts}",
+                                                 messageOriginSlackEventTs: "{message_slack_event.ts}",
+                                                 originSlackEventTs: "{reply_slack_event.ts}",
                                                  slackChannelId: "{slack_channel.id}",
                                                  text: "{reply.text}"}}) {{
               slackUser {{

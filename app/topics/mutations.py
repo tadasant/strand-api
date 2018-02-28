@@ -9,6 +9,7 @@ from app.topics.types import (
     DiscussionInputType,
     TagType,
     TagInputType,
+    MarkDiscussionAsPendingClosedInputType,
     CloseDiscussionInputType)
 from app.topics.validators import TopicValidator, DiscussionValidator, TagValidator
 
@@ -62,6 +63,21 @@ class CreateTagMutation(graphene.Mutation):
         return CreateTagMutation(tag=tag)
 
 
+class MarkDiscussionAsPendingClosed(graphene.Mutation):
+    class Arguments:
+        input = MarkDiscussionAsPendingClosedInputType(required=True)
+
+    discussion = graphene.Field(DiscussionType)
+
+    @check_authorization
+    def mutate(self, info, input):
+        discussion = Discussion.objects.get(pk=input['id'])
+
+        discussion.standby_to_auto_close()
+
+        return MarkDiscussionAsPendingClosed(discussion=discussion)
+
+
 class CloseDiscussionMutation(graphene.Mutation):
     class Arguments:
         input = CloseDiscussionInputType(required=True)
@@ -83,4 +99,5 @@ class Mutation(graphene.ObjectType):
     create_discussion = CreateDiscussionMutation.Field()
     create_tag = CreateTagMutation.Field()
 
+    mark_discussion_as_pending_closed = MarkDiscussionAsPendingClosed.Field()
     close_discussion = CloseDiscussionMutation.Field()

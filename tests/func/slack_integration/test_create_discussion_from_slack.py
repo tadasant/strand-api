@@ -6,7 +6,7 @@ class TestCreateDiscussionFromSlack:
     @pytest.mark.django_db
     def test_unauthenticated(self, client, slack_channel_factory, slack_team_factory, discussion_factory,
                              topic_factory):
-        topic = topic_factory()
+        topic = topic_factory(is_private=False)
         slack_team = slack_team_factory()
         discussion = discussion_factory.build()
         slack_channel = slack_channel_factory.build()
@@ -35,7 +35,7 @@ class TestCreateDiscussionFromSlack:
 
     @pytest.mark.django_db
     def test_valid(self, auth_client, slack_channel_factory, slack_team_factory, discussion_factory, topic_factory):
-        topic = topic_factory()
+        topic = topic_factory(is_private=False)
         slack_team = slack_team_factory()
         discussion = discussion_factory.build()
         slack_channel = slack_channel_factory.build()

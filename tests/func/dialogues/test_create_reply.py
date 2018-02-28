@@ -51,7 +51,7 @@ class TestCreateReply:
 
     @pytest.mark.django_db
     def test_valid(self, auth_client, message_factory, reply_factory):
-        message = message_factory()
+        message = message_factory(discussion__topic__is_private=False)
         reply = reply_factory.build(message=message)
 
         mutation = f'''
@@ -73,7 +73,7 @@ class TestCreateReply:
                                       reply_factory):
         message_author = user_factory(is_bot=False)
         reply_author = user_factory(is_bot=False)
-        discussion = discussion_factory()
+        discussion = discussion_factory(topic__is_private=False)
         message = message_factory(time=datetime.now(tz=pytz.UTC) - timedelta(minutes=31), discussion=discussion,
                                   author=message_author)
         discussion.mark_as_stale()

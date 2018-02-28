@@ -9,13 +9,13 @@ class TestCreateUserAndTopicFromSlack:
         slack_team = slack_team_factory()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
             createUserAndTopicFromSlack(input: {{title: "{topic.title}",
                                                     description: "{topic.description}",
-                                                    isAnonymous: {str(topic.is_anonymous).lower()},
+                                                    isPrivate: {str(topic.is_private).lower()},
                                                     originalPosterSlackUser: {{
                                                       id: "{slack_user.id}",
                                                       name: "{slack_user.name}",
@@ -58,30 +58,30 @@ class TestCreateUserAndTopicFromSlack:
         slack_team = slack_team_factory()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
             createUserAndTopicFromSlack(input: {{title: "{topic.title}",
-                                                    description: "{topic.description}",
-                                                    isAnonymous: {str(topic.is_anonymous).lower()},
-                                                    originalPosterSlackUser: {{
-                                                      id: "{slack_user.id}",
-                                                      name: "{slack_user.name}",
-                                                      firstName: "{slack_user.first_name}",
-                                                      lastName: "{slack_user.last_name}",
-                                                      realName: "{slack_user.real_name}",
-                                                      displayName: "{slack_user.display_name}",
-                                                      email: "{slack_user.email}",
-                                                      image72: "{slack_user.image_72}",
-                                                      isBot: {str(slack_user.is_bot).lower()},
-                                                      isAdmin: {str(slack_user.is_admin).lower()},
-                                                      slackTeamId: "{slack_team.id}"
-                                                    }},
-                                                    tags: [
-                                                      {{name: "{tag_one.name}"}},
-                                                      {{name: "{tag_two.name}"}}
-                                                    ]}}) {{
+                                                 description: "{topic.description}",
+                                                 isPrivate: {str(topic.is_private).lower()},
+                                                 originalPosterSlackUser: {{
+                                                   id: "{slack_user.id}",
+                                                   name: "{slack_user.name}",
+                                                   firstName: "{slack_user.first_name}",
+                                                   lastName: "{slack_user.last_name}",
+                                                   realName: "{slack_user.real_name}",
+                                                   displayName: "{slack_user.display_name}",
+                                                   email: "{slack_user.email}",
+                                                   image72: "{slack_user.image_72}",
+                                                   isBot: {str(slack_user.is_bot).lower()},
+                                                   isAdmin: {str(slack_user.is_admin).lower()},
+                                                   slackTeamId: "{slack_team.id}"
+                                                 }},
+                                                   tags: [
+                                                     {{name: "{tag_one.name}"}},
+                                                     {{name: "{tag_two.name}"}}
+                                                   ]}}) {{
               topic {{
                 title
                 tags {{
@@ -107,30 +107,30 @@ class TestCreateUserAndTopicFromSlack:
         slack_team = slack_team_factory.build()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
             createUserAndTopicFromSlack(input: {{title: "{topic.title}",
-                                                    description: "{topic.description}",
-                                                    isAnonymous: {str(topic.is_anonymous).lower()},
-                                                    originalPosterSlackUser: {{
-                                                      id: "{slack_user.id}",
-                                                      name: "{slack_user.name}",
-                                                      firstName: "{slack_user.first_name}",
-                                                      lastName: "{slack_user.last_name}",
-                                                      realName: "{slack_user.real_name}",
-                                                      displayName: "{slack_user.display_name}",
-                                                      email: "{slack_user.email}",
-                                                      image72: "{slack_user.image_72}",
-                                                      isBot: {str(slack_user.is_bot).lower()},
-                                                      isAdmin: {str(slack_user.is_admin).lower()},
-                                                      slackTeamId: "{slack_team.id}"
-                                                    }},
-                                                    tags: [
-                                                      {{name: "{tag_one.name}"}},
-                                                      {{name: "{tag_two.name}"}}
-                                                    ]}}) {{
+                                                 description: "{topic.description}",
+                                                 isPrivate: {str(topic.is_private).lower()},
+                                                 originalPosterSlackUser: {{
+                                                   id: "{slack_user.id}",
+                                                   name: "{slack_user.name}",
+                                                   firstName: "{slack_user.first_name}",
+                                                   lastName: "{slack_user.last_name}",
+                                                   realName: "{slack_user.real_name}",
+                                                   displayName: "{slack_user.display_name}",
+                                                   email: "{slack_user.email}",
+                                                   image72: "{slack_user.image_72}",
+                                                   isBot: {str(slack_user.is_bot).lower()},
+                                                   isAdmin: {str(slack_user.is_admin).lower()},
+                                                   slackTeamId: "{slack_team.id}"
+                                                 }},
+                                                 tags: [
+                                                   {{name: "{tag_one.name}"}},
+                                                   {{name: "{tag_two.name}"}}
+                                                 ]}}) {{
               topic {{
                 title
                 tags {{
@@ -156,30 +156,30 @@ class TestCreateUserAndTopicFromSlack:
         slack_team = slack_team_factory()
         tag_one = tag_factory()
         tag_two = tag_factory.build()
-        topic = topic_factory.build()
+        topic = topic_factory.build(is_private=False)
 
         mutation = f'''
           mutation {{
             createUserAndTopicFromSlack(input: {{title: "{topic.title}",
-                                                    description: "{topic.description}",
-                                                    isAnonymous: {str(topic.is_anonymous).lower()},
-                                                    originalPosterSlackUser: {{
-                                                      id: "{slack_user.id}",
-                                                      name: "{slack_user.name}",
-                                                      firstName: "{slack_user.first_name}",
-                                                      lastName: "{slack_user.last_name}",
-                                                      realName: "{slack_user.real_name}",
-                                                      displayName: "{slack_user.display_name}",
-                                                      email: "{slack_user.email}",
-                                                      image72: "{slack_user.image_72}",
-                                                      isBot: {str(slack_user.is_bot).lower()},
-                                                      isAdmin: {str(slack_user.is_admin).lower()},
-                                                      slackTeamId: "{slack_team.id}"
-                                                    }},
-                                                    tags: [
-                                                      {{name: "{tag_one.name}"}},
-                                                      {{name: "{tag_two.name}"}}
-                                                    ]}}) {{
+                                                 description: "{topic.description}",
+                                                 isPrivate: {str(topic.is_private).lower()},
+                                                 originalPosterSlackUser: {{
+                                                   id: "{slack_user.id}",
+                                                   name: "{slack_user.name}",
+                                                   firstName: "{slack_user.first_name}",
+                                                   lastName: "{slack_user.last_name}",
+                                                   realName: "{slack_user.real_name}",
+                                                   displayName: "{slack_user.display_name}",
+                                                   email: "{slack_user.email}",
+                                                   image72: "{slack_user.image_72}",
+                                                   isBot: {str(slack_user.is_bot).lower()},
+                                                   isAdmin: {str(slack_user.is_admin).lower()},
+                                                   slackTeamId: "{slack_team.id}"
+                                                 }},
+                                                 tags: [
+                                                   {{name: "{tag_one.name}"}},
+                                                   {{name: "{tag_two.name}"}}
+                                                 ]}}) {{
               topic {{
                 title
                 tags {{

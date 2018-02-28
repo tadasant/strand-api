@@ -16,13 +16,15 @@ if os.environ.get('ENVIRONMENT') == 'PROD':
     from config.settings.production import *
 elif os.environ.get('ENVIRONMENT') == 'STAGING':
     from config.settings.staging import *
+elif os.environ.get('ENVIRONMENT') == 'DEVELOPMENT':
+    from config.settings.development import *
 elif os.environ.get('ENVIRONMENT') == 'TEST':
     from config.settings.testing import *
 else:
-    from config.settings.development import *
+    from config.settings.local import *
 
 # Release version
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

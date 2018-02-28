@@ -1,7 +1,7 @@
 import pytest
 
 
-class TestMarkDiscussionAsPendingClosedFromSlack:
+class TestMarkDiscussionAsPendingClosed:
 
     @pytest.mark.django_db
     def test_unauthenticated(self, client, discussion_factory):
@@ -9,7 +9,7 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
 
         mutation = f'''
           mutation {{
-            markDiscussionAsPendingClosed(input: {{id: "{discussion.id}"}}) {{
+            markDiscussionAsPendingClosed(input: {{id: {discussion.id}}}) {{
               discussion {{
                 status
               }}
@@ -17,27 +17,27 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
           }}
         '''
         response = client.post('/graphql', {'query': mutation})
+
         assert response.status_code == 200
-        assert response.json()['data']['markDiscussionAsPendingClosedFromSlack'] is None
+        assert response.json()['data']['markDiscussionAsPendingClosed'] is None
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_discussion(self, auth_client, discussion_factory):
-        discussion = discussion_factory(topic__is_private=False, status='STALE')
+    def test_invalid_discussion(self, auth_client):
 
-        mutation = f'''
-          mutation {{
-            markDiscussionAsPendingClosed(input: {{id: "{discussion.id}"}}) {{
-              discussion {{
+        mutation = '''
+          mutation {
+            markDiscussionAsPendingClosed(input: {id: 1}) {
+              discussion {
                 status
-              }}
-            }}
-          }}
+              }
+            }
+          }
         '''
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
-        assert response.json()['data']['markDiscussionAsPendingClosedFromSlack'] is None
+        assert response.json()['data']['markDiscussionAsPendingClosed'] is None
         assert response.json()['errors'][0]['message'] == 'Discussion matching query does not exist.'
 
     @pytest.mark.django_db
@@ -46,7 +46,7 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
 
         mutation = f'''
           mutation {{
-            markDiscussionAsPendingClosed(input: {{id: "{discussion.id}"}}) {{
+            markDiscussionAsPendingClosed(input: {{id: {discussion.id}}}) {{
               discussion {{
                 status
               }}
@@ -56,7 +56,7 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
-        assert response.json()['data']['markDiscussionAsPendingClosedFromSlack'] is None
+        assert response.json()['data']['markDiscussionAsPendingClosed'] is None
         assert response.json()['errors'][0]['message'] == "Can't switch from state 'OPEN' using method " \
                                                           "'mark_as_pending_closed'"
 
@@ -67,7 +67,7 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
 
         mutation = f'''
           mutation {{
-            markDiscussionAsPendingClosed(input: {{id: "{discussion.id}"}}) {{
+            markDiscussionAsPendingClosed(input: {{id: {discussion.id}}}) {{
               discussion {{
                 status
               }}
@@ -77,5 +77,5 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
-        assert response.json()['data']['markDiscussionAsPendingClosedFromSlack']['discussion'][
+        assert response.json()['data']['markDiscussionAsPendingClosed']['discussion'][
                    'status'] == 'PENDING CLOSED'

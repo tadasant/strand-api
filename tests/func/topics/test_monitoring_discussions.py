@@ -55,7 +55,6 @@ class TestMarkingDiscussionAsStale:
         assert not Discussion.objects.get(pk=discussion.id).is_stale
         assert not slack_app_request_factory.calls
 
-    # dodgy
     @pytest.mark.django_db()
     def test_does_become_stale_with_bot_message(self, mark_stale_discussions_factory, auth_client, discussion_factory,
                                                 slack_channel_factory, message_factory, user_factory,

@@ -4,7 +4,6 @@ from django.dispatch import receiver
 from model_utils.models import TimeStampedModel
 
 from app.topics.models import Discussion
-from app.slack_integration.models import SlackEvent
 from app.users.models import User
 
 
@@ -13,8 +12,6 @@ class Message(TimeStampedModel):
     discussion = models.ForeignKey(to=Discussion, on_delete=models.CASCADE, related_name='messages')
     author = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name='messages')
     time = models.DateTimeField()
-    origin_slack_event = models.ForeignKey(to=SlackEvent, on_delete=models.SET_NULL, related_name='message',
-                                           blank=True, null=True)
 
     def __str__(self):
         return f'Message on {self.time}'

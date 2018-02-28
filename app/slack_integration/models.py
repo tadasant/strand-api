@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django_fsm import FSMField, transition
 from model_utils.models import TimeStampedModel
 
+from app.dialogues.models import Message
 from app.groups.models import Group
 from app.slack_integration.wrappers import SlackAppClientWrapper
 from app.topics.models import Discussion
@@ -140,6 +141,7 @@ class SlackChannel(TimeStampedModel):
 
 
 class SlackEvent(TimeStampedModel):
+    message = models.OneToOneField(to=Message, on_delete=models.CASCADE, related_name='slack_event')
     ts = models.CharField(max_length=255)
 
 

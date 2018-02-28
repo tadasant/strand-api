@@ -117,6 +117,7 @@ class SlackEventFactory(factory.DjangoModelFactory):
     class Meta:
         model = SlackEvent
 
+    message = factory.SubFactory(MessageFactory)
     ts = factory.Faker('unix_time')
 
 

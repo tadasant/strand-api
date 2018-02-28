@@ -17,7 +17,7 @@ class TestMarkingDiscussionAsStale:
         original_time = datetime.now(tz=pytz.UTC) - timedelta(minutes=29, seconds=58)
         discussion = discussion_factory(topic__is_private=False, time_start=original_time)
 
-        wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_stale, timeout=7)
+        wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_stale, timeout=5)
 
         assert Discussion.objects.get(pk=discussion.id).is_stale
         assert not slack_app_request_factory.calls
@@ -82,10 +82,11 @@ class TestMarkingDiscussionAsStale:
         response = auth_client.post('/graphql', {'query': mutation})
         assert response.status_code == 200
 
-        wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_stale, timeout=5)
+        wait_until(condition=lambda: len(slack_app_request_factory.calls) == 1, timeout=5)
         discussion = Discussion.objects.get(pk=discussion.id)
 
         assert discussion.is_stale
+        assert discussion.slack_channel
         assert len(slack_app_request_factory.calls) == 1
         assert slack_app_request_factory.calls[0].request.url == settings.SLACK_APP_STALE_DISCUSSION_ENDPOINT
 
@@ -133,7 +134,7 @@ class TestClosingPendingClosedDiscussion:
         assert response.status_code == 200
         assert not Discussion.objects.get(pk=discussion.id).is_closed
 
-        wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_closed, timeout=5)
+        wait_until(condition=lambda: len(slack_app_request_factory.calls) == 1, timeout=5)
         discussion = Discussion.objects.get(pk=discussion.id)
 
         assert discussion.is_closed
@@ -268,10 +269,11 @@ class TestClosingPendingClosedDiscussion:
         response = auth_client.post('/graphql', {'query': mutation})
         assert response.status_code == 200
 
-        wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_closed, timeout=5)
+        wait_until(condition=lambda: len(slack_app_request_factory.calls) == 1, timeout=5)
         discussion = Discussion.objects.get(pk=discussion.id)
 
         assert discussion.is_closed
+        assert discussion.slack_channel
         assert len(slack_app_request_factory.calls) == 1
         assert slack_app_request_factory.calls[0].request.url == settings.SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT
 
@@ -298,7 +300,7 @@ class TestClosingPendingClosedDiscussion:
         response = auth_client.post('/graphql', {'query': mutation})
         assert response.status_code == 200
 
-        wait_until(condition=lambda: Discussion.objects.get(pk=discussion.id).is_closed, timeout=5)
+        wait_until(condition=lambda: len(slack_app_request_factory.calls) == 1, timeout=5)
         discussion = Discussion.objects.get(pk=discussion.id)
 
         assert discussion.is_closed

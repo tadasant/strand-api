@@ -55,6 +55,7 @@ class TestMarkingDiscussionAsStale:
         assert not Discussion.objects.get(pk=discussion.id).is_stale
         assert not slack_app_request_factory.calls
 
+    # dodgy
     @pytest.mark.django_db()
     def test_does_become_stale_with_bot_message(self, mark_stale_discussions_factory, auth_client, discussion_factory,
                                                 slack_channel_factory, message_factory, user_factory,
@@ -86,6 +87,8 @@ class TestMarkingDiscussionAsStale:
         discussion = Discussion.objects.get(pk=discussion.id)
 
         assert discussion.is_stale
+        assert discussion.slack_channel
+        # FAILS HERE
         assert len(slack_app_request_factory.calls) == 1
         assert slack_app_request_factory.calls[0].request.url == settings.SLACK_APP_STALE_DISCUSSION_ENDPOINT
 
@@ -205,6 +208,7 @@ class TestClosingPendingClosedDiscussion:
         assert not Discussion.objects.get(pk=discussion.id).is_closed
         assert not slack_app_request_factory.calls
 
+    # dodgy
     @pytest.mark.django_db
     def test_does_get_closed_with_bot_message(self, auto_close_pending_closed_discussion_factory,
                                               auth_client, discussion_factory, slack_channel_factory,
@@ -272,6 +276,8 @@ class TestClosingPendingClosedDiscussion:
         discussion = Discussion.objects.get(pk=discussion.id)
 
         assert discussion.is_closed
+        assert discussion.slack_channel
+        # FAILS HERE
         assert len(slack_app_request_factory.calls) == 1
         assert slack_app_request_factory.calls[0].request.url == settings.SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT
 

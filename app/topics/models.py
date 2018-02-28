@@ -53,6 +53,7 @@ class Discussion(TimeStampedModel):
 
     @property
     def datetime_of_last_non_bot_message(self):
+        # TODO: Not factoring in replies
         last_non_bot_message = self.messages.filter(author__is_bot=False).order_by('time').last()
         if last_non_bot_message:
             return last_non_bot_message.time

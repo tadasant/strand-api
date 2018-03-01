@@ -1,5 +1,7 @@
 import pytest
 
+from tests.resources.MutationGenerator import MutationGenerator
+
 
 class TestCreateSlackUser:
 
@@ -9,22 +11,16 @@ class TestCreateSlackUser:
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createSlackUser(input: {{id: "{slack_user.id}", name: "{slack_user.name}",
-                                     realName: "{slack_user.real_name}", displayName: "{slack_user.display_name}",
-                                     image72: "{slack_user.image_72}", isBot: {str(slack_user.is_bot).lower()},
-                                     isAdmin: {str(slack_user.is_admin).lower()}, slackTeamId: "{slack_team.id}",
-                                     userId: {user.id}}}) {{
-              slackUser {{
-                id
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_slack_user(id=slack_user.id, name=slack_user.name,
+                                                       real_name=slack_user.real_name,
+                                                       display_name=slack_user.display_name,
+                                                       image_72=slack_user.image_72,
+                                                       is_bot=str(slack_user.is_bot).lower(),
+                                                       is_admin=str(slack_user.is_admin).lower(),
+                                                       slack_team_id=slack_team.id, user_id=user.id)
         response = client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
@@ -33,23 +29,16 @@ class TestCreateSlackUser:
         slack_team = slack_team_factory.build()
         slack_user = slack_user_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createSlackUser(input: {{id: "{slack_user.id}", name: "{slack_user.name}",
-                                     realName: "{slack_user.real_name}", displayName: "{slack_user.display_name}",
-                                     image72: "{slack_user.image_72}", isBot: {str(slack_user.is_bot).lower()},
-                                     isAdmin: {str(slack_user.is_admin).lower()}, slackTeamId: "{slack_team.id}",
-                                     userId: {user.id}}}) {{
-              slackUser {{
-                id
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_slack_user(id=slack_user.id, name=slack_user.name,
+                                                       real_name=slack_user.real_name,
+                                                       display_name=slack_user.display_name,
+                                                       image_72=slack_user.image_72,
+                                                       is_bot=str(slack_user.is_bot).lower(),
+                                                       is_admin=str(slack_user.is_admin).lower(),
+                                                       slack_team_id=slack_team.id, user_id=user.id)
         response = auth_client.post('/graphql', {'query': mutation})
-        print(response.content)
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['errors'][0]['message'] == f"{{'slack_team_id': ['Invalid pk \"{slack_team.id}\" - " \
                                                           "object does not exist.']}"
 
@@ -58,22 +47,16 @@ class TestCreateSlackUser:
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createSlackUser(input: {{id: "{slack_user.id}", name: "{slack_user.name}",
-                                     realName: "{slack_user.real_name}", displayName: "{slack_user.display_name}",
-                                     image72: "{slack_user.image_72}", isBot: {str(slack_user.is_bot).lower()},
-                                     isAdmin: {str(slack_user.is_admin).lower()}, slackTeamId: "{slack_team.id}",
-                                     userId: 1}}) {{
-              slackUser {{
-                id
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_slack_user(id=slack_user.id, name=slack_user.name,
+                                                       real_name=slack_user.real_name,
+                                                       display_name=slack_user.display_name,
+                                                       image_72=slack_user.image_72,
+                                                       is_bot=str(slack_user.is_bot).lower(),
+                                                       is_admin=str(slack_user.is_admin).lower(),
+                                                       slack_team_id=slack_team.id, user_id=1)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['errors'][0]['message'] == "{'user_id': ['Invalid pk \"1\" - object does not exist.']}"
 
     @pytest.mark.django_db
@@ -82,20 +65,14 @@ class TestCreateSlackUser:
         slack_team = slack_team_factory()
         slack_user = slack_user_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createSlackUser(input: {{id: "{slack_user.id}", name: "{slack_user.name}",
-                                     realName: "{slack_user.real_name}", displayName: "{slack_user.display_name}",
-                                     image72: "{slack_user.image_72}", isBot: {str(slack_user.is_bot).lower()},
-                                     isAdmin: {str(slack_user.is_admin).lower()}, slackTeamId: "{slack_team.id}",
-                                     userId: {user.id}}}) {{
-              slackUser {{
-                id
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_slack_user(id=slack_user.id, name=slack_user.name,
+                                                       real_name=slack_user.real_name,
+                                                       display_name=slack_user.display_name,
+                                                       image_72=slack_user.image_72,
+                                                       is_bot=str(slack_user.is_bot).lower(),
+                                                       is_admin=str(slack_user.is_admin).lower(),
+                                                       slack_team_id=slack_team.id, user_id=user.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createSlackUser']['slackUser']['id'] == slack_user.id

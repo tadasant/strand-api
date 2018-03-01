@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 
 import pytest
 
+from tests.resources.MutationGenerator import MutationGenerator
+
 
 class TestCreateReply:
 
@@ -11,16 +13,7 @@ class TestCreateReply:
         message = message_factory()
         reply = reply_factory.build(message=message)
 
-        mutation = f'''
-          mutation {{
-            createReply(input: {{text: "{reply.text}", messageId: {message.id}, authorId: {message.author.id},
-                                 time: "{reply.time}"}}) {{
-              reply {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_reply(reply.text, reply.message.id, message.author.id, reply.time)
         response = client.post('/graphql', {'query': mutation})
 
         assert response.json()['data']['createReply'] is None
@@ -32,19 +25,10 @@ class TestCreateReply:
         message = message_factory(discussion=discussion)
         reply = reply_factory.build(message=message)
 
-        mutation = f'''
-          mutation {{
-            createReply(input: {{text: "{reply.text}", messageId: {message.id}, authorId: {message.author.id},
-                                 time: "{reply.time}"}}) {{
-              reply {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_reply(reply.text, reply.message.id, message.author.id, reply.time)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createReply'] is None
         assert response.json()['errors'][0]['message'] == "{'non_field_errors': ['Cannot create reply to message in " \
                                                           "closed discussion']}"
@@ -54,23 +38,14 @@ class TestCreateReply:
         message = message_factory(discussion__topic__is_private=False)
         reply = reply_factory.build(message=message)
 
-        mutation = f'''
-          mutation {{
-            createReply(input: {{text: "{reply.text}", messageId: {message.id}, authorId: {message.author.id},
-                                 time: "{reply.time}"}}) {{
-              reply {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_reply(reply.text, reply.message.id, message.author.id, reply.time)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.json()['data']['createReply']['reply']['text'] == reply.text
 
     @pytest.mark.django_db()
-    def test_marks_discussion_as_open(self, auth_client, discussion_factory, user_factory, message_factory,
-                                      reply_factory):
+    def test_marks_discussion_as_open(self, auth_client, discussion_factory, user_factory,
+                                      message_factory, reply_factory):
         message_author = user_factory(is_bot=False)
         reply_author = user_factory(is_bot=False)
         discussion = discussion_factory(topic__is_private=False)
@@ -78,26 +53,11 @@ class TestCreateReply:
                                   author=message_author)
         discussion.mark_as_stale()
         discussion.save()
-
         reply = reply_factory.build(message=message, author=reply_author)
 
-        mutation = f'''
-          mutation {{
-            createReply(input: {{text: "{reply.text}", messageId: {reply.message.id}, authorId: {message.author.id},
-                                 time: "{reply.time}"}}) {{
-              reply {{
-                text
-                message {{
-                  discussion {{
-                    status
-                  }}
-                }}
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_reply(reply.text, reply.message.id, message.author.id, reply.time)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createReply']['reply']['text'] == reply.text
         assert response.json()['data']['createReply']['reply']['message']['discussion']['status'] == 'OPEN'

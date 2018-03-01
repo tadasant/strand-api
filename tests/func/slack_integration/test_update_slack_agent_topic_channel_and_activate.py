@@ -1,65 +1,51 @@
 import pytest
 
+from tests.resources.MutationGenerator import MutationGenerator
+
 
 class TestUpdateSlackAgentTopicChannelAndActivate:
 
     @pytest.mark.django_db
     def test_unauthenticated(self, client, slack_agent_factory, slack_team_factory,
-                             slack_application_installation_factory, slack_app_request_factory):
+                             slack_application_installation_factory, slack_app_request):
         slack_agent = slack_agent_factory(topic_channel_id=None)
         slack_application_installation_factory(slack_agent=slack_agent)
         slack_agent.authenticate()
         slack_agent.save()
 
-        assert len(slack_app_request_factory.calls) == 1
-        assert slack_app_request_factory.calls[0].request.method == 'POST'
+        assert len(slack_app_request.calls) == 1
+        assert slack_app_request.calls[0].request.method == 'POST'
 
         slack_team = slack_team_factory(slack_agent=slack_agent)
         topic_channel_id = slack_agent_factory.build().topic_channel_id
 
-        mutation = f'''
-          mutation {{
-            updateSlackAgentTopicChannelAndActivate(input: {{slackTeamId: "{slack_team.id}",
-                                                            topicChannelId: "{topic_channel_id}"}}) {{
-              slackAgent {{
-                topicChannelId
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.update_slack_agent_topic_channel_and_activate(slack_team_id=slack_team.id,
+                                                                                   topic_channel_id=topic_channel_id)
         response = client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['updateSlackAgentTopicChannelAndActivate'] is None
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_slack_team(self, auth_client, slack_application_installation_factory, slack_agent_factory,
-                                slack_team_factory, slack_app_request_factory):
+    def test_invalid_slack_team(self, auth_client, slack_application_installation_factory,
+                                slack_agent_factory, slack_team_factory, slack_app_request):
         slack_agent = slack_agent_factory(topic_channel_id=None)
         slack_application_installation_factory(slack_agent=slack_agent)
         slack_agent.authenticate()
         slack_agent.save()
 
-        assert len(slack_app_request_factory.calls) == 1
-        assert slack_app_request_factory.calls[0].request.method == 'POST'
+        assert len(slack_app_request.calls) == 1
+        assert slack_app_request.calls[0].request.method == 'POST'
 
         slack_team = slack_team_factory.build(slack_agent=slack_agent)
         topic_channel_id = slack_agent_factory.build().topic_channel_id
 
-        mutation = f'''
-          mutation {{
-            updateSlackAgentTopicChannelAndActivate(input: {{slackTeamId: "{slack_team.id}",
-                                                            topicChannelId: "{topic_channel_id}"}}) {{
-              slackAgent {{
-                topicChannelId
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.update_slack_agent_topic_channel_and_activate(slack_team_id=slack_team.id,
+                                                                                   topic_channel_id=topic_channel_id)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['updateSlackAgentTopicChannelAndActivate'] is None
         assert response.json()['errors'][0]['message'] == 'SlackAgent matching query does not exist.'
 
@@ -70,54 +56,36 @@ class TestUpdateSlackAgentTopicChannelAndActivate:
         slack_team = slack_team_factory(slack_agent=slack_agent)
         topic_channel_id = slack_agent_factory.build().topic_channel_id
 
-        mutation = f'''
-          mutation {{
-            updateSlackAgentTopicChannelAndActivate(input: {{slackTeamId: "{slack_team.id}",
-                                                            topicChannelId: "{topic_channel_id}"}}) {{
-              slackAgent {{
-                topicChannelId
-                status
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.update_slack_agent_topic_channel_and_activate(slack_team_id=slack_team.id,
+                                                                                   topic_channel_id=topic_channel_id)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['updateSlackAgentTopicChannelAndActivate'] is None
         assert response.json()['errors'][0]['message'] == "Can't switch from state 'INITIATED' using method 'activate'"
 
     @pytest.mark.django_db
-    def test_valid(self, auth_client, slack_application_installation_factory, slack_agent_factory, slack_team_factory,
-                   slack_app_request_factory):
+    def test_valid(self, auth_client, slack_application_installation_factory, slack_agent_factory,
+                   slack_team_factory, slack_app_request):
         slack_agent = slack_agent_factory(topic_channel_id=None)
         slack_application_installation_factory(slack_agent=slack_agent)
         slack_agent.authenticate()
         slack_agent.save()
 
-        assert len(slack_app_request_factory.calls) == 1
-        assert slack_app_request_factory.calls[0].request.method == 'POST'
+        assert len(slack_app_request.calls) == 1
+        assert slack_app_request.calls[0].request.method == 'POST'
 
         slack_team = slack_team_factory(slack_agent=slack_agent)
         topic_channel_id = slack_agent_factory.build().topic_channel_id
 
-        mutation = f'''
-          mutation {{
-            updateSlackAgentTopicChannelAndActivate(input: {{slackTeamId: "{slack_team.id}",
-                                                            topicChannelId: "{topic_channel_id}"}}) {{
-              slackAgent {{
-                topicChannelId
-                status
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.update_slack_agent_topic_channel_and_activate(slack_team_id=slack_team.id,
+                                                                                   topic_channel_id=topic_channel_id)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['updateSlackAgentTopicChannelAndActivate']['slackAgent'][
                    'topicChannelId'] == topic_channel_id
         assert response.json()['data']['updateSlackAgentTopicChannelAndActivate']['slackAgent']['status'] == 'ACTIVE'
 
-        assert len(slack_app_request_factory.calls) == 2
-        assert slack_app_request_factory.calls[1].request.method == 'PUT'
+        assert len(slack_app_request.calls) == 2
+        assert slack_app_request.calls[1].request.method == 'PUT'

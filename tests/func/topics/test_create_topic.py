@@ -1,5 +1,7 @@
 import pytest
 
+from tests.resources.MutationGenerator import MutationGenerator
+
 
 class TestCreateTopic:
 
@@ -9,21 +11,12 @@ class TestCreateTopic:
         user = user_factory()
         topic = topic_factory.build(is_private=False)
 
-        mutation = f'''
-          mutation {{
-            createTopic(input: {{title: "{topic.title}", description: "{topic.description}",
-                                 isPrivate: {str(topic.is_private).lower()},
-                                 originalPosterId: {user.id},
-                                 groupId: {str(group.id)}}}) {{
-              topic {{
-                title
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_topic(title=topic.title, description=topic.description,
+                                                  is_private=str(topic.is_private).lower(), original_poster_id=user.id,
+                                                  group_id=group.id)
         response = client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createTopic'] is None
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
@@ -33,21 +26,12 @@ class TestCreateTopic:
         user = user_factory()
         topic = topic_factory.build(is_private=False)
 
-        mutation = f'''
-          mutation {{
-            createTopic(input: {{title: "{topic.title}", description: "{topic.description}",
-                                 isPrivate: {str(topic.is_private).lower()},
-                                 originalPosterId: {user.id},
-                                 groupId: {str(group.id)}}}) {{
-              topic {{
-                title
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_topic(title=topic.title, description=topic.description,
+                                                  is_private=str(topic.is_private).lower(), original_poster_id=user.id,
+                                                  group_id=group.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createTopic']['topic']['title'] == topic.title
 
     @pytest.mark.django_db
@@ -59,27 +43,11 @@ class TestCreateTopic:
         tag_one = tag_factory.build()
         tag_two = tag_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createTopic(input: {{title: "{topic.title}", description: "{topic.description}",
-                                 isPrivate: {str(topic.is_private).lower()},
-                                 originalPosterId: {user.id},
-                                 groupId: {str(group.id)},
-                                 tags: [
-                                   {{name: "{tag_one.name}"}},
-                                   {{name: "{tag_two.name}"}}
-                                 ]}}) {{
-              topic {{
-                title
-                tags {{
-                  name
-                }}
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_topic(title=topic.title, description=topic.description,
+                                                  is_private=str(topic.is_private).lower(), original_poster_id=user.id,
+                                                  group_id=group.id, tags=[tag_one, tag_two])
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createTopic']['topic']
         assert len(response.json()['data']['createTopic']['topic']['tags']) == 2

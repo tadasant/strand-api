@@ -1,5 +1,7 @@
 import pytest
 
+from tests.resources.MutationGenerator import MutationGenerator
+
 
 class TestCreateMessageFromSlack:
     @pytest.mark.django_db
@@ -12,20 +14,13 @@ class TestCreateMessageFromSlack:
         slack_event = slack_event_factory.build()
         message = message_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createMessageFromSlack(input: {{text: "{message.text}",
-                                            slackChannelId: "{slack_channel.id}", slackUserId: "{slack_user.id}",
-                                            originSlackEventTs: "{slack_event.ts}"}}) {{
-              message {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_message_from_slack(text=message.text,
+                                                               slack_channel_id=slack_channel.id,
+                                                               slack_user_id=slack_user.id,
+                                                               origin_slack_event_ts=slack_event.ts)
         response = client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createMessageFromSlack'] is None
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
@@ -39,20 +34,13 @@ class TestCreateMessageFromSlack:
         slack_event = slack_event_factory.build()
         message = message_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createMessageFromSlack(input: {{text: "{message.text}",
-                                            slackChannelId: "{slack_channel.id}", slackUserId: "{slack_user.id}",
-                                            originSlackEventTs: "{slack_event.ts}"}}) {{
-              message {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_message_from_slack(text=message.text,
+                                                               slack_channel_id=slack_channel.id,
+                                                               slack_user_id=slack_user.id,
+                                                               origin_slack_event_ts=slack_event.ts)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createMessageFromSlack'] is None
         assert response.json()['errors'][0]['message'] == 'User matching query does not exist.'
 
@@ -66,20 +54,13 @@ class TestCreateMessageFromSlack:
         slack_event = slack_event_factory.build()
         message = message_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createMessageFromSlack(input: {{text: "{message.text}",
-                                            slackChannelId: "{slack_channel.id}", slackUserId: "{slack_user.id}",
-                                            originSlackEventTs: "{slack_event.ts}"}}) {{
-              message {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_message_from_slack(text=message.text,
+                                                               slack_channel_id=slack_channel.id,
+                                                               slack_user_id=slack_user.id,
+                                                               origin_slack_event_ts=slack_event.ts)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createMessageFromSlack'] is None
         assert response.json()['errors'][0]['message'] == 'Discussion matching query does not exist.'
 
@@ -94,28 +75,13 @@ class TestCreateMessageFromSlack:
         slack_event = slack_event_factory.build()
         message = message_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createMessageFromSlack(input: {{text: "{message.text}",
-                                            slackChannelId: "{slack_channel.id}", slackUserId: "{slack_user.id}",
-                                            originSlackEventTs: "{slack_event.ts}"}}) {{
-              message {{
-                author {{
-                  id
-                }}
-                discussion {{
-                  id
-                  participants {{
-                    id
-                  }}
-                }}
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_message_from_slack(text=message.text,
+                                                               slack_channel_id=slack_channel.id,
+                                                               slack_user_id=slack_user.id,
+                                                               origin_slack_event_ts=slack_event.ts)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createMessageFromSlack']['message']['author']['id'] == \
             str(slack_user.user.id)
         assert response.json()['data']['createMessageFromSlack']['message']['discussion']['id'] == str(discussion.id)

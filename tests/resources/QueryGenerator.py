@@ -46,6 +46,30 @@ class DialoguesQueryGenerator:
         return query
 
 
+class GroupsQueryGenerator:
+    @staticmethod
+    def get_group(group_name):
+        query = f'''
+          query {{
+            group(name: "{group_name}") {{
+              id
+            }}
+          }}
+        '''
+        return query
+
+    @staticmethod
+    def get_groups():
+        query = '''
+          query {
+            groups {
+              name
+            }
+          }
+        '''
+        return query
+
+
 class SlackIntegrationQueryGenerator:
     @staticmethod
     def get_slack_application_installation(slack_application_installation_id):
@@ -265,6 +289,7 @@ class UsersQueryGenerator:
 
 
 class QueryGenerator(DialoguesQueryGenerator,
+                     GroupsQueryGenerator,
                      SlackIntegrationQueryGenerator,
                      TopicsQueryGenerator,
                      UsersQueryGenerator):

@@ -7,21 +7,12 @@ import pytest
 class TestCreateMessage:
 
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, discussion_factory, user_factory, message_factory):
+    def test_unauthenticated(self, client, mutation_generator, discussion_factory, user_factory, message_factory):
         discussion = discussion_factory(topic__is_private=False)
         user = user_factory()
         message = message_factory.build(discussion=discussion, author=user)
 
-        mutation = f'''
-          mutation {{
-            createMessage(input: {{text: "{message.text}", discussionId: {discussion.id}, authorId: {message.author.id},
-                                   time: "{message.time}"}}) {{
-              message {{
-                time
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.create_message(message.text, discussion.id, user.id, message.time)
         response = client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -29,21 +20,13 @@ class TestCreateMessage:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_closed_discussion(self, auth_client, discussion_factory, user_factory, message_factory):
+    def test_closed_discussion(self, auth_client, mutation_generator, discussion_factory,
+                               user_factory, message_factory):
         discussion = discussion_factory(topic__is_private=False, status='CLOSED')
         user = user_factory()
         message = message_factory.build(discussion=discussion, author=user)
 
-        mutation = f'''
-          mutation {{
-            createMessage(input: {{text: "{message.text}", discussionId: {message.discussion.id},
-                                   authorId: {message.author.id}, time: "{message.time}"}}) {{
-              message {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.create_message(message.text, discussion.id, user.id, message.time)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -52,28 +35,20 @@ class TestCreateMessage:
                                                           "discussion']}"
 
     @pytest.mark.django_db
-    def test_valid(self, auth_client, discussion_factory, user_factory, message_factory):
+    def test_valid(self, auth_client, mutation_generator, discussion_factory, user_factory, message_factory):
         discussion = discussion_factory(topic__is_private=False)
         user = user_factory()
         message = message_factory.build(discussion=discussion, author=user)
 
-        mutation = f'''
-          mutation {{
-            createMessage(input: {{text: "{message.text}", discussionId: {discussion.id}, authorId: {message.author.id},
-                                   time: "{message.time}"}}) {{
-              message {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.create_message(message.text, discussion.id, user.id, message.time)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
         assert response.json()['data']['createMessage']['message']['text'] == message.text
 
     @pytest.mark.django_db()
-    def test_marks_discussion_as_open(self, auth_client, discussion_factory, user_factory, message_factory):
+    def test_marks_discussion_as_open(self, auth_client, mutation_generator, discussion_factory,
+                                      user_factory, message_factory):
         discussion = discussion_factory(topic__is_private=False)
         user = user_factory(is_bot=False)
         message_factory(time=datetime.now(tz=pytz.UTC) - timedelta(minutes=31), discussion=discussion)
@@ -82,19 +57,7 @@ class TestCreateMessage:
 
         message = message_factory.build(discussion=discussion, author=user)
 
-        mutation = f'''
-          mutation {{
-            createMessage(input: {{text: "{message.text}", discussionId: {message.discussion.id},
-                                   authorId: {message.author.id}, time: "{message.time}"}}) {{
-              message {{
-                text
-                discussion {{
-                  status
-                }}
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.create_message(message.text, discussion.id, user.id, message.time)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200

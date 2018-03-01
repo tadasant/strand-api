@@ -4,21 +4,14 @@ import pytest
 class TestCreateSlackChannel:
 
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, slack_channel_factory, slack_team_factory, discussion_factory):
+    def test_unauthenticated(self, client, mutation_generator, slack_channel_factory, slack_team_factory,
+                             discussion_factory):
         discussion = discussion_factory()
         slack_team = slack_team_factory()
         slack_channel = slack_channel_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createSlackChannel(input: {{id: "{slack_channel.id}", name: "{slack_channel.name}",
-                                        slackTeamId: "{slack_team.id}", discussionId: {discussion.id}}}) {{
-              slackChannel {{
-                name
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.create_slack_channel(id=slack_channel.id, name=slack_channel.name,
+                                                           slack_team_id=slack_team.id, discussion_id=discussion.id)
         response = client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -26,21 +19,14 @@ class TestCreateSlackChannel:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_team(self, auth_client, slack_channel_factory, slack_team_factory, discussion_factory):
+    def test_invalid_team(self, auth_client, mutation_generator, slack_channel_factory, slack_team_factory,
+                          discussion_factory):
         discussion = discussion_factory()
         slack_team = slack_team_factory.build()
         slack_channel = slack_channel_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createSlackChannel(input: {{id: "{slack_channel.id}", name: "{slack_channel.name}",
-                                        slackTeamId: "{slack_team.id}", discussionId: {discussion.id}}}) {{
-              slackChannel {{
-                name
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.create_slack_channel(id=slack_channel.id, name=slack_channel.name,
+                                                           slack_team_id=slack_team.id, discussion_id=discussion.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -49,20 +35,12 @@ class TestCreateSlackChannel:
                                                           "object does not exist.']}"
 
     @pytest.mark.django_db
-    def test_invalid_discussion(self, auth_client, slack_channel_factory, slack_team_factory):
+    def test_invalid_discussion(self, auth_client, mutation_generator, slack_channel_factory, slack_team_factory):
         slack_team = slack_team_factory()
         slack_channel = slack_channel_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createSlackChannel(input: {{id: "{slack_channel.id}", name: "{slack_channel.name}",
-                                        slackTeamId: "{slack_team.id}", discussionId: 0}}) {{
-              slackChannel {{
-                name
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.create_slack_channel(id=slack_channel.id, name=slack_channel.name,
+                                                           slack_team_id=slack_team.id, discussion_id=0)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -71,21 +49,14 @@ class TestCreateSlackChannel:
                                                           "object does not exist.']}"
 
     @pytest.mark.django_db
-    def test_valid(self, auth_client, slack_channel_factory, slack_team_factory, discussion_factory):
+    def test_valid(self, auth_client, mutation_generator, slack_channel_factory, slack_team_factory,
+                   discussion_factory):
         discussion = discussion_factory()
         slack_team = slack_team_factory()
         slack_channel = slack_channel_factory.build()
 
-        mutation = f'''
-          mutation {{
-            createSlackChannel(input: {{id: "{slack_channel.id}", name: "{slack_channel.name}",
-                                        slackTeamId: "{slack_team.id}", discussionId: {discussion.id}}}) {{
-              slackChannel {{
-                name
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.create_slack_channel(id=slack_channel.id, name=slack_channel.name,
+                                                           slack_team_id=slack_team.id, discussion_id=discussion.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200

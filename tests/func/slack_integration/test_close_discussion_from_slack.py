@@ -4,21 +4,13 @@ import pytest
 class TestCloseDiscussionFromSlack:
 
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, discussion_factory, slack_channel_factory, slack_user_factory):
+    def test_unauthenticated(self, client, mutation_generator, discussion_factory, slack_channel_factory,
+                             slack_user_factory):
         discussion = discussion_factory(topic__is_private=False)
         slack_user = slack_user_factory(is_admin=True)
         slack_channel = slack_channel_factory(discussion=discussion)
 
-        mutation = f'''
-          mutation {{
-            closeDiscussionFromSlack(input: {{slackChannelId: "{slack_channel.id}",
-                                              slackUserId: "{slack_user.id}"}}) {{
-              discussion {{
-                id
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.close_discussion_from_slack(slack_channel.id, slack_user.id)
         response = client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -26,21 +18,13 @@ class TestCloseDiscussionFromSlack:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_slack_channel(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory):
+    def test_invalid_slack_channel(self, auth_client, mutation_generator, discussion_factory, slack_channel_factory,
+                                   slack_user_factory):
         discussion = discussion_factory(topic__is_private=False)
         slack_user = slack_user_factory(is_admin=True)
         slack_channel = slack_channel_factory.build(discussion=discussion)
 
-        mutation = f'''
-          mutation {{
-            closeDiscussionFromSlack(input: {{slackChannelId: "{slack_channel.id}",
-                                              slackUserId: "{slack_user.id}"}}) {{
-              discussion {{
-                id
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.close_discussion_from_slack(slack_channel.id, slack_user.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -48,22 +32,13 @@ class TestCloseDiscussionFromSlack:
         assert response.json()['errors'][0]['message'] == 'Discussion matching query does not exist.'
 
     @pytest.mark.django_db
-    def test_invalid_user(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory):
+    def test_invalid_user(self, auth_client, mutation_generator, discussion_factory, slack_channel_factory,
+                          slack_user_factory):
         slack_user = slack_user_factory(is_admin=False)
         discussion = discussion_factory(topic__is_private=False)
         slack_channel = slack_channel_factory(discussion=discussion)
 
-        mutation = f'''
-          mutation {{
-            closeDiscussionFromSlack(input: {{slackChannelId: "{slack_channel.id}",
-                                              slackUserId: "{slack_user.id}"}}) {{
-              discussion {{
-                id
-                status
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.close_discussion_from_slack(slack_channel.id, slack_user.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -71,43 +46,26 @@ class TestCloseDiscussionFromSlack:
         assert response.json()['errors'][0]['message'] == 'Slack user does not have permission to close discussion'
 
     @pytest.mark.django_db
-    def test_valid_op(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory):
+    def test_valid_op(self, auth_client, mutation_generator, discussion_factory, slack_channel_factory,
+                      slack_user_factory):
         slack_user = slack_user_factory()
         discussion = discussion_factory(topic__is_private=False, topic__original_poster=slack_user.user)
         slack_channel = slack_channel_factory(discussion=discussion)
 
-        mutation = f'''
-          mutation {{
-            closeDiscussionFromSlack(input: {{slackChannelId: "{slack_channel.id}",
-                                              slackUserId: "{slack_user.id}"}}) {{
-              discussion {{
-                id
-                status
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.close_discussion_from_slack(slack_channel.id, slack_user.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
         assert response.json()['data']['closeDiscussionFromSlack']['discussion']['status'] == 'CLOSED'
 
     @pytest.mark.django_db
-    def test_valid_admin(self, auth_client, discussion_factory, slack_channel_factory, slack_user_factory):
+    def test_valid_admin(self, auth_client, mutation_generator, discussion_factory, slack_channel_factory,
+                         slack_user_factory):
         discussion = discussion_factory(topic__is_private=False)
         slack_user = slack_user_factory(is_admin=True)
         slack_channel = slack_channel_factory(discussion=discussion)
 
-        mutation = f'''
-          mutation {{
-            closeDiscussionFromSlack(input: {{slackChannelId: "{slack_channel.id}",
-                                              slackUserId: "{slack_user.id}"}}) {{
-              discussion {{
-                status
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.close_discussion_from_slack(slack_channel.id, slack_user.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200

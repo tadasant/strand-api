@@ -23,9 +23,11 @@ from tests.factories import (
     TagFactory,
     UserFactory
 )
+from tests.resources.MutationGenerator import MutationGenerator
 from tests.resources.TestSlackClient import TestSlackClient
 from tests.resources.test_celery_tasks import run_auto_close_pending_closed_discussion_task,\
     run_mark_stale_discussions_task
+from tests.resources.QueryGenerator import QueryGenerator
 
 register(GroupFactory)
 register(MessageFactory)
@@ -149,3 +151,13 @@ def mark_stale_discussion_task(transactional_db):
 @pytest.fixture()
 def use_slack_domain():
     Switch.objects.create(name='use_slack_domain', active=True)
+
+
+@pytest.fixture()
+def mutation_generator():
+    yield MutationGenerator
+
+
+@pytest.fixture()
+def query_generator():
+    yield QueryGenerator

@@ -23,7 +23,6 @@ class UserType(DjangoObjectType):
         return self.strand_groups.all()
 
 
-# TODO: Add user to group
 class UserInputType(graphene.InputObjectType):
     email = graphene.String()
     username = graphene.String(required=True)

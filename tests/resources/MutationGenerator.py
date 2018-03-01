@@ -17,6 +17,38 @@ class DialoguesMutationGenerator:
         return mutation
 
     @staticmethod
+    def create_user_and_message(email, username, first_name, last_name, avatar_url, is_bot, groups, text, discussion_id,
+                                time):
+        mutation = f'''
+          mutation {{
+            createUserAndMessage(input: {{user: {{email: "{email}",
+                                                  username: "{username}",
+                                                  firstName: "{first_name}",
+                                                  lastName: "{last_name}",
+                                                  avatarUrl: "{avatar_url}",
+                                                  isBot: {is_bot},
+                                                  groupIds: {[group.id for group in groups]}}},
+                                          message: {{text: "{text}",
+                                                     discussionId: {discussion_id},
+                                                     time: "{time}"}}}}) {{
+              message {{
+               text
+               discussion {{
+                 status
+               }}
+              }}
+              user {{
+                alias
+                groups {{
+                  name
+                }}
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
     def create_reply(text, message_id, author_id, time):
         mutation = f'''
           mutation {{
@@ -34,6 +66,39 @@ class DialoguesMutationGenerator:
           }}
         '''
         return mutation
+
+    @staticmethod
+    def create_user_and_reply(email, username, first_name, last_name, avatar_url, is_bot, groups, text, message_id,
+                              time):
+        mutation = f'''
+          mutation {{
+            createUserAndReply(input: {{user: {{email: "{email}",
+                                                username: "{username}",
+                                                firstName: "{first_name}",
+                                                lastName: "{last_name}",
+                                                avatarUrl: "{avatar_url}",
+                                                isBot: {is_bot},
+                                                groupIds: {[group.id for group in groups]}}},
+                                        reply: {{text: "{text}",
+                                                 messageId: {message_id},
+                                                 time: "{time}"}}}}) {{
+              reply {{
+               text
+               message {{
+                 text
+               }}
+              }}
+              user {{
+                alias
+                groups {{
+                  name
+                }}
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
 
 
 class GroupsMutationGenerator:

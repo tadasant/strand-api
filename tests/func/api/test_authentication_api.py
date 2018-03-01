@@ -10,7 +10,7 @@ class TestAPIAuthentication:
         data = {'email': user.email, 'password': 'mypass123!'}
         response = client.post('/auth-token', data)
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['token']
 
     @pytest.mark.django_db

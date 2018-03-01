@@ -1,5 +1,7 @@
 import pytest
 
+from tests.resources.MutationGenerator import MutationGenerator
+
 
 class TestAttemptSlackInstallation:
 
@@ -10,18 +12,11 @@ class TestAttemptSlackInstallation:
         code = '123456789012.123456789012.1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABCDEFGHIJKLMNOPQR'
         client_id = '123456789012.123456789012.123456'
         redirect_uri = 'www.app.trystrand.com/install'
-        mutation = f'''
-          mutation {{
-            attemptSlackInstallation(input: {{code: "{code}",
-                                              clientId: "{client_id}", redirectUri: "{redirect_uri}"}}) {{
-              slackTeam {{
-                name
-              }}
-            }}
-          }}
-        '''
+
+        mutation = MutationGenerator.attempt_slack_installation(code, client_id, redirect_uri)
         response = client.post('/graphql', {'query': mutation})
-        assert response.status_code == 200
+
+        assert response.status_code == 200, response.content
         assert response.json()['errors'][0]['message'] == 'Error accessing OAuth: invalid_code'
 
     @pytest.mark.django_db
@@ -31,16 +26,9 @@ class TestAttemptSlackInstallation:
         code = '123456789012.123456789012.1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABCDEFGHIJKLMNOPQR'
         client_id = '123456789012.123456789012.123456'
         redirect_uri = 'www.app.trystrand.com/install'
-        mutation = f'''
-          mutation {{
-            attemptSlackInstallation(input: {{code: "{code}",
-                                              clientId: "{client_id}", redirectUri: "{redirect_uri}"}}) {{
-              slackTeam {{
-                name
-              }}
-            }}
-          }}
-        '''
+
+        mutation = MutationGenerator.attempt_slack_installation(code, client_id, redirect_uri)
         response = client.post('/graphql', {'query': mutation})
-        assert response.status_code == 200
+
+        assert response.status_code == 200, response.content
         assert response.json()['data']['attemptSlackInstallation']['slackTeam']['name'] == 'Clippy Sandbox'

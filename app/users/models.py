@@ -50,6 +50,10 @@ class User(AbstractUser):
         user = super(User, self).save(*args, **kwargs)
         return user
 
+    def add_to_groups(self, group_ids):
+        for group_id in group_ids:
+            self.strand_groups.add(group_id)
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

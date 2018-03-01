@@ -25,13 +25,9 @@ class CreateTopicMutation(graphene.Mutation):
 
     @check_authorization
     def mutate(self, info, input):
-        tags = input.pop('tags', [])
-
         topic_validator = TopicValidator(data=input)
         topic_validator.is_valid(raise_exception=True)
         topic = topic_validator.save()
-
-        topic.add_or_create_tags(tags)
 
         return CreateTopicMutation(topic=topic)
 
@@ -48,14 +44,10 @@ class CreateUserAndTopicMutation(graphene.Mutation):
         user_validator = UserValidator(data=input.pop('user'))
         user_validator.is_valid(raise_exception=True)
         user = user_validator.save()
-        print(user)
 
-        tags = input['topic'].pop('tags', [])
         topic_validator = TopicValidator(data=dict(original_poster_id=user.id, **input.pop('topic')))
         topic_validator.is_valid(raise_exception=True)
         topic = topic_validator.save()
-
-        topic.add_or_create_tags(tags)
 
         return CreateUserAndTopicMutation(topic=topic, user=user)
 

@@ -437,7 +437,7 @@ class TopicsMutationGenerator:
         return mutation
 
     @staticmethod
-    def create_user_and_topic(email, username, first_name, last_name, avatar_url, is_bot,
+    def create_user_and_topic(email, username, first_name, last_name, avatar_url, is_bot, groups,
                               title, description, is_private, group_id, tags=''):
         tags = ','.join([f'{{name: "{tag.name}"}}' for tag in tags]) if tags else tags
         mutation = f'''
@@ -447,7 +447,8 @@ class TopicsMutationGenerator:
                                                 firstName: "{first_name}",
                                                 lastName: "{last_name}",
                                                 avatarUrl: "{avatar_url}",
-                                                isBot: {is_bot}}},
+                                                isBot: {is_bot},
+                                                groupIds: {[group.id for group in groups]}}},
                                         topic: {{title: "{title}",
                                                  description: "{description}",
                                                  isPrivate: {is_private},
@@ -461,6 +462,9 @@ class TopicsMutationGenerator:
               }}
               user {{
                 alias
+                groups {{
+                  name
+                }}
               }}
             }}
           }}

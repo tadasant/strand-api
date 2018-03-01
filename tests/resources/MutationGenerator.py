@@ -437,6 +437,37 @@ class TopicsMutationGenerator:
         return mutation
 
     @staticmethod
+    def create_user_and_topic(email, username, first_name, last_name, avatar_url, is_bot,
+                              title, description, is_private, group_id, tags=''):
+        tags = ','.join([f'{{name: "{tag.name}"}}' for tag in tags]) if tags else tags
+        mutation = f'''
+          mutation {{
+            createUserAndTopic(input: {{user: {{email: "{email}",
+                                                username: "{username}",
+                                                firstName: "{first_name}",
+                                                lastName: "{last_name}",
+                                                avatarUrl: "{avatar_url}",
+                                                isBot: {is_bot}}},
+                                        topic: {{title: "{title}",
+                                                 description: "{description}",
+                                                 isPrivate: {is_private},
+                                                 groupId: {group_id},
+                                                 tags: [{tags}]}}}}) {{
+              topic {{
+               title
+               tags {{
+                 name
+               }}
+              }}
+              user {{
+                alias
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
     def mark_discussion_as_pending_closed(discussion_id):
         mutation = f'''
           mutation {{

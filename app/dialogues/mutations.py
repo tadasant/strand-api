@@ -41,3 +41,6 @@ class CreateReplyMutation(graphene.Mutation):
 class Mutation(graphene.ObjectType):
     create_message = CreateMessageMutation.Field()
     create_reply = CreateReplyMutation.Field()
+
+    # create_user_and_message = CreateUserAndMessageMutation.Field()
+    # create_user_and_reply = CreateUserAndReplyMutation.Field()

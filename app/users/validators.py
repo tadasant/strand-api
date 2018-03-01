@@ -8,7 +8,7 @@ from app.users.models import User
 class UserValidator(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'username', 'avatar_url', 'is_bot')
+        fields = ('email', 'username', 'avatar_url', 'is_bot', 'first_name', 'last_name')
 
     def create(self, validated_data):
         alias = User.objects.generate_random_alias(4)

@@ -16,7 +16,12 @@ class UserType(DjangoObjectType):
         return self.slack_users
 
 
+# TODO: Add user to group
 class UserInputType(graphene.InputObjectType):
     email = graphene.String()
     username = graphene.String(required=True)
+    first_name = graphene.String()
+    last_name = graphene.String()
     avatar_url = graphene.String()
+    is_bot = graphene.Boolean()
+

@@ -100,7 +100,6 @@ class DialoguesMutationGenerator:
         return mutation
 
 
-
 class GroupsMutationGenerator:
     @staticmethod
     def create_group(group_name):

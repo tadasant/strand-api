@@ -5,7 +5,8 @@ class TestAttemptSlackInstallation:
 
     @pytest.mark.django_db
     @pytest.mark.parametrize('slack_oauth_request', ['invalid_token'], indirect=True)
-    def test_invalid_token(self, client, slack_oauth_request):
+    @pytest.mark.usefixtures('slack_oauth_request')
+    def test_invalid_token(self, client):
         code = '123456789012.123456789012.1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABCDEFGHIJKLMNOPQR'
         client_id = '123456789012.123456789012.123456'
         redirect_uri = 'www.app.trystrand.com/install'
@@ -25,7 +26,8 @@ class TestAttemptSlackInstallation:
 
     @pytest.mark.django_db
     @pytest.mark.parametrize('slack_oauth_request', ['valid_token'], indirect=True)
-    def test_valid(self, client, slack_client_factory, slack_oauth_request):
+    @pytest.mark.usefixtures('slack_client', 'slack_oauth_request')
+    def test_valid(self, client):
         code = '123456789012.123456789012.1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABCDEFGHIJKLMNOPQR'
         client_id = '123456789012.123456789012.123456'
         redirect_uri = 'www.app.trystrand.com/install'

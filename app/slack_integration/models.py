@@ -8,7 +8,7 @@ from model_utils.models import TimeStampedModel
 
 from app.dialogues.models import Message
 from app.groups.models import Group
-from app.slack_integration.wrappers import SlackAppClientWrapper
+from app.api.wrappers import SlackAppClientWrapper
 from app.topics.models import Discussion
 from app.users.models import User
 

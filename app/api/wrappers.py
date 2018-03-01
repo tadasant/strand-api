@@ -1,4 +1,6 @@
 import requests
+import waffle
+
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -11,9 +13,13 @@ class SlackAppClientWrapper:
         return headers
 
     @staticmethod
-    def _construct_discussion_payload(discussion):
+    def _construct_slack_discussion_payload(discussion):
         return {'slack_channel_id': discussion.slack_channel.id,
                 'slack_team_id': discussion.slack_channel.slack_team.id}
+
+    @staticmethod
+    def _construct_discussion_payload(discussion):
+        return {'discussion_id': discussion.id}
 
     @staticmethod
     def _construct_slack_agent_payload(slack_agent):
@@ -57,7 +63,10 @@ class SlackAppClientWrapper:
     @staticmethod
     def _post_discussion(endpoint, discussion):
         headers = SlackAppClientWrapper._construct_headers()
-        payload = SlackAppClientWrapper._construct_discussion_payload(discussion)
+        if waffle.switch_is_active('use_slack_domain'):
+            payload = SlackAppClientWrapper._construct_slack_discussion_payload(discussion)
+        else:
+            payload = SlackAppClientWrapper._construct_discussion_payload(discussion)
 
         resp = requests.post(endpoint, json=payload, headers=headers)
         assert 200 <= resp.status_code < 300, resp.content

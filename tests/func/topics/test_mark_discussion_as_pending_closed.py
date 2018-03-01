@@ -61,8 +61,8 @@ class TestMarkDiscussionAsPendingClosed:
                                                           "'mark_as_pending_closed'"
 
     @pytest.mark.django_db
-    def test_valid(self, auth_client, discussion_factory, auto_close_pending_closed_discussion_factory,
-                   slack_app_request_factory):
+    @pytest.mark.usefixtures('auto_close_pending_closed_discussion_task', 'slack_app_request')
+    def test_valid(self, auth_client, discussion_factory):
         discussion = discussion_factory(topic__is_private=False, status='STALE')
 
         mutation = f'''

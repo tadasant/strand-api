@@ -1,5 +1,6 @@
 import pytest
 import responses
+from waffle.models import Switch
 from django.conf import settings
 from pytest_factoryboy.fixture import register
 from rest_framework.authtoken.models import Token
@@ -23,7 +24,8 @@ from tests.factories import (
     UserFactory
 )
 from tests.resources.TestSlackClient import TestSlackClient
-from tests.resources.test_celery_tasks import auto_close_pending_closed_discussion_task, mark_stale_discussions_task
+from tests.resources.test_celery_tasks import run_auto_close_pending_closed_discussion_task,\
+    run_mark_stale_discussions_task
 
 register(GroupFactory)
 register(MessageFactory)
@@ -56,7 +58,7 @@ def auth_client(user_factory):
 
 
 @pytest.fixture()
-def slack_app_request_factory():
+def slack_app_request():
     """Pytest fixture for calls from requests to Slack App
 
     Uses the responses library that was built at Dropbox to mock
@@ -77,7 +79,7 @@ def slack_app_request_factory():
 
 
 @pytest.fixture()
-def slack_oauth_request(slack_app_request_factory, request):
+def slack_oauth_request(slack_app_request, request):
     """Pytest fixture for calls from requests to Slack
 
     Uses the responses library that was built at Dropbox to mock out
@@ -99,17 +101,17 @@ def slack_oauth_request(slack_app_request_factory, request):
     else:
         response = {'ok': False, 'error': 'invalid_code'}
 
-    slack_app_request_factory.add(responses.GET, 'https://slack.com/api/oauth.access', json=response)
-    slack_app_request_factory.add(responses.POST, settings.SLACK_APP_SLACK_AGENT_ENDPOINT, status=200)
-    slack_app_request_factory.add(responses.PUT, settings.SLACK_APP_SLACK_AGENT_ENDPOINT, status=200)
-    slack_app_request_factory.add(responses.POST, settings.SLACK_APP_STALE_DISCUSSION_ENDPOINT, status=200)
-    slack_app_request_factory.add(responses.POST, settings.SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT, status=200)
+    slack_app_request.add(responses.GET, 'https://slack.com/api/oauth.access', json=response)
+    slack_app_request.add(responses.POST, settings.SLACK_APP_SLACK_AGENT_ENDPOINT, status=200)
+    slack_app_request.add(responses.PUT, settings.SLACK_APP_SLACK_AGENT_ENDPOINT, status=200)
+    slack_app_request.add(responses.POST, settings.SLACK_APP_STALE_DISCUSSION_ENDPOINT, status=200)
+    slack_app_request.add(responses.POST, settings.SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT, status=200)
 
-    yield slack_app_request_factory
+    yield slack_app_request
 
 
 @pytest.fixture()
-def slack_client_factory(mocker):
+def slack_client(mocker):
     """Pytest fixture to patch api_call using test resource
 
     Created a test slack client class that implements the init
@@ -122,7 +124,7 @@ def slack_client_factory(mocker):
 
 
 @pytest.fixture()
-def auto_close_pending_closed_discussion_factory(mocker, transactional_db):
+def auto_close_pending_closed_discussion_task(mocker, transactional_db):
     """Pytest fixture to patch async_delay using test resource
 
     Created a test resource for the auto_close_pending_closed_discussion
@@ -130,15 +132,20 @@ def auto_close_pending_closed_discussion_factory(mocker, transactional_db):
     a Celery worker.
     """
     mocker.patch.object(auto_close_pending_closed_discussion, 'apply_async',
-                        new=auto_close_pending_closed_discussion_task)
+                        new=run_auto_close_pending_closed_discussion_task)
 
 
 @pytest.fixture()
-def mark_stale_discussions_factory(transactional_db):
+def mark_stale_discussion_task(transactional_db):
     """Pytest fixture to monitor for stale discussions.
 
     This is in lieu of creating mock resources to mimick a
     Celery Beat and Celery worker. This does a timed loop
     10 times and executes the mark_stale_discussion task.
     """
-    return mark_stale_discussions_task
+    return run_mark_stale_discussions_task
+
+
+@pytest.fixture()
+def use_slack_domain():
+    Switch.objects.create(name='use_slack_domain', active=True)

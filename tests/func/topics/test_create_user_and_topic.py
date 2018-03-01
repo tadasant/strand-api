@@ -56,7 +56,7 @@ class TestCreateUserAndTopic:
                                                            groups=[group],
                                                            title=topic.title, description=topic.description,
                                                            is_private=str(topic.is_private).lower(),
-                                                           group_id=group.id+1)
+                                                           group_id=group.id + 1)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200, response.content
@@ -81,5 +81,4 @@ class TestCreateUserAndTopic:
 
         assert response.status_code == 200, response.content
         assert response.json()['data']['createUserAndTopic']['topic']['title'] == topic.title
-        print(response.json())
         assert response.json()['data']['createUserAndTopic']['user']['groups'][0]['name'] == group.name

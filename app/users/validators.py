@@ -15,7 +15,7 @@ class UserValidator(serializers.ModelSerializer):
 
     def create(self, validated_data):
         alias = User.objects.generate_random_alias(4)
-        group_ids = validated_data.pop('group_ids')
+        group_ids = validated_data.pop('group_ids', [])
         user = User.objects.create(**validated_data, alias=alias)
         user.add_to_groups(group_ids)
         return user

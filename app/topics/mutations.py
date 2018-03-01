@@ -51,8 +51,7 @@ class CreateUserAndTopicMutation(graphene.Mutation):
         print(user)
 
         tags = input['topic'].pop('tags', [])
-        topic_validator = TopicValidator(data=dict(original_poster=user, **input.pop('topic')))
-        print(topic_validator.initial_data)
+        topic_validator = TopicValidator(data=dict(original_poster_id=user.id, **input.pop('topic')))
         topic_validator.is_valid(raise_exception=True)
         topic = topic_validator.save()
 

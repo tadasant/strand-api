@@ -12,4 +12,5 @@ class UserValidator(serializers.ModelSerializer):
 
     def create(self, validated_data):
         alias = User.objects.generate_random_alias(4)
-        return User(**validated_data, alias=alias)
+        user = User.objects.create(**validated_data, alias=alias)
+        return user

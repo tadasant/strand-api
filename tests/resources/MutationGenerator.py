@@ -63,7 +63,7 @@ class SlackIntegrationMutationGenerator:
                 name
               }}
             }}
-          }}        
+          }}
         '''
         return mutation
 
@@ -186,8 +186,288 @@ class SlackIntegrationMutationGenerator:
         '''
         return mutation
 
+    @staticmethod
+    def create_topic_from_slack(title, description, is_private, original_poster_slack_user_id,
+                                tags):
+        tags = ','.join([f'{{name: "{tag.name}"}}' for tag in tags])
+        mutation = f'''
+          mutation {{
+            createTopicFromSlack(input: {{title: "{title}",
+                                          description: "{description}",
+                                          isPrivate: {is_private},
+                                          originalPosterSlackUserId: "{original_poster_slack_user_id}",
+                                          tags: [{tags}]}}) {{
+              topic {{
+                title
+                tags {{
+                  name
+                }}
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def create_user_and_message_from_slack(id, name, first_name, last_name, real_name, display_name, email,
+                                           image_72, is_bot, is_admin, slack_team_id, origin_slack_event_ts,
+                                           slack_channel_id, text):
+        mutation = f'''
+          mutation {{
+            createUserAndMessageFromSlack(input: {{slackUser: {{id: "{id}",
+                                                                name: "{name}",
+                                                                firstName: "{first_name}",
+                                                                lastName: "{last_name}",
+                                                                realName: "{real_name}",
+                                                                displayName: "{display_name}",
+                                                                email: "{email}",
+                                                                image72: "{image_72}",
+                                                                isBot: {is_bot},
+                                                                isAdmin: {is_admin},
+                                                                slackTeamId: "{slack_team_id}"}},
+                                                    originSlackEventTs: "{origin_slack_event_ts}",
+                                                    slackChannelId: "{slack_channel_id}",
+                                                    text: "{text}"}}) {{
+              slackUser {{
+                user {{
+                  alias
+                }}
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def create_user_and_reply_from_slack(id, name, first_name, last_name, real_name, display_name, email,
+                                         image_72, is_bot, is_admin, slack_team_id, message_origin_slack_event_ts,
+                                         origin_slack_event_ts, slack_channel_id, text):
+        mutation = f'''
+          mutation {{
+            createUserAndReplyFromSlack(input: {{slackUser: {{
+                                                   id: "{id}",
+                                                   name: "{name}",
+                                                   firstName: "{first_name}",
+                                                   lastName: "{last_name}",
+                                                   realName: "{real_name}",
+                                                   displayName: "{display_name}",
+                                                   email: "{email}",
+                                                   image72: "{image_72}",
+                                                   isBot: {is_bot},
+                                                   isAdmin: {is_admin},
+                                                   slackTeamId: "{slack_team_id}"
+                                                 }},
+                                                 messageOriginSlackEventTs: "{message_origin_slack_event_ts}",
+                                                 originSlackEventTs: "{origin_slack_event_ts}",
+                                                 slackChannelId: "{slack_channel_id}",
+                                                 text: "{text}"}}) {{
+              slackUser {{
+                id
+              }}
+              user {{
+                alias
+              }}
+              reply {{
+                message {{
+                  id
+                }}
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def create_user_and_topic_from_slack(id, name, first_name, last_name, real_name, display_name, email,
+                                         image_72, is_bot, is_admin, slack_team_id, title, description,
+                                         is_private, tags):
+        tags = ','.join([f'{{name: "{tag.name}"}}' for tag in tags])
+        mutation = f'''
+          mutation {{
+            createUserAndTopicFromSlack(input: {{title: "{title}",
+                                                 description: "{description}",
+                                                 isPrivate: {is_private},
+                                                 originalPosterSlackUser: {{
+                                                   id: "{id}",
+                                                   name: "{name}",
+                                                   firstName: "{first_name}",
+                                                   lastName: "{last_name}",
+                                                   realName: "{real_name}",
+                                                   displayName: "{display_name}",
+                                                   email: "{email}",
+                                                   image72: "{image_72}",
+                                                   isBot: {is_bot},
+                                                   isAdmin: {is_admin},
+                                                   slackTeamId: "{slack_team_id}"
+                                                 }},
+                                                 tags: [{tags}]}}) {{
+              topic {{
+                title
+                tags {{
+                  name
+                }}
+              }}
+              slackUser {{
+                id
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def create_user_from_slack(id, name, first_name, last_name, real_name, display_name, email,
+                               image_72, is_bot, is_admin, slack_team_id):
+        mutation = f'''
+          mutation {{
+            createUserFromSlack(input: {{id: "{id}",
+                                         name: "{name}",
+                                         firstName: "{first_name}",
+                                         lastName: "{last_name}",
+                                         realName: "{real_name}",
+                                         displayName: "{display_name}",
+                                         email: "{email}",
+                                         image72: "{image_72}",
+                                         isBot: {is_bot},
+                                         isAdmin: {is_admin},
+                                         slackTeamId: "{slack_team_id}"}}) {{
+              slackUser {{
+                user {{
+                  id
+                  alias
+                }}
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def mark_discussion_as_pending_closed_from_slack(slack_channel_id):
+        mutation = f'''
+          mutation {{
+            markDiscussionAsPendingClosedFromSlack(input: {{slackChannelId: "{slack_channel_id}"}}) {{
+              discussion {{
+                status
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def update_slack_agent_topic_channel_and_activate(slack_team_id, topic_channel_id):
+        mutation = f'''
+          mutation {{
+            updateSlackAgentTopicChannelAndActivate(input: {{slackTeamId: "{slack_team_id}",
+                                                            topicChannelId: "{topic_channel_id}"}}) {{
+              slackAgent {{
+                topicChannelId
+                status
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+
+class TopicsMutationGenerator:
+    @staticmethod
+    def close_discussion(discussion_id):
+        mutation = f'''
+          mutation {{
+            closeDiscussion(input: {{id: {discussion_id}}}) {{
+              discussion {{
+                id
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def create_discussion(time_start, time_end, topic_id):
+        mutation = f'''
+          mutation {{
+            createDiscussion(input: {{timeStart: "{time_start}", timeEnd: "{time_end}",
+                                      topicId: {topic_id}}}) {{
+              discussion {{
+                topic {{
+                  id
+                }}
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def create_tag(name):
+        mutation = f'''
+          mutation {{
+            createTag(input: {{name: "{name}"}}) {{
+              tag {{
+                name
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def create_topic(title, description, is_private, original_poster_id, group_id, tags=''):
+        tags = ','.join([f'{{name: "{tag.name}"}}' for tag in tags]) if tags else tags
+        mutation = f'''
+          mutation {{
+            createTopic(input: {{title: "{title}",
+                                 description: "{description}",
+                                 isPrivate: {is_private},
+                                 originalPosterId: {original_poster_id},
+                                 groupId: {group_id},
+                                 tags: [{tags}]}}) {{
+              topic {{
+                title
+                tags {{
+                  name
+                }}
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def mark_discussion_as_pending_closed(discussion_id):
+        mutation = f'''
+          mutation {{
+            markDiscussionAsPendingClosed(input: {{id: {discussion_id}}}) {{
+              discussion {{
+                status
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+
+class UsersMutationGenerator:
+    @staticmethod
+    def create_user(email, username):
+        mutation = f'''
+          mutation {{
+            createUser(input: {{email: "{email}", username: "{username}"}}) {{
+              user {{
+                alias
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
 
 class MutationGenerator(DialoguesMutationGenerator,
                         GroupsMutationGenerator,
-                        SlackIntegrationMutationGenerator):
+                        SlackIntegrationMutationGenerator,
+                        TopicsMutationGenerator,
+                        UsersMutationGenerator):
     pass

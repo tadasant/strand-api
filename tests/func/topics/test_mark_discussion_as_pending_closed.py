@@ -4,18 +4,10 @@ import pytest
 class TestMarkDiscussionAsPendingClosed:
 
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, discussion_factory):
+    def test_unauthenticated(self, client, mutation_generator, discussion_factory):
         discussion = discussion_factory(topic__is_private=False, status='STALE')
 
-        mutation = f'''
-          mutation {{
-            markDiscussionAsPendingClosed(input: {{id: {discussion.id}}}) {{
-              discussion {{
-                status
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.mark_discussion_as_pending_closed(discussion.id)
         response = client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -23,17 +15,8 @@ class TestMarkDiscussionAsPendingClosed:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_discussion(self, auth_client):
-
-        mutation = '''
-          mutation {
-            markDiscussionAsPendingClosed(input: {id: 1}) {
-              discussion {
-                status
-              }
-            }
-          }
-        '''
+    def test_invalid_discussion(self, auth_client, mutation_generator):
+        mutation = mutation_generator.mark_discussion_as_pending_closed(1)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -41,18 +24,10 @@ class TestMarkDiscussionAsPendingClosed:
         assert response.json()['errors'][0]['message'] == 'Discussion matching query does not exist.'
 
     @pytest.mark.django_db
-    def test_invalid_discussion_state(self, auth_client, discussion_factory):
+    def test_invalid_discussion_state(self, auth_client, mutation_generator, discussion_factory):
         discussion = discussion_factory(topic__is_private=False, status='OPEN')
 
-        mutation = f'''
-          mutation {{
-            markDiscussionAsPendingClosed(input: {{id: {discussion.id}}}) {{
-              discussion {{
-                status
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.mark_discussion_as_pending_closed(discussion.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -62,18 +37,10 @@ class TestMarkDiscussionAsPendingClosed:
 
     @pytest.mark.django_db
     @pytest.mark.usefixtures('auto_close_pending_closed_discussion_task', 'slack_app_request')
-    def test_valid(self, auth_client, discussion_factory):
+    def test_valid(self, auth_client, mutation_generator, discussion_factory):
         discussion = discussion_factory(topic__is_private=False, status='STALE')
 
-        mutation = f'''
-          mutation {{
-            markDiscussionAsPendingClosed(input: {{id: {discussion.id}}}) {{
-              discussion {{
-                status
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.mark_discussion_as_pending_closed(discussion.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200

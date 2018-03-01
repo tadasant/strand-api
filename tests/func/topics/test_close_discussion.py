@@ -4,18 +4,10 @@ import pytest
 class TestCloseDiscussion:
 
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, discussion_factory):
+    def test_unauthenticated(self, client, mutation_generator, discussion_factory):
         discussion = discussion_factory(topic__is_private=False)
 
-        mutation = f'''
-          mutation {{
-            closeDiscussion(input: {{id: {discussion.id}}}) {{
-              discussion {{
-                timeEnd
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.close_discussion(discussion_id=discussion.id)
         response = client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -23,18 +15,10 @@ class TestCloseDiscussion:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_discussion(self, auth_client, discussion_factory):
+    def test_invalid_discussion(self, auth_client, mutation_generator, discussion_factory):
         discussion = discussion_factory(topic__is_private=False)
 
-        mutation = f'''
-          mutation {{
-            closeDiscussion(input: {{id: {discussion.id + 1}}}) {{
-              discussion {{
-                timeEnd
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.close_discussion(discussion_id=discussion.id + 1)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200
@@ -42,19 +26,10 @@ class TestCloseDiscussion:
         assert response.json()['errors'][0]['message'] == 'Discussion matching query does not exist.'
 
     @pytest.mark.django_db
-    def test_valid(self, auth_client, discussion_factory):
+    def test_valid(self, auth_client, mutation_generator, discussion_factory):
         discussion = discussion_factory(topic__is_private=False)
 
-        mutation = f'''
-          mutation {{
-            closeDiscussion(input: {{id: {discussion.id}}}) {{
-              discussion {{
-                id
-                timeEnd
-              }}
-            }}
-          }}
-        '''
+        mutation = mutation_generator.close_discussion(discussion_id=discussion.id)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200

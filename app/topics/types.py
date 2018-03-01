@@ -8,7 +8,7 @@ from app.api.authorization import check_topic_authorization
 class TopicType(DjangoObjectType):
     class Meta:
         model = Topic
-        only_fields = ('id', 'title', 'description', 'is_private', 'original_poster', 'group', 'tags',)
+        only_fields = ('id', 'title', 'description', 'is_private', 'original_poster', 'group', 'tags', 'discussion',)
 
     # TODO: Move to object-level permissions
     @check_topic_authorization
@@ -38,6 +38,10 @@ class TopicType(DjangoObjectType):
     @check_topic_authorization
     def resolve_tags(self, info):
         return self.tags
+
+    @check_topic_authorization
+    def resolve_discussion(self, info):
+        return self.discussion
 
 
 class DiscussionType(DjangoObjectType):

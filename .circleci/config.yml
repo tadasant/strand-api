@@ -63,11 +63,46 @@ jobs:
           command: |
             sudo pip install awsebcli --upgrade
             eb init "Strand API" -r us-east-1 -p "arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.6.4"
-            echo "Initialized"
             eb use api-development
-            echo "Used"
             eb deploy
 
+  deploy-to-staging:
+    docker:
+      - image: circleci/python:3.6.1
+
+      working_directory: ~/repo
+
+      steps:
+        - checkout
+
+        - setup_remote_docker
+
+        - run:
+            name: Deploy to EB
+            command: |
+              sudo pip install awsebcli --upgrade
+              eb init "Strand API" -r us-east-1 -p "arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.6.4"
+              eb use api-staging
+              eb deploy
+
+  deploy-to-production:
+    docker:
+      - image: circleci/python:3.6.1
+
+      working_directory: ~/repo
+
+      steps:
+        - checkout
+
+        - setup_remote_docker
+
+        - run:
+            name: Deploy to EB
+            command: |
+              sudo pip install awsebcli --upgrade
+              eb init "Strand API" -r us-east-1 -p "arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.6.4"
+              eb use api-production
+              eb deploy
 
 workflows:
   version: 2
@@ -79,7 +114,49 @@ workflows:
           type: approval
           requires:
            - build
+          filters:
+            branches:
+              only:
+                - /API(?:-.+)?$/
 
       - deploy-to-development:
           requires:
             - hold-for-development
+          filters:
+            branches:
+              only:
+                - /API(?:-.+)?$/
+
+      - hold-for-staging:
+          type: approval
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - /release(?:-.+)?$/
+
+      - deploy-to-staging:
+          requires:
+            - hold-for-staging
+          filters:
+            branches:
+              only:
+                - master
+                - /release(?:-.+)?$/
+
+      - hold-for-production:
+          type: approval
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
+      - deploy-to-production:
+          requires:
+            - hold-for-production
+          filters:
+            branches:
+              only: master

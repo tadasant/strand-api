@@ -59,12 +59,15 @@ jobs:
       - setup_remote_docker
 
       - run:
-        name: Deploy to EB
-        command: |
-          sudo pip install awsebcli --upgrade --user
-          eb init "Strand API" -r us-east-1 -p "arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.6.4"
-          eb use api-development
-          eb deploy
+          name: Deploy to EB
+          command: |
+            sudo pip install awsebcli --upgrade --user
+            echo "Installed pip"
+            eb init "Strand API" -r us-east-1 -p "arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.6.4"
+            echo "Initialized"
+            eb use api-development
+            echo "Used"
+            eb deploy
 
 
 workflows:

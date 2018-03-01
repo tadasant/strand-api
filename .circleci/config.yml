@@ -70,39 +70,39 @@ jobs:
     docker:
       - image: circleci/python:3.6.1
 
-      working_directory: ~/repo
+    working_directory: ~/repo
 
-      steps:
-        - checkout
+    steps:
+      - checkout
 
-        - setup_remote_docker
+      - setup_remote_docker
 
-        - run:
-            name: Deploy to EB
-            command: |
-              sudo pip install awsebcli --upgrade
-              eb init "Strand API" -r us-east-1 -p "arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.6.4"
-              eb use api-staging
-              eb deploy
+      - run:
+          name: Deploy to EB
+          command: |
+            sudo pip install awsebcli --upgrade
+            eb init "Strand API" -r us-east-1 -p "arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.6.4"
+            eb use api-staging
+            eb deploy
 
   deploy-to-production:
     docker:
       - image: circleci/python:3.6.1
 
-      working_directory: ~/repo
+    working_directory: ~/repo
 
-      steps:
-        - checkout
+    steps:
+      - checkout
 
-        - setup_remote_docker
+      - setup_remote_docker
 
-        - run:
-            name: Deploy to EB
-            command: |
-              sudo pip install awsebcli --upgrade
-              eb init "Strand API" -r us-east-1 -p "arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.6.4"
-              eb use api-production
-              eb deploy
+      - run:
+          name: Deploy to EB
+          command: |
+            sudo pip install awsebcli --upgrade
+            eb init "Strand API" -r us-east-1 -p "arn:aws:elasticbeanstalk:us-east-1::platform/Python 3.6 running on 64bit Amazon Linux/2.6.4"
+            eb use api-production
+            eb deploy
 
 workflows:
   version: 2

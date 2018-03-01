@@ -7,22 +7,22 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class SlackAppClientWrapper:
     @staticmethod
-    def construct_headers():
+    def __construct_headers():
         headers = {'Authorization': f'Token {settings.SLACK_APP_VERIFICATION_TOKEN}',
                    'Content-Type': 'application/json'}
         return headers
 
     @staticmethod
-    def construct_slack_discussion_payload(discussion):
+    def __construct_slack_discussion_payload(discussion):
         return {'slack_channel_id': discussion.slack_channel.id,
                 'slack_team_id': discussion.slack_channel.slack_team.id}
 
     @staticmethod
-    def construct_discussion_payload(discussion):
+    def __construct_discussion_payload(discussion):
         return {'discussion_id': discussion.id}
 
     @staticmethod
-    def construct_slack_agent_payload(slack_agent):
+    def __construct_slack_agent_payload(slack_agent):
         slack_agent_payload = {'status': slack_agent.status,
                                'topic_channel_id': slack_agent.topic_channel_id,
                                'slack_application_installation': {},
@@ -60,39 +60,37 @@ class SlackAppClientWrapper:
 
         return slack_agent_payload
 
-    @staticmethod
-    def post_discussion(endpoint, discussion):
-        headers = SlackAppClientWrapper.construct_headers()
+    @classmethod
+    def __post_discussion(cls, endpoint, discussion):
+        headers = cls.__construct_headers()
         if waffle.switch_is_active('use_slack_domain'):
-            payload = SlackAppClientWrapper.construct_slack_discussion_payload(discussion)
+            payload = cls.__construct_slack_discussion_payload(discussion)
         else:
-            payload = SlackAppClientWrapper.construct_discussion_payload(discussion)
+            payload = cls.__construct_discussion_payload(discussion)
 
         resp = requests.post(endpoint, json=payload, headers=headers)
         assert 200 <= resp.status_code < 300, resp.content
 
-    @staticmethod
-    def post_auto_closed_discussion(discussion):
-        SlackAppClientWrapper.post_discussion(settings.SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT,
-                                               discussion)
+    @classmethod
+    def post_auto_closed_discussion(cls, discussion):
+        cls.__post_discussion(settings.SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT, discussion)
 
-    @staticmethod
-    def post_stale_discussion(discussion):
-        SlackAppClientWrapper.__post_discussion(settings.SLACK_APP_STALE_DISCUSSION_ENDPOINT,
-                                                discussion)
+    @classmethod
+    def post_stale_discussion(cls, discussion):
+        cls.__post_discussion(settings.SLACK_APP_STALE_DISCUSSION_ENDPOINT, discussion)
 
-    @staticmethod
-    def post_slack_agent(slack_agent):
-        headers = SlackAppClientWrapper.construct_headers()
-        payload = SlackAppClientWrapper.construct_slack_agent_payload(slack_agent)
+    @classmethod
+    def post_slack_agent(cls, slack_agent):
+        headers = cls.__construct_headers()
+        payload = cls.__construct_slack_agent_payload(slack_agent)
 
         resp = requests.post(settings.SLACK_APP_SLACK_AGENT_ENDPOINT, json=payload, headers=headers)
         assert 200 <= resp.status_code < 300, resp.content
 
-    @staticmethod
-    def put_slack_agent(slack_agent):
-        headers = SlackAppClientWrapper.construct_headers()
-        payload = SlackAppClientWrapper.construct_slack_agent_payload(slack_agent)
+    @classmethod
+    def put_slack_agent(cls, slack_agent):
+        headers = cls.__construct_headers()
+        payload = cls.__construct_slack_agent_payload(slack_agent)
 
         resp = requests.put(settings.SLACK_APP_SLACK_AGENT_ENDPOINT, json=payload, headers=headers)
         assert 200 <= resp.status_code < 300, resp.content

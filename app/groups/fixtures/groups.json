@@ -162,5 +162,29 @@
       153
     ]
   }
+},
+{
+  "model": "groups.group",
+  "pk": 2,
+  "fields": {
+    "created": "2018-03-02T15:02:10.300Z",
+    "modified": "2018-03-02T15:02:10.312Z",
+    "name": "strand-development",
+    "members": [
+      155
+    ]
+  }
+},
+{
+  "model": "groups.group",
+  "pk": 3,
+  "fields": {
+    "created": "2018-03-02T15:53:51.388Z",
+    "modified": "2018-03-02T15:53:51.394Z",
+    "name": "Strand Development",
+    "members": [
+      156
+    ]
+  }
 }
 ]

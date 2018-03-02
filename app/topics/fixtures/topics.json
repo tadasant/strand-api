@@ -612,6 +612,51 @@
   }
 },
 {
+  "model": "topics.tag",
+  "pk": 69,
+  "fields": {
+    "created": "2018-03-02T15:54:54.304Z",
+    "modified": "2018-03-02T15:54:54.306Z",
+    "name": "weird"
+  }
+},
+{
+  "model": "topics.tag",
+  "pk": 70,
+  "fields": {
+    "created": "2018-03-02T15:54:54.348Z",
+    "modified": "2018-03-02T15:54:54.349Z",
+    "name": "message"
+  }
+},
+{
+  "model": "topics.tag",
+  "pk": 71,
+  "fields": {
+    "created": "2018-03-02T15:54:54.368Z",
+    "modified": "2018-03-02T15:54:54.369Z",
+    "name": "formats"
+  }
+},
+{
+  "model": "topics.tag",
+  "pk": 72,
+  "fields": {
+    "created": "2018-03-02T16:55:27.500Z",
+    "modified": "2018-03-02T16:55:27.501Z",
+    "name": "tag"
+  }
+},
+{
+  "model": "topics.tag",
+  "pk": 73,
+  "fields": {
+    "created": "2018-03-02T18:00:07.312Z",
+    "modified": "2018-03-02T18:00:07.313Z",
+    "name": "blah"
+  }
+},
+{
   "model": "topics.topic",
   "pk": 1,
   "fields": {
@@ -619,7 +664,7 @@
     "modified": "2018-02-08T16:11:12.333Z",
     "title": "Having an issue reading a text file that was submitted via a web form using POST...",
     "description": "Originally posted this on reddit, \n\nSo I wrote some code to parse through a CSV file in Jupyter, it works great but it's reading a local static file. I thought it would be simple to transition to the web (since I'm trying to make this into something my coworkers can easily access), but so far it has proved to be quite difficult. I finally got to the point where I'm submitting and reading the file, but now I realize every time I submit the same csv file, the script gets different data. Anyone know what's happening here? It sounds like a buffer issue but I don't know the proper way to upload and parse a text file via POST.\n\n<https://www.reddit.com/r/learnpython/comments/7k22zs/having_an_issue_with_reading_a_text_file_that_was/>",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -636,7 +681,7 @@
     "modified": "2018-02-08T16:11:34.186Z",
     "title": "Having an issue reading a text file that was submitted via a web form using POST...",
     "description": "Originally posted this on reddit, \n\nSo I wrote some code to parse through a CSV file in Jupyter, it works great but it's reading a local static file. I thought it would be simple to transition to the web (since I'm trying to make this into something my coworkers can easily access), but so far it has proved to be quite difficult. I finally got to the point where I'm submitting and reading the file, but now I realize every time I submit the same csv file, the script gets different data. Anyone know what's happening here? It sounds like a buffer issue but I don't know the proper way to upload and parse a text file via POST.\n\n<https://www.reddit.com/r/learnpython/comments/7k22zs/having_an_issue_with_reading_a_text_file_that_was/>",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -653,7 +698,7 @@
     "modified": "2018-02-08T16:12:00.456Z",
     "title": "Having an issue reading a text file that was submitted via a web form using POST...",
     "description": "Originally posted this on reddit, \n\nSo I wrote some code to parse through a CSV file in Jupyter, it works great but it's reading a local static file. I thought it would be simple to transition to the web (since I'm trying to make this into something my coworkers can easily access), but so far it has proved to be quite difficult. I finally got to the point where I'm submitting and reading the file, but now I realize every time I submit the same csv file, the script gets different data. Anyone know what's happening here? It sounds like a buffer issue but I don't know the proper way to upload and parse a text file via POST.\n\n<https://www.reddit.com/r/learnpython/comments/7k22zs/having_an_issue_with_reading_a_text_file_that_was/>",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -670,7 +715,7 @@
     "modified": "2018-02-08T16:12:31.117Z",
     "title": "Having an issue reading a text file that was submitted via a web form using POST...",
     "description": "Originally posted this on reddit, \n\nSo I wrote some code to parse through a CSV file in Jupyter, it works great but it's reading a local static file. I thought it would be simple to transition to the web (since I'm trying to make this into something my coworkers can easily access), but so far it has proved to be quite difficult. I finally got to the point where I'm submitting and reading the file, but now I realize every time I submit the same csv file, the script gets different data. Anyone know what's happening here? It sounds like a buffer issue but I don't know the proper way to upload and parse a text file via POST.\n\n<https://www.reddit.com/r/learnpython/comments/7k22zs/having_an_issue_with_reading_a_text_file_that_was/>",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -687,7 +732,7 @@
     "modified": "2018-02-08T16:12:31.572Z",
     "title": "Having an issue Pandas Data frame subtraction",
     "description": "TypeError: unsupported operand type(s) for -: 'str' and 'str'\n\nI'm using the operation like below\noutput = df1.subract(df2, axis=0, fill_value=0)\nRequirement:  have 2 DF's , 1st DF contains all data with correct values and 2nd DF is similar to first DF\nand contains extra rows in which some column values are NaN. here i need to subtract DF1 from DF2 and the result DF should contain only error(column contains NaN) rows",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -704,7 +749,7 @@
     "modified": "2018-02-08T16:12:31.855Z",
     "title": "transfering table data from one psql db to other  psql table in different db",
     "description": "I am stuck, trying to do that. I have tried a lot of different queries in psql console such as :\n```INSERT INTO \"pro-greffe_development\".departments\nSELECT name description department_number slug FROM banquesansfrais.departments;```\nSo more precisely I am trying to transfer the data in fields ```ame description department_number slug``` from the db ```banquesansfrais``` table ```departments``` into the db ```pro-greffe_development``` table departments. \nBoth these tables have schema set to ```public```.\nHere's what I get after I launch my query in psql console :\n```ERROR:  relation \"pro-greffe_development.departments\" does not exist\nLINE 1: INSERT INTO \"pro-greffe_development\".departments```",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -720,7 +765,7 @@
     "modified": "2018-02-08T16:12:33.637Z",
     "title": "What are your commands?",
     "description": "I want to know all of Clippy\u2019s commands.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -736,7 +781,7 @@
     "modified": "2018-02-08T16:12:33.827Z",
     "title": "How to resolve blockchain dns using Python Requests",
     "description": "There are certain blockchain domains that are resolved only by blockchain dns resolvers. \nFor ex: <http://Jstash.bazar>\nIf you try to open this link in a browser, it wont get resolved. But, just install the browser plugin from <https://blockchain-dns.info/>\nand then try to open the site again, it will open up smoothly.\nI want to scrap some data from this site using Python Requests (browserless) and have no idea as to how to resolve such blockchain domains.\nAny help would be highly appreciated.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -754,7 +799,7 @@
     "modified": "2018-02-08T16:12:34.079Z",
     "title": "Responsive web design with React, best practices",
     "description": "Diving into responsive web design with React for the first time. Wondering if my approach is an anti-pattern in any way, since it doesn\u2019t seem super common: for each view in my app, I\u2019m creating a \u201ccontainer\u201d component (e.g. `AppDashboard`) that uses a series of material-ui\u2019s `&lt;Hidden&gt;` component to basically do a switch statement across a bunch of child components that each lay out a different screen size, e.g. `AppDashboardDesktop` vs. `AppDashboardMobile`. I\u2019m separately extracting out all common children-of-children components, strings of text, etc so there\u2019s little code duplication between those two child components. I think this makes it a lot easier to manage the different layouts that end up pieced together with material-ui `&lt;Grid&gt;` components - you don\u2019t mess up the mobile view if you make changes to the desktop view. But it seems the more common approach would be to use just one file, and do e.g. `&lt;Grid sm={8} md={4} xl={3}&gt;`. Is this just the old webdev non-React way of thinking, or am I missing something?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -771,7 +816,7 @@
     "modified": "2018-02-08T16:12:34.374Z",
     "title": "Best practice for CD to Staging environment and manual deployment to Production environment using CircleCI",
     "description": "Currently using CircleCI to run tests. Would like to further leverage CircleCI to continuously deploy successful builds to a staging environment on AWS ECS with the option to manually deploy to production if staging was successful. In CircleCI v2.0, workflows seem to be the best practice. Working hypothesis is to have a workflow that deploys to staging and holds for approval before deploying to production. The deploy-to-staging and deploy-to-production jobs would each have bash scripts that use AWS\u2019s CLI. If anyone has experience here or if there is a more elegant solution via CircleCI than the bash scripts, would love to hear.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -789,7 +834,7 @@
     "modified": "2018-02-08T16:12:34.644Z",
     "title": "Change background-color of an element when value of input type color changes",
     "description": "I have a `&lt;div class=\"colorpicker_new_color\"&gt;&lt;/div&gt;` and `&lt;input type=\"color\" id=\"colorPicker\"&gt;&lt;/input&gt;` how do I make an event handler when `$('#colorPicker').val()` changes to put `$('.colorpicker_new_color').css(\"backgroundColor\") = $('#colorPicker').val()` and vice versa but I'll have to convert RGB into hex.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -809,7 +854,7 @@
     "modified": "2018-02-08T16:12:34.950Z",
     "title": "SVGs in React",
     "description": "I'm trying to replace a bunch of png's in my app with svg's. Proving to be a lot more difficult than I expected. I'm trying out libraries like react-inlinesvg so I can render the SVG's with supplemental CSS-in-JS to get the size scaling right. Turning out to be a mess of wrappers &amp; editing the SVG's parameters. Probably lacking some basic understanding of how SVG's are supposed to work, or maybe missing some React library that abstracts this all out - any ideas?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -827,7 +872,7 @@
     "modified": "2018-02-08T16:12:35.158Z",
     "title": "https website does not open with Chrome and Requests but works with firefox when using Proxy",
     "description": "I admit in advance that this is a very weird problem. I am still posting it hoping someone could figure out whats wrong.\nI am trying to access a webpage, url - <https://www.ticketmaster.com/member/payment_options>. I can open it using Google Chrome, Firefox and Python Requests as well.\nNow, I want to access the same page using a dedicated proxy from stormproxies. I follow the proxy setup on Firefox and Chrome, as well as use those in Requests code. The webpage opens up well in Firefox, but not in Chrome. It just keeps on waiting for the sever to respond. Same thing happens with Requests code. It times out if I use a timeout parameter.\n\nHere is the Requests code I am using:\n```import requests\n\nproxy = '&lt;proxy&gt;'\nproxies = {'http': 'http://{}'.format(proxy), 'https': 'http://{}'.format(proxy)}\n\n\nheaders = {\n    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',\n    'Accept-Encoding': 'gzip, deflate, br',\n    'Accept-Language': 'en-US,en;q=0.9',\n    'Cache-Control': 'max-age=0',\n    'Connection': 'keep-alive',\n    'Host': '<http://www.ticketmaster.com|www.ticketmaster.com>',\n    'Upgrade-Insecure-Requests': '1',\n    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'\n}\n\ns = requests.session()\ns.headers.update(headers)\n# s.proxies.update(proxies)\nurl = '<https://www.ticketmaster.com/member/payment_options>'\nr = s.get(url, timeout=30)\nprint(r.content.decode())```\n\nThis code would work fine, but as soon as you uncomment the line `s.proxies.update(proxies)`, it would throw TimeoutException.\n\nThe bigger issue here is that even Google Chrome isnt working.\nThe only reasons I could figure out is that Firefox has its own Proxy setup, but Google Chrome rather uses Windows Internet Explorer proxy settings and security settings.\n\nLet me know if any of you have come across this or if know a solution.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -848,7 +893,7 @@
     "modified": "2018-02-08T16:12:35.475Z",
     "title": "SqliteDatabase showing up empty (no tables) during pytest session, even though peewee's create_tables appears to run",
     "description": "I have a branch where this is not a problem, and a branch where this is a problem, can't figure out what in the diff is causing it... Maybe something to do with SqliteDatabase and how it works with threads?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -867,7 +912,7 @@
     "modified": "2018-02-08T16:12:35.670Z",
     "title": "Css basic, what affects the &lt;body&gt; to act this way?",
     "description": "body {\n    display: flex;\n    margin: 0;\n    text-align: center;\n    background: #424242;\n}\nthat's the css, and the dimensions are 1580\u00d7222, what could be affecting it to not be full screen",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -883,7 +928,7 @@
     "modified": "2018-02-08T16:12:36.237Z",
     "title": "Error when using the Slack API",
     "description": "This is an error on my end (not Slack\u2019s). We\u2019re monitoring messages through the Slack event firehose. Attaching two screenshots. One is of the logs and one is of the relevant source code. It seems that the if statement on line 218 was not true, which resulted in the logging statements on lines 237-238. However, the channel ID of the message equals the HELP_CHANNEL and the user is not in ADMIN_USERS. Any help here would be much appreciated.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -900,7 +945,7 @@
     "modified": "2018-02-08T16:12:36.658Z",
     "title": "Selecting DOM elements",
     "description": "The 5th line is not finished in js.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -917,7 +962,7 @@
     "modified": "2018-02-08T16:12:36.991Z",
     "title": "Domain design of settings",
     "description": "We have a domain that includes an entity called team. What\u2019s the best way to model the concept of settings for a team? We currently have a team_settings table. Issues with this our two-fold. 1) What\u2019s the plural of settings? 2) It doesn\u2019t have an inherent identity - so should it be an entity?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -934,7 +979,7 @@
     "modified": "2018-02-08T16:12:37.286Z",
     "title": "creating a custom widget with flask wtforms",
     "description": "I am strugling to find resources that explain how to create custom widget with wtforms. I want to display a list of toggle buttons. So far I ve been able to create a list of checkboxes with `SelectMultipleFields`:\n`class PrecisionForm(FlaskForm):\n    phone_number     = StringField('Phone number', [validators.Length(min=4, max=25)])\n    contact_emails = SelectMultipleField(\n            'Contact emails',\n            [at_least_one],\n            choices=[],\n            option_widget=widgets.CheckboxInput(),\n            widget=widgets.ListWidget(prefix_label=False)\n            )\n`",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -952,7 +997,7 @@
     "modified": "2018-02-08T16:12:38.152Z",
     "title": "event delegation js",
     "description": "So I wrote first 2 in jQuery, seems like it's the same.. just another way to write it right?\nthe 3rd is in vanilla, now I am researching more... and stumbled upon this:\n<https://lists.evolt.org/archive/Week-of-Mon-20090209/127339.html>\nI copy pasted the part that I didn't get to work, it's from 2009, is it too old or what's with the syntax?\n<https://jsfiddle.net/d8ak0edq/1/>",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -970,7 +1015,7 @@
     "modified": "2018-02-08T16:12:38.682Z",
     "title": "RDBMS Schema for a Scientific Experiment Dat aBase",
     "description": "I work with experimental data (structured into 4 sheets / CSV and 1 CSV / experiment currently). I would like to store this in an RDBMS to allow for some querying as well. Two of the aforementioned sheets are time series / voltage series. I'm unsure if I should avoid creating 4 tables / experiment each time. If I should just keep 4 master tables, I'm not sure what to use as a primary key. Each experiment often involves several sensors (so the fields in one of the time series tables would be experiment_id, sensor_id, raw_time,raw_current_electrode1...electroden. (So I'm unsure what a unique identifier would be)",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -988,7 +1033,7 @@
     "modified": "2018-02-08T16:12:38.939Z",
     "title": "RDBMS Schema for a Scientific Experiment DataBase",
     "description": "I work with experimental data (structured into 4 sheets / CSV and 1 CSV / experiment currently). I would like to store this in an RDBMS to allow for some querying as well. Two of the aforementioned sheets are time series / voltage series. I'm unsure if I should avoid creating 4 tables / experiment each time. If I should just keep 4 master tables, I'm not sure what to use as a primary key. Each experiment often involves several sensors (so the fields in one of the time series tables would be experiment_id, sensor_id, raw_time,raw_current_electrode1...electroden. (So I'm unsure what a unique identifier would be)",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1006,7 +1051,7 @@
     "modified": "2018-02-08T16:12:39.203Z",
     "title": "Time Series DB Handling",
     "description": "I work with experimental data (structured into 4 sheets / CSV and 1 CSV / experiment currently). I decided to store this data in 4 master tables, and use an experiment_ID and sensor_ID column to help query data. (In doing so, the DB will have no primary key). However, two of these tables are time series and may not have the same frequency of time. Can anyone recommend a good way to handle time series data?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1024,7 +1069,7 @@
     "modified": "2018-02-08T16:12:39.916Z",
     "title": "HTMLCollection - adding different attributes affects the live collection differently",
     "description": "We all know `document.getElementsByClassName` and `document.getElementsByTagName` are live HTMLCollections.\nSo I made 2 examples, one with adding a class attribute, the other with bgcolor. Why does the first act like expected and the other gets it's job done...\n<https://jsfiddle.net/adkuca/84ryjp7s/2/>\n<https://jsfiddle.net/adkuca/f1o9h7be/>\nHow can I know what will work normally and what wont??",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1045,7 +1090,7 @@
     "modified": "2018-02-08T16:12:40.326Z",
     "title": "Drop a level from Pandas Multiindex",
     "description": "I have a Pandas DF, image attached, and want to drop a level so the columns 'line up'. Can anyone advise?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1061,7 +1106,7 @@
     "modified": "2018-02-08T16:12:40.560Z",
     "title": "Flatten Index Hierarchy of a Pandas DF",
     "description": "How would I flatten this DF structure such that the columns 'calibration_type' and 'calibration_num' values would be shown in every row.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1077,7 +1122,7 @@
     "modified": "2018-02-08T16:12:40.928Z",
     "title": "Pytest failing despite custom error handling in Flask",
     "description": "Working on a Flask app and have a custom error handler for an exception I raise in a route. This works perfectly when testing manually with HTTP responses. However, when running a functional test with pytest, the test fails when the exception is initially raised before the Flask app gets a chance to handle it.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1095,7 +1140,7 @@
     "modified": "2018-02-08T16:12:41.226Z",
     "title": "Mimic jQuery's Delegated Event Listener",
     "description": "So here I have a piece of code that basically does what jQuery's delegated event listener would do. This was purely just to learn.\n<https://jsfiddle.net/adkuca/rdrekqk2/2/>\nHow to make it that it would have the same syntax, like `outer.addDelegateEventListener('mousedown', 'div', function(evt){})`",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1114,7 +1159,7 @@
     "modified": "2018-02-08T16:12:41.508Z",
     "title": "Trying to replicate c# function in python",
     "description": "So I'm trying to replicate function which is written in c#. In c# it passes two objects to the function, which is pretty clear how everything works, but I can't replicate same functionality in python",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1131,7 +1176,7 @@
     "modified": "2018-02-08T16:12:41.882Z",
     "title": "Py2app application not opening with message \"myapp Error\"",
     "description": "My setup.py file is as follows:\n\nfrom setuptools import setup\nAPP = ['Pythagoras Calculator.py']\nDATA_FILES = []\nOPTIONS = {\n'iconfile': 'icon.icns'\n}\nsetup(\napp=APP,\ndata_files=DATA_FILES,\noptions={'py2app': OPTIONS},\nsetup_requires=['py2app'],\n)",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1147,7 +1192,7 @@
     "modified": "2018-02-08T16:12:44.826Z",
     "title": "Python: Formatting a list properly",
     "description": "A Tkinter entry widget accepts input (a list) separated by ' , '  . The issue is that the list gets formatted like ['600,1200,1800'] rather than ['600','1200','1800']. Can anyone advise on how to format this properly?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1164,7 +1209,7 @@
     "modified": "2018-02-08T16:12:46.148Z",
     "title": "Wordpress custom post meta data",
     "description": "I'm getting post custom values with get_post_custom_values('my-key', post_id) and get return of something like that \"0 =&gt; string 'a:30:{s:8:\"subtitle\";s:50:\";s:12:\"featuredItem\";s:1:\"0\";s:10:\"headerType\";s:3:\"map\";s:11:\"headerImage\";s:0:\"\"}\", question is how to extract those values by keywords?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1182,7 +1227,7 @@
     "modified": "2018-02-08T16:12:46.829Z",
     "title": "Plotly Dash: Render a Graph only if certain data in a Pandas DataFrame exists",
     "description": "I currently use Plotly Dash to create a webapp to visualize data. The syntax involves using dcc.Graph to render an HTML Div as follows. Below the html.Div is the code to render the plot figure. The x and y axis values come from a Pandas DF. Can anyone recommend a way to use an IF statement to check if a given column exists and then proceed to return the following code. Plotly Dash gives an error when a 'fig' variable does not exist\nhtml.Div([\n    html.Div([\n        html.H3('Chart'),\n        dcc.Graph(id='Chart',figure = chart_fig\n)\nsensor3_trace_day1 = Scatter(\ny = sensor_3_day1['BG Calibration (mg/dl)'],\nx = sensor_3_day1['Current (nA)'],\nmode = 'markers',\nname = 'Sensor 3 Day 1'\n)    \ndata = [sensor1_trace]\nlayout = Layout(showlegend=True, height = 600, width = 600, title='Day     1: BG Cal vs Current',xaxis={'title':'Current [nA]'},yaxis={'title':'BG Calibration (mg/dl)'})\nchart_fig = dict(data=data, layout=layout)\niplot(chart_fig)",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1201,7 +1246,7 @@
     "modified": "2018-02-08T16:12:47.288Z",
     "title": "First Project",
     "description": "I just want to know how I can see what my website might look like. I am using sublime text with html language.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1217,7 +1262,7 @@
     "modified": "2018-02-08T16:12:47.573Z",
     "title": "Trouble with xquery in Google Sheets",
     "description": "I'm trying to use XML and xquery to collect some data in Google Sheets, but I'm having a hard time fetching the specific result I'm looking for",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1235,7 +1280,7 @@
     "modified": "2018-02-08T16:12:47.839Z",
     "title": "Unable to set JavaScript click handlers",
     "description": "I'm trying to get a JS function to run on click of a button. This should be easy, but I can't seem to get the button element by getElementById, and am at a roadblock. For context, I'm using the PptxGenJS library to generate a powerpoint (using JS) on the click of a butoon.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1254,7 +1299,7 @@
     "modified": "2018-02-08T16:12:48.417Z",
     "title": "Python with HTML Site?",
     "description": "Trying to figure out if it will be possible to store a python variable in the HTML code and run some script based off a user's inputed data",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1271,7 +1316,7 @@
     "modified": "2018-02-08T16:12:48.744Z",
     "title": "HTML5 load video from website",
     "description": "I\u2019m trying to load mp4 videos from another website but it only works locally, not on my heroku server",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1288,7 +1333,7 @@
     "modified": "2018-02-08T16:12:49.087Z",
     "title": "Using Python method in Javascript code",
     "description": "We have some text processing being done in python that we need to integrate into our javascript code to get it working on the website, but we don\u2019t know how to integrate it",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1305,7 +1350,7 @@
     "modified": "2018-02-08T16:12:49.380Z",
     "title": "Wordpress add_rewrite_rule",
     "description": "Trying to rewrite url from /dashboard/edit/?post_id=THE_ID to /dashboard/edit/post_id/THE_ID, but nothing works.",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1323,7 +1368,7 @@
     "modified": "2018-02-08T16:12:49.886Z",
     "title": "import with flask-assets and pycss",
     "description": "I am using flask-assets in a flask app. In my scss bundle I register all my scss files from my static/sass folder. Some of my scss files need to import some other files ( for instance my sass/base/_base.scss needs to import sass/abstracts/_variables.scss. My import in my _base.scss file looks like that :",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1341,7 +1386,7 @@
     "modified": "2018-02-08T16:12:50.251Z",
     "title": "Adding Plotly Charts to an HTML file with Python",
     "description": "Similar to <https://stackoverflow.com/questions/47529290/python-plotly-offline-chart-embed-into-html-not-working>, I have been using Plotly to generate some charts and then create an HTML string in python which is then written to an HTML file, generating an HTML report for my Plotly charts. In the example below, I create a Plotly chart object (aPlot) and then insert that into an HTML string. My question is is there a Pythonic way to check whether the aPlot object exists? Something like try and except before the ''' + aPlot ''' line in the HTML string. I know this is poorly worded and am happy to give better context if needed.                                                                                           ```import plotly\n\nfig = {'data': [{'x': [1,2,3],\n                  'y': [2,5,3],\n                  'type': 'bar'}],\n      'layout': {'width': 800,\n                 'height': 550}}\n\naPlot = plotly.offline.plot(fig, \n                            config={\"displayModeBar\": False}, \n                            show_link=False, \n                            include_plotlyjs=False, \n                            output_type='div')\n\nhtml_string = '''\n&lt;html&gt;\n    &lt;head&gt;\n      &lt;script src=\"<https://cdn.plot.ly/plotly-latest.min.js>\"&gt;&lt;/script&gt;\n      &lt;link rel=\"stylesheet\" href=\"<https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css>\"&gt;\n      &lt;style&gt;body{ margin:0 100; background:whitesmoke; }&lt;/style&gt;\n    &lt;/head&gt;\n    &lt;body&gt;\n      &lt;h1&gt;Monthly Report&lt;/h1&gt;\n      ''' + aPlot + '''\n    &lt;/body&gt;\n&lt;/html&gt;'''\n\nwith open(\"nick.html\", 'w') as f:\n    f.write(html_string)```",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1359,7 +1404,7 @@
     "modified": "2018-02-08T16:12:50.526Z",
     "title": "How can I round a variable in python to 4 significant figures? Example: 3.1415926 rounded to 3.142 instead 3",
     "description": "Example: 3.1415926 rounded to 3.142 instead 3. I would use round() but it rounds to the nearest integer",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1375,7 +1420,7 @@
     "modified": "2018-02-08T16:12:50.800Z",
     "title": "Pytest executing tests (unexpectedly?) in parallel",
     "description": "I feel like I'm fundamentally misunderstanding something related to scopes or fixtures. I have a bunch of production code that uses threads, and I'm running into nondeterministic outcomes (i.e. fails once per ~10 runs or  when trying to test them with pytest. I'm pretty confident is has something to do with tests trampling each other: one test starts, makes some changes to my application state, then another test tries to execute when starting from an unexpected application state. I'm _not_ using pytest xdist, so I'm confused as to why this would happen. Indeed when I add a fixture like this:\n```@pytest.fixture(autouse=True)\ndef log_test_start():\n    logger = get_logger('Fixtures')\n    <http://logger.info|logger.info>('******** TEST START ********')\n    yield\n    <http://logger.info|logger.info>('******** TEST END ********')\n```\nI see log messages like:\n```2018-02-06 10:15:53,005 - Fixtures - INFO - log_test_start - ******** TEST START ********\n2018-02-06 10:15:53,005 - Fixtures - INFO - log_test_start - ******** TEST START ********\n2018-02-06 10:15:53,005 - Fixtures - INFO - log_test_start - ******** TEST START ********\n2018-02-06 10:15:53,021 - Fixtures - INFO - log_test_start - ******** TEST END ********\n2018-02-06 10:15:53,021 - Fixtures - INFO - log_test_start - ******** TEST END ********\n2018-02-06 10:15:53,021 - Fixtures - INFO - log_test_start - ******** TEST END ********\n```\nWhy aren't they executing in sequence? Am I misunderstanding something about how pytest is supposed to work, or did I do something funky with my setup elsewhere?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1393,7 +1438,7 @@
     "modified": "2018-02-08T16:12:51.040Z",
     "title": "How to pass query of results from flask-sql-alchemy ",
     "description": "I have a query in flask sql alchemy, that has a set of results from the model, when I try to pass this to a form it does not work as it is a query and not and object, is there a way around this?\n:sos:",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1411,7 +1456,7 @@
     "modified": "2018-02-08T16:12:51.264Z",
     "title": "IDLE giving me a syntax error for no reason...",
     "description": "My print statements from lines 18 to 22 are giving me a syntax error for no reason. Code in #session-59",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1428,7 +1473,7 @@
     "modified": "2018-02-08T16:12:51.860Z",
     "title": "How can I run my python 3.6 program with its own GUI as opposed to the command line?",
     "description": "I have a program that runs fine in the command line but how could I make it run with its own GUI or window instead of the command line?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1444,7 +1489,7 @@
     "modified": "2018-02-08T16:12:53.982Z",
     "title": "General python coding advice, refacto",
     "description": "I wrote a small lib that sends request to github api and I use it in my flask app. I'd like to share my code with you to get some advice in order to improve my python skills. I know this is very general but any good refacto advice is welcome. \nThere are actually two things I m wondering about :thinking_face:. Should I wrap this code into a class or a module ? Right now Im just importing all methods from the file.\nSecond do you think the way im dealing with exceptions is fine or should I do it differently, creating a precise exception child class ? Thanks for all advices",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1460,7 +1505,7 @@
     "modified": "2018-02-08T16:12:54.872Z",
     "title": "How to create dynamic form composite in flask-wtforms",
     "description": "I have a list of results from a db that I want to loop through in my wtforms, each of them has their own id that are unique, so I will have one save button that posts all unique data that has had its checkbox checked. I read this; <https://wtforms.readthedocs.io/en/1.0.4/specific_problems.html#dynamic-form-composition>. But cannot seem to understand how to use it?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1475,10 +1520,10 @@
   "pk": 50,
   "fields": {
     "created": "2018-02-08T16:12:57.684Z",
-    "modified": "2018-02-08T16:12:57.685Z",
-    "title": "Modified Bland Altman Plot. ",
+    "modified": "2018-02-26T16:49:41.789Z",
+    "title": "Modified Bland Altman Plot.",
     "description": "The Plot I'm trying to create compares two diagnostic sensors (in this example, glucose sensors). The x axis shows the gold standard/reference sensor values plotted against the absolute errors for each corresponding value. I'll attach a code snippet and an image of the plot produces. I need to add some annotations and an additional trace, which is what I need help with",
-    "is_anonymous": false,
+    "is_private": false,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1497,7 +1542,7 @@
     "modified": "2018-02-08T16:12:58.762Z",
     "title": "Recursively create dict from object",
     "description": "`vars(my_obj)` (the cleaner form of `my_obj.__dict__``) is close, but trying to find a clean way to do nested objects, maybe not working this correctly as I'm finding little help on google",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1513,7 +1558,7 @@
     "modified": "2018-02-08T16:12:59.329Z",
     "title": "Launching subprocesses in parallel in python script without blocking execution of the script",
     "description": ": I am writting a test method for my flask app in which I need to 1) launch my flask app 2) expose it publicly with ngrok.\nThus I need to launch two processes from my test script :\n```python app.py```\n==&gt; launching my flask app\n```ngrok http 5000```\n==&gt; listening to port 5000 (on which the Flask app is running and exposing public Url\nin the case of the ngrok process I also need to get the output of the ngrok command in order to get the url on which I am publicly exposing the flask app.\nI need this to process to run in parallel and not to block the execution of my script.\nI am really unsure about how to do this. I was thinking about running background processes ? I went through <https://docs.python.org/2/library/subprocess.html>, but I cant figure much out of the docs. So far I have only be able to launch a process from my script but it\u2019s blocking the rest of my script.\nI will also need to kill the processes at the end of my script.\nCould someone please help and maybe give me an exampel as how they would achieve this ?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
@@ -1530,13 +1575,63 @@
     "modified": "2018-02-08T16:13:00.321Z",
     "title": "JavaScript single request to two different ports",
     "description": "I'm testing a script where one function makes an http request and is then called in another function.\nThe first function is:\n```export function getFeedData (sub) {\n    if (getFeedId(sub) === 2) {\n        return axios.get('<http://localhost:4000>').then((data) =&gt; \nJSON.parse(data));\n    }\n}```\nAnd the second is:\n```export function isDelay (sub, stop) {\n    return getFeedData(sub).then((data) =&gt; {\n        return data.entity.filter((entityObj) =&gt; {\n            return entityObj.stop_time_update !== undefined;\n        });\n    }).then((newData) =&gt;  {\n        console.log(newData);\n    }).catch((err) =&gt; {\n        console.log(err);\n    });\n}```\nThe reason they're two different functions is that the second will eventually be longer, and I wanted to separate everything out for the sake of simplicity and making my code a bit more declarative.\nThe tests for these functions currently look like this:\n```import express from 'express';\nimport { getFeedId, getFeedData, reverseStop, isDelay } from \n'../mocks/apiMock';\n\nconst app = express();\napp.use(express.static('../mocks/MockData.json'));\n\nit('returns json data', (done) =&gt; {\n    app.listen(4000, function () {\n        expect.assertions(2);\n        return getFeedData('L').then((data) =&gt; {\n            expect(data).toBeDefined();\n            expect(data.header.gtfs_realtime_version).toBe('1.0');\n        });\n    });\n    done();\n});\n\nit('returns either the delay or time until the next train' , (done) \n=&gt; {\n    app.listen(4000, function () {\n        isDelay('L', 'Lorimer St');\n    });\n    done();\n});```\nThat second test doesn't run because it's trying to listen on a port that's already occupied.\nThe solution I had in mind would be to pass `app.listen()` `0` as its first parameter so it listens on a random port. However, I don't know how I could get my axios request to request that specific port. Is there a way to do this? Or perhaps a better solution to my problem?",
-    "is_anonymous": false,
+    "is_private": true,
     "original_poster": 57,
     "group": 1,
     "tags": [
       14,
       67,
       68
+    ]
+  }
+},
+{
+  "model": "topics.topic",
+  "pk": 54,
+  "fields": {
+    "created": "2018-03-02T15:54:54.260Z",
+    "modified": "2018-03-02T15:54:54.261Z",
+    "title": "Topic With Poor Messages",
+    "description": "I'm going to put a bunch of weirdly formatted messages in there!!!",
+    "is_private": true,
+    "original_poster": 149,
+    "group": 3,
+    "tags": [
+      69,
+      70,
+      71
+    ]
+  }
+},
+{
+  "model": "topics.topic",
+  "pk": 55,
+  "fields": {
+    "created": "2018-03-02T16:55:27.492Z",
+    "modified": "2018-03-02T16:55:27.493Z",
+    "title": "Testing",
+    "description": "123",
+    "is_private": true,
+    "original_poster": 149,
+    "group": 3,
+    "tags": [
+      72
+    ]
+  }
+},
+{
+  "model": "topics.topic",
+  "pk": 56,
+  "fields": {
+    "created": "2018-03-02T18:00:07.303Z",
+    "modified": "2018-03-02T18:00:07.304Z",
+    "title": "blah",
+    "description": "blah",
+    "is_private": true,
+    "original_poster": 149,
+    "group": 3,
+    "tags": [
+      73
     ]
   }
 },
@@ -1564,10 +1659,10 @@
     "status": "OPEN",
     "topic": 2,
     "participants": [
+      152,
       57,
-      63,
       149,
-      152
+      63
     ]
   }
 },
@@ -1582,10 +1677,10 @@
     "status": "OPEN",
     "topic": 3,
     "participants": [
+      152,
       57,
-      63,
       149,
-      152
+      63
     ]
   }
 },
@@ -1600,10 +1695,10 @@
     "status": "OPEN",
     "topic": 4,
     "participants": [
+      152,
       57,
-      63,
       149,
-      152
+      63
     ]
   }
 },
@@ -1618,8 +1713,8 @@
     "status": "OPEN",
     "topic": 5,
     "participants": [
-      57,
       104,
+      57,
       112
     ]
   }
@@ -1635,9 +1730,9 @@
     "status": "OPEN",
     "topic": 6,
     "participants": [
-      36,
+      104,
       57,
-      104
+      36
     ]
   }
 },
@@ -1667,10 +1762,10 @@
     "status": "OPEN",
     "topic": 8,
     "participants": [
-      57,
-      63,
       104,
-      149
+      57,
+      149,
+      63
     ]
   }
 },
@@ -1686,8 +1781,8 @@
     "topic": 9,
     "participants": [
       57,
-      63,
-      137
+      137,
+      63
     ]
   }
 },
@@ -1718,11 +1813,11 @@
     "status": "OPEN",
     "topic": 11,
     "participants": [
-      6,
       38,
+      6,
+      137,
       57,
-      63,
-      137
+      63
     ]
   }
 },
@@ -1753,10 +1848,10 @@
     "status": "OPEN",
     "topic": 13,
     "participants": [
-      57,
-      63,
       104,
-      149
+      57,
+      149,
+      63
     ]
   }
 },
@@ -1787,10 +1882,10 @@
     "status": "OPEN",
     "topic": 15,
     "participants": [
-      6,
       57,
-      63,
-      137
+      137,
+      6,
+      63
     ]
   }
 },
@@ -1805,8 +1900,8 @@
     "status": "OPEN",
     "topic": 16,
     "participants": [
-      57,
       104,
+      57,
       137,
       149
     ]
@@ -1855,9 +1950,9 @@
     "status": "OPEN",
     "topic": 19,
     "participants": [
-      36,
       57,
-      137
+      137,
+      36
     ]
   }
 },
@@ -1872,9 +1967,9 @@
     "status": "OPEN",
     "topic": 20,
     "participants": [
-      6,
       57,
-      137
+      137,
+      6
     ]
   }
 },
@@ -1889,10 +1984,10 @@
     "status": "OPEN",
     "topic": 21,
     "participants": [
-      4,
       57,
-      63,
-      137
+      137,
+      4,
+      63
     ]
   }
 },
@@ -1922,9 +2017,9 @@
     "status": "OPEN",
     "topic": 23,
     "participants": [
-      4,
       57,
-      137
+      137,
+      4
     ]
   }
 },
@@ -1939,10 +2034,10 @@
     "status": "OPEN",
     "topic": 24,
     "participants": [
-      6,
       57,
-      63,
-      149
+      149,
+      6,
+      63
     ]
   }
 },
@@ -1957,10 +2052,10 @@
     "status": "OPEN",
     "topic": 25,
     "participants": [
-      4,
       57,
-      63,
-      149
+      4,
+      149,
+      63
     ]
   }
 },
@@ -1975,8 +2070,8 @@
     "status": "OPEN",
     "topic": 26,
     "participants": [
-      4,
       57,
+      4,
       149
     ]
   }
@@ -2009,9 +2104,9 @@
     "status": "OPEN",
     "topic": 28,
     "participants": [
-      6,
       57,
-      137
+      137,
+      6
     ]
   }
 },
@@ -2027,9 +2122,9 @@
     "topic": 29,
     "participants": [
       57,
-      63,
       116,
-      149
+      149,
+      63
     ]
   }
 },
@@ -2044,9 +2139,9 @@
     "status": "OPEN",
     "topic": 30,
     "participants": [
-      42,
+      104,
       57,
-      104
+      42
     ]
   }
 },
@@ -2061,10 +2156,10 @@
     "status": "OPEN",
     "topic": 31,
     "participants": [
-      4,
       57,
-      63,
-      149
+      4,
+      149,
+      63
     ]
   }
 },
@@ -2079,8 +2174,8 @@
     "status": "OPEN",
     "topic": 32,
     "participants": [
-      57,
       104,
+      57,
       116,
       149
     ]
@@ -2098,10 +2193,10 @@
     "topic": 33,
     "participants": [
       4,
-      57,
-      63,
       104,
-      137
+      137,
+      57,
+      63
     ]
   }
 },
@@ -2117,9 +2212,9 @@
     "topic": 34,
     "participants": [
       57,
-      63,
       66,
-      137
+      137,
+      63
     ]
   }
 },
@@ -2134,8 +2229,8 @@
     "status": "OPEN",
     "topic": 35,
     "participants": [
-      57,
       72,
+      57,
       149
     ]
   }
@@ -2151,11 +2246,11 @@
     "status": "OPEN",
     "topic": 36,
     "participants": [
-      57,
-      63,
-      79,
       104,
-      137
+      137,
+      79,
+      57,
+      63
     ]
   }
 },
@@ -2170,11 +2265,11 @@
     "status": "OPEN",
     "topic": 37,
     "participants": [
-      57,
-      63,
-      104,
       133,
-      137
+      104,
+      137,
+      57,
+      63
     ]
   }
 },
@@ -2210,8 +2305,8 @@
     "topic": 39,
     "participants": [
       16,
-      32,
       57,
+      32,
       137
     ]
   }
@@ -2227,11 +2322,11 @@
     "status": "OPEN",
     "topic": 40,
     "participants": [
-      57,
-      63,
-      116,
       137,
-      149
+      116,
+      149,
+      57,
+      63
     ]
   }
 },
@@ -2246,10 +2341,10 @@
     "status": "OPEN",
     "topic": 41,
     "participants": [
-      36,
       57,
-      63,
-      149
+      36,
+      149,
+      63
     ]
   }
 },
@@ -2265,10 +2360,10 @@
     "topic": 42,
     "participants": [
       4,
-      57,
-      63,
       137,
-      149
+      149,
+      57,
+      63
     ]
   }
 },
@@ -2283,8 +2378,8 @@
     "status": "OPEN",
     "topic": 43,
     "participants": [
-      42,
       57,
+      42,
       149
     ]
   }
@@ -2318,9 +2413,9 @@
     "topic": 45,
     "participants": [
       57,
-      63,
       137,
-      149
+      149,
+      63
     ]
   }
 },
@@ -2335,10 +2430,10 @@
     "status": "OPEN",
     "topic": 46,
     "participants": [
-      42,
       57,
-      63,
-      149
+      42,
+      149,
+      63
     ]
   }
 },
@@ -2353,9 +2448,9 @@
     "status": "OPEN",
     "topic": 47,
     "participants": [
-      42,
-      57,
       104,
+      57,
+      42,
       137
     ]
   }
@@ -2371,9 +2466,9 @@
     "status": "OPEN",
     "topic": 48,
     "participants": [
-      36,
       57,
-      137
+      137,
+      36
     ]
   }
 },
@@ -2388,10 +2483,10 @@
     "status": "OPEN",
     "topic": 49,
     "participants": [
-      57,
-      63,
       89,
-      149
+      57,
+      149,
+      63
     ]
   }
 },
@@ -2400,15 +2495,15 @@
   "pk": 50,
   "fields": {
     "created": "2018-02-08T16:12:57.824Z",
-    "modified": "2018-02-08T16:12:57.825Z",
+    "modified": "2018-02-15T00:40:17.570Z",
     "time_start": "2018-02-07T18:32:47Z",
     "time_end": "2018-02-08T01:42:44Z",
-    "status": "OPEN",
+    "status": "STALE",
     "topic": 50,
     "participants": [
-      4,
       57,
-      137
+      137,
+      4
     ]
   }
 },
@@ -2439,8 +2534,8 @@
     "status": "OPEN",
     "topic": 52,
     "participants": [
-      57,
       104,
+      57,
       137
     ]
   }
@@ -2450,16 +2545,62 @@
   "pk": 53,
   "fields": {
     "created": "2018-02-08T16:13:00.400Z",
-    "modified": "2018-02-08T16:13:00.402Z",
+    "modified": "2018-02-15T00:39:48.298Z",
     "time_start": "2017-12-15T22:06:16Z",
-    "time_end": "2017-12-15T22:43:27Z",
-    "status": "OPEN",
+    "time_end": "2018-02-15T00:39:48.297Z",
+    "status": "CLOSED",
     "topic": 53,
     "participants": [
       24,
       57,
-      63,
-      137
+      137,
+      63
+    ]
+  }
+},
+{
+  "model": "topics.discussion",
+  "pk": 54,
+  "fields": {
+    "created": "2018-03-02T15:54:54.791Z",
+    "modified": "2018-03-02T16:55:13.649Z",
+    "time_start": "2018-03-02T15:54:54.791Z",
+    "time_end": "2018-03-02T16:55:13.648Z",
+    "status": "CLOSED",
+    "topic": 54,
+    "participants": [
+      156,
+      149
+    ]
+  }
+},
+{
+  "model": "topics.discussion",
+  "pk": 55,
+  "fields": {
+    "created": "2018-03-02T16:55:27.926Z",
+    "modified": "2018-03-02T16:55:27.927Z",
+    "time_start": "2018-03-02T16:55:27.926Z",
+    "time_end": null,
+    "status": "OPEN",
+    "topic": 55,
+    "participants": [
+      156
+    ]
+  }
+},
+{
+  "model": "topics.discussion",
+  "pk": 56,
+  "fields": {
+    "created": "2018-03-02T18:00:07.736Z",
+    "modified": "2018-03-02T18:00:07.736Z",
+    "time_start": "2018-03-02T18:00:07.736Z",
+    "time_end": null,
+    "status": "OPEN",
+    "topic": 56,
+    "participants": [
+      156
     ]
   }
 }

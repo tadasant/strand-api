@@ -6,7 +6,7 @@ from app.users.models import User
 
 class Group(TimeStampedModel):
     name = models.CharField(max_length=255, unique=True)
-    members = models.ManyToManyField(to=User)
+    members = models.ManyToManyField(to=User, related_name='strand_groups')
 
     def __str__(self):
         return self.name

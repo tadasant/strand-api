@@ -22,8 +22,7 @@ class TestCreateMessage:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_closed_discussion(self, auth_client, discussion_factory,
-                               user_factory, message_factory):
+    def test_closed_discussion(self, auth_client, discussion_factory, user_factory, message_factory):
         discussion = discussion_factory(topic__is_private=False, status='CLOSED')
         user = user_factory()
         message = message_factory.build(discussion=discussion, author=user)
@@ -49,8 +48,7 @@ class TestCreateMessage:
         assert response.json()['data']['createMessage']['message']['text'] == message.text
 
     @pytest.mark.django_db()
-    def test_marks_discussion_as_open(self, auth_client, discussion_factory,
-                                      user_factory, message_factory):
+    def test_marks_discussion_as_open(self, auth_client, discussion_factory, user_factory, message_factory):
         discussion = discussion_factory(topic__is_private=False)
         user = user_factory(is_bot=False)
         message_factory(time=datetime.now(tz=pytz.UTC) - timedelta(minutes=31), discussion=discussion)

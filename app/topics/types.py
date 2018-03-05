@@ -1,8 +1,9 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from app.topics.models import Topic, Discussion, Tag
 from app.api.authorization import check_topic_authorization
+from app.topics.models import Topic, Discussion, Tag
+from app.users.types import UserInputType
 
 
 class TopicType(DjangoObjectType):
@@ -112,3 +113,15 @@ class MarkDiscussionAsPendingClosedInputType(graphene.InputObjectType):
 
 class CloseDiscussionInputType(graphene.InputObjectType):
     id = graphene.Int()
+
+
+class UserAndTopicInputType(graphene.InputObjectType):
+    class CustomTopicInputType(graphene.InputObjectType):
+        title = graphene.String(required=True)
+        description = graphene.String(required=True)
+        is_private = graphene.Boolean()
+        group_id = graphene.Int()
+        tags = graphene.List(TagInputType)
+
+    user = graphene.Field(UserInputType, required=True)
+    topic = graphene.Field(CustomTopicInputType, required=True)

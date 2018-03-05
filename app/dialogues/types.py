@@ -1,8 +1,9 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from app.dialogues.models import Message, Reply
 from app.api.authorization import check_topic_authorization
+from app.dialogues.models import Message, Reply
+from app.users.types import UserInputType
 
 
 class MessageType(DjangoObjectType):
@@ -71,3 +72,23 @@ class ReplyInputType(graphene.InputObjectType):
     message_id = graphene.Int(required=True)
     author_id = graphene.Int(required=True)
     time = graphene.String(required=True)
+
+
+class UserAndMessageInputType(graphene.InputObjectType):
+    class CustomMessageInputType(graphene.InputObjectType):
+        text = graphene.String(required=True)
+        discussion_id = graphene.Int(required=True)
+        time = graphene.String(required=True)
+
+    user = graphene.Field(UserInputType, required=True)
+    message = graphene.Field(CustomMessageInputType, required=True)
+
+
+class UserAndReplyInputType(graphene.InputObjectType):
+    class CustomReplyInputType(graphene.InputObjectType):
+        text = graphene.String(required=True)
+        message_id = graphene.Int(required=True)
+        time = graphene.String(required=True)
+
+    user = graphene.Field(UserInputType, required=True)
+    reply = graphene.Field(CustomReplyInputType, required=True)

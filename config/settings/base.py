@@ -24,7 +24,7 @@ else:
     from config.settings.local import *
 
 # Release version
-VERSION = '0.1.1'
+VERSION = '0.1.2'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_fsm',
     'fsm_admin',
     'corsheaders',
+    'waffle',
     'storages',
     'app.users',
     'app.groups',
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'waffle.middleware.WaffleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -158,3 +160,6 @@ if os.environ.get('RAVEN_DSN'):
         'dsn': os.environ['RAVEN_DSN'],
         'release': VERSION
     }
+
+# http://waffle.readthedocs.io/en/latest/starting/configuring.html
+WAFFLE_SWITCH_DEFAULT = False

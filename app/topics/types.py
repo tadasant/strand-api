@@ -1,14 +1,15 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from app.topics.models import Topic, Discussion, Tag
 from app.api.authorization import check_topic_authorization
+from app.topics.models import Topic, Discussion, Tag
+from app.users.types import UserInputType
 
 
 class TopicType(DjangoObjectType):
     class Meta:
         model = Topic
-        only_fields = ('id', 'title', 'description', 'is_private', 'original_poster', 'group', 'tags',)
+        only_fields = ('id', 'title', 'description', 'is_private', 'original_poster', 'group', 'tags', 'discussion',)
 
     # TODO: Move to object-level permissions
     @check_topic_authorization
@@ -38,6 +39,10 @@ class TopicType(DjangoObjectType):
     @check_topic_authorization
     def resolve_tags(self, info):
         return self.tags
+
+    @check_topic_authorization
+    def resolve_discussion(self, info):
+        return self.discussion
 
 
 class DiscussionType(DjangoObjectType):
@@ -108,3 +113,15 @@ class MarkDiscussionAsPendingClosedInputType(graphene.InputObjectType):
 
 class CloseDiscussionInputType(graphene.InputObjectType):
     id = graphene.Int()
+
+
+class UserAndTopicInputType(graphene.InputObjectType):
+    class CustomTopicInputType(graphene.InputObjectType):
+        title = graphene.String(required=True)
+        description = graphene.String(required=True)
+        is_private = graphene.Boolean()
+        group_id = graphene.Int()
+        tags = graphene.List(TagInputType)
+
+    user = graphene.Field(UserInputType, required=True)
+    topic = graphene.Field(CustomTopicInputType, required=True)

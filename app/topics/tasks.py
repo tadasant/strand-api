@@ -2,7 +2,7 @@ from django.conf import settings
 
 from app.api.celery import celery_app
 from app.topics.models import Discussion, DiscussionStatus
-from app.slack_integration.wrappers import SlackAppClientWrapper
+from app.api.wrappers import SlackAppClientWrapper
 
 
 @celery_app.task

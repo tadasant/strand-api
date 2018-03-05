@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 
 import pytest
 
+from tests.resources.MutationGenerator import MutationGenerator
+
 
 class TestCreateMessage:
 
@@ -12,19 +14,10 @@ class TestCreateMessage:
         user = user_factory()
         message = message_factory.build(discussion=discussion, author=user)
 
-        mutation = f'''
-          mutation {{
-            createMessage(input: {{text: "{message.text}", discussionId: {discussion.id}, authorId: {message.author.id},
-                                   time: "{message.time}"}}) {{
-              message {{
-                time
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_message(message.text, discussion.id, user.id, message.time)
         response = client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createMessage'] is None
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
@@ -34,19 +27,10 @@ class TestCreateMessage:
         user = user_factory()
         message = message_factory.build(discussion=discussion, author=user)
 
-        mutation = f'''
-          mutation {{
-            createMessage(input: {{text: "{message.text}", discussionId: {message.discussion.id},
-                                   authorId: {message.author.id}, time: "{message.time}"}}) {{
-              message {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_message(message.text, discussion.id, user.id, message.time)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createMessage'] is None
         assert response.json()['errors'][0]['message'] == "{'non_field_errors': ['Cannot create message in closed " \
                                                           "discussion']}"
@@ -57,19 +41,10 @@ class TestCreateMessage:
         user = user_factory()
         message = message_factory.build(discussion=discussion, author=user)
 
-        mutation = f'''
-          mutation {{
-            createMessage(input: {{text: "{message.text}", discussionId: {discussion.id}, authorId: {message.author.id},
-                                   time: "{message.time}"}}) {{
-              message {{
-                text
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_message(message.text, discussion.id, user.id, message.time)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createMessage']['message']['text'] == message.text
 
     @pytest.mark.django_db()
@@ -82,21 +57,9 @@ class TestCreateMessage:
 
         message = message_factory.build(discussion=discussion, author=user)
 
-        mutation = f'''
-          mutation {{
-            createMessage(input: {{text: "{message.text}", discussionId: {message.discussion.id},
-                                   authorId: {message.author.id}, time: "{message.time}"}}) {{
-              message {{
-                text
-                discussion {{
-                  status
-                }}
-              }}
-            }}
-          }}
-        '''
+        mutation = MutationGenerator.create_message(message.text, discussion.id, user.id, message.time)
         response = auth_client.post('/graphql', {'query': mutation})
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.content
         assert response.json()['data']['createMessage']['message']['text'] == message.text
         assert response.json()['data']['createMessage']['message']['discussion']['status'] == 'OPEN'

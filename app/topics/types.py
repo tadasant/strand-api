@@ -48,7 +48,7 @@ class TopicType(DjangoObjectType):
 class DiscussionType(DjangoObjectType):
     class Meta:
         model = Discussion
-        only_fields = ('id', 'time_start', 'time_end', 'status', 'topic', 'participants',)
+        only_fields = ('id', 'time_start', 'time_end', 'status', 'topic', 'participants', 'messages')
 
     # TODO: Move to object-level permissions
     @check_topic_authorization
@@ -74,6 +74,10 @@ class DiscussionType(DjangoObjectType):
     @check_topic_authorization
     def resolve_participants(self, info):
         return self.participants
+
+    @check_topic_authorization
+    def resolve_messages(self, info):
+        return self.messages
 
 
 class TagType(DjangoObjectType):

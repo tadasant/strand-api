@@ -22,6 +22,72 @@ class GroupsQueryGenerator:
         return query
 
 
+class StrandsQueryGenerator:
+    @staticmethod
+    def get_strand(strand_id):
+        query = f'''
+          query {{
+            strand(id: {strand_id}) {{
+              title
+              body
+              originalPoster {{
+                email
+              }}
+              owner {{
+                name
+              }}
+              tags {{
+                name
+              }}
+            }}
+          }}
+        '''
+        return query
+
+    @staticmethod
+    def get_strands():
+        query = '''
+          query {
+            strands {
+              title
+              body
+              originalPoster {
+                email
+              }
+              owner {
+                name
+              }
+              tags {
+                name
+              }
+            }
+          }
+        '''
+        return query
+
+    @staticmethod
+    def get_tag(tag_name):
+        query = f'''
+          query {{
+            tag(name: "{tag_name}") {{
+              name
+            }}
+          }}
+        '''
+        return query
+
+    @staticmethod
+    def get_tags():
+        query = '''
+          query {
+            tags {
+              name
+            }
+          }
+        '''
+        return query
+
+
 class UsersQueryGenerator:
     @staticmethod
     def get_user(user_id):
@@ -58,5 +124,6 @@ class UsersQueryGenerator:
 
 
 class QueryGenerator(GroupsQueryGenerator,
+                     StrandsQueryGenerator,
                      UsersQueryGenerator):
     pass

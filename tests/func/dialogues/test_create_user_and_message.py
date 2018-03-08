@@ -15,8 +15,6 @@ class TestCreateUserAndMessage:
                                                              username=user.username,
                                                              first_name=user.first_name,
                                                              last_name=user.last_name,
-                                                             avatar_url=user.avatar_url,
-                                                             is_bot=str(user.is_bot).lower(),
                                                              groups=[],
                                                              text=message.text,
                                                              discussion_id=discussion.id,
@@ -37,8 +35,6 @@ class TestCreateUserAndMessage:
                                                              username=user.username,
                                                              first_name=user.first_name,
                                                              last_name=user.last_name,
-                                                             avatar_url=user.avatar_url,
-                                                             is_bot=str(user.is_bot).lower(),
                                                              groups=[],
                                                              text=message.text,
                                                              discussion_id=discussion.id + 1,
@@ -60,8 +56,6 @@ class TestCreateUserAndMessage:
                                                              username=user.username,
                                                              first_name=user.first_name,
                                                              last_name=user.last_name,
-                                                             avatar_url=user.avatar_url,
-                                                             is_bot=str(user.is_bot).lower(),
                                                              groups=[],
                                                              text=message.text,
                                                              discussion_id=discussion.id,
@@ -83,8 +77,6 @@ class TestCreateUserAndMessage:
                                                              username=user.username,
                                                              first_name=user.first_name,
                                                              last_name=user.last_name,
-                                                             avatar_url=user.avatar_url,
-                                                             is_bot=str(user.is_bot).lower(),
                                                              groups=[],
                                                              text=message.text,
                                                              discussion_id=discussion.id,
@@ -92,5 +84,5 @@ class TestCreateUserAndMessage:
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200, response.content
-        assert response.json()['data']['createUserAndMessage']['user']['alias']
+        assert response.json()['data']['createUserAndMessage']['user']['id']
         assert response.json()['data']['createUserAndMessage']['message']['text'] == message.text

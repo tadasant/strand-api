@@ -24,4 +24,4 @@ class TestCreateUser:
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200, response.content
-        assert response.json()['data']['createUser']['user']['alias']
+        assert response.json()['data']['createUser']['user']['id']

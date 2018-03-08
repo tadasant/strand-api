@@ -11,13 +11,11 @@ class UserType(DjangoObjectType):
 
     class Meta:
         model = User
-        only_fields = ('id', 'alias', 'slack_users',
-                       'messages', 'replies', 'topics',
-                       'groups')
+        only_fields = ('id', 'email', 'messages', 'replies', 'topics', 'groups')
 
     @check_authorization
-    def resolve_slack_users(self, info):
-        return self.slack_users
+    def resolve_email(self, info):
+        return self.email
 
     def resolve_groups(self, info):
         return self.strand_groups.all()
@@ -28,6 +26,4 @@ class UserInputType(graphene.InputObjectType):
     username = graphene.String(required=True)
     first_name = graphene.String()
     last_name = graphene.String()
-    avatar_url = graphene.String()
-    is_bot = graphene.Boolean()
     group_ids = graphene.List(graphene.Int)

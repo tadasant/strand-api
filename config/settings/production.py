@@ -33,13 +33,6 @@ CSRF_COOKIE_SECURE = True
 # Slack credentials
 SLACK_CLIENT_SECRET = os.environ['SLACK_CLIENT_SECRET']
 
-# Celery
-CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
-
-# Discussion settings
-MIN_UNTIL_STALE = float(os.environ['MIN_UNTIL_STALE'])
-AUTO_CLOSE_DELAY = int(os.environ['AUTO_CLOSE_DELAY'])
-
 # Slack App Verification Token
 SLACK_APP_VERIFICATION_TOKEN = os.environ['SLACK_APP_VERIFICATION_TOKEN']
 SLACK_APP_STALE_DISCUSSION_ENDPOINT = os.environ['SLACK_APP_STALE_DISCUSSION_ENDPOINT']

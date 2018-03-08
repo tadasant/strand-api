@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'storages',
     'app.users',
     'app.groups',
+    'app.strands',
     'raven.contrib.django.raven_compat',
 ]
 

@@ -1,6 +1,5 @@
 from enum import Enum
 
-from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django_fsm import FSMField, transition
@@ -83,20 +82,12 @@ class Discussion(TimeStampedModel):
         self.mark_as_pending_closed()
         self.save()
 
-        from app.topics.tasks import auto_close_pending_closed_discussion
-        auto_close_pending_closed_discussion.apply_async(args=[self.id],
-                                                         countdown=settings.AUTO_CLOSE_DELAY)
-
-    def can_mark_as_stale(self):
-        return self.minutes_since_last_non_bot_message >= settings.MIN_UNTIL_STALE
-
     @transition(field=status, source=[DiscussionStatus.STALE.value, DiscussionStatus.PENDING_CLOSED.value],
                 target=DiscussionStatus.OPEN.value, custom={'button_name': 'Mark as Open'})
     def mark_as_open(self):
         pass
 
-    @transition(field=status, source=DiscussionStatus.OPEN.value, target=DiscussionStatus.STALE.value,
-                conditions=[can_mark_as_stale], custom={'button_name': 'Mark as Stale'})
+    @transition(field=status, source='*', target=DiscussionStatus.STALE.value, custom={'button_name': 'Mark as Stale'})
     def mark_as_stale(self):
         pass
 

@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_beat',
-    'django_celery_results',
     'graphene_django',
     'rest_framework',
     'rest_framework.authtoken',
@@ -142,16 +140,6 @@ REST_FRAMEWORK = {
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
-
-# Celery
-# http://docs.celeryproject.org/en/latest/userguide/configuration.html
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
-CELERY_ENABLE_UTC = True
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # Sentry
 # https://docs.sentry.io/clients/python/integrations/django/#setup

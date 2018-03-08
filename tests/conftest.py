@@ -7,7 +7,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 from slackclient import SlackClient
 
-from app.topics.tasks import auto_close_pending_closed_discussion
 from tests.factories import (
     GroupFactory,
     MessageFactory,
@@ -24,8 +23,6 @@ from tests.factories import (
     UserFactory
 )
 from tests.resources.TestSlackClient import TestSlackClient
-from tests.resources.test_celery_tasks import run_auto_close_pending_closed_discussion_task,\
-    run_mark_stale_discussions_task
 
 register(GroupFactory)
 register(MessageFactory)
@@ -121,29 +118,6 @@ def slack_client(mocker):
     the scope of the token.
     """
     mocker.patch.object(SlackClient, 'api_call', new=TestSlackClient.api_call)
-
-
-@pytest.fixture()
-def auto_close_pending_closed_discussion_task(mocker, transactional_db):
-    """Pytest fixture to patch async_delay using test resource
-
-    Created a test resource for the auto_close_pending_closed_discussion
-    task that executes after the intended delay without the need of
-    a Celery worker.
-    """
-    mocker.patch.object(auto_close_pending_closed_discussion, 'apply_async',
-                        new=run_auto_close_pending_closed_discussion_task)
-
-
-@pytest.fixture()
-def mark_stale_discussion_task(transactional_db):
-    """Pytest fixture to monitor for stale discussions.
-
-    This is in lieu of creating mock resources to mimick a
-    Celery Beat and Celery worker. This does a timed loop
-    10 times and executes the mark_stale_discussion task.
-    """
-    return run_mark_stale_discussions_task
 
 
 @pytest.fixture()

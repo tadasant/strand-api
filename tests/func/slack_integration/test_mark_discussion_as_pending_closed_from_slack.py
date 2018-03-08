@@ -41,7 +41,7 @@ class TestMarkDiscussionAsPendingClosedFromSlack:
                                                           "'mark_as_pending_closed'"
 
     @pytest.mark.django_db
-    @pytest.mark.usefixtures('auto_close_pending_closed_discussion_task', 'slack_app_request')
+    @pytest.mark.usefixtures('slack_app_request')
     def test_valid(self, auth_client, slack_channel_factory):
         slack_channel = slack_channel_factory(discussion__topic__is_private=False, discussion__status='STALE')
 

@@ -1,14 +1,34 @@
 import graphene
 
 from app.api.authorization import check_authorization
+from app.strands.types import (
+    StrandType,
+    StrandInputType,
+    TagType,
+    TagInputType,
+)
 
 
 class CreateStrandMutation(graphene.Mutation):
-    pass
+    class Arguments:
+        input = StrandInputType(required=True)
+
+    strand = graphene.Field(StrandType)
+
+    @check_authorization
+    def mutate(self, info, input):
+        return CreateStrandMutation(strand=None)
 
 
 class CreateTagMutation(graphene.Mutation):
-    pass
+    class Arguments:
+        input = TagInputType(required=True)
+
+    tag = graphene.Field(TagType)
+
+    @check_authorization
+    def mutate(self, info, input):
+        return CreateTagMutation(tag=None)
 
 
 class Mutation(graphene.ObjectType):

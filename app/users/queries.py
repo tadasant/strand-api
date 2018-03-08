@@ -1,4 +1,6 @@
 import graphene
+from django.db.models import Q
+from django.conf import settings
 
 from app.users.models import User
 from app.users.types import UserType
@@ -15,4 +17,5 @@ class Query(graphene.ObjectType):
         return None
 
     def resolve_users(self, info):
-        return User.objects.all()
+        # Django guardian needs an anonymous user to handle permissions
+        return User.objects.filter(~Q(email=settings.ANONYMOUS_USER_NAME)).all()

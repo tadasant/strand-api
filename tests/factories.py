@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 
 from app.groups.models import Group
 from app.users.models import User
+from app.strands.models import Strand, Tag
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -30,3 +31,20 @@ class GroupFactory(factory.DjangoModelFactory):
         if extracted:
             for member in extracted:
                 self.members.add(member)
+
+
+class TagFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Tag
+
+    name = factory.Faker('word')
+
+
+class StrandFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Strand
+
+    title = factory.Faker('sentence')
+    body = factory.Faker('sentence')
+    original_poster = factory.SubFactory(UserFactory)
+    owner = factory.SubFactory(GroupFactory)

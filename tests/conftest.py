@@ -5,10 +5,14 @@ from rest_framework.test import APIClient
 
 from tests.factories import (
     GroupFactory,
+    StrandFactory,
+    TagFactory,
     UserFactory
 )
 
 register(GroupFactory)
+register(StrandFactory)
+register(TagFactory)
 register(UserFactory)
 
 

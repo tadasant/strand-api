@@ -1,10 +1,10 @@
-class GroupsMutationGenerator:
+class TeamsMutationGenerator:
     @staticmethod
-    def create_group(group_name):
+    def create_team(team_name):
         mutation = f'''
               mutation {{
-                createGroup(input: {{name: "{group_name}"}}) {{
-                  group {{
+                createTeam(input: {{name: "{team_name}"}}) {{
+                  team {{
                     name
                   }}
                 }}
@@ -72,5 +72,5 @@ class StrandsMutationGenerator:
         return mutation
 
 
-class MutationGenerator(GroupsMutationGenerator, StrandsMutationGenerator, UsersMutationGenerator):
+class MutationGenerator(TeamsMutationGenerator, StrandsMutationGenerator, UsersMutationGenerator):
     pass

@@ -6,9 +6,9 @@ from tests.resources.MutationGenerator import MutationGenerator
 class TestCreateStrand:
 
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, strand_factory, user_factory, group_factory):
+    def test_unauthenticated(self, client, strand_factory, user_factory, team_factory):
         original_poster = user_factory()
-        owner = group_factory(members=[original_poster])
+        owner = team_factory(members=[original_poster])
         strand = strand_factory.build()
 
         mutation = MutationGenerator.create_strand(title=strand.title,
@@ -23,9 +23,9 @@ class TestCreateStrand:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_original_poster(self, auth_client, strand_factory, user_factory, group_factory):
+    def test_invalid_original_poster(self, auth_client, strand_factory, user_factory, team_factory):
         original_poster = user_factory()
-        owner = group_factory()
+        owner = team_factory()
         strand = strand_factory.build()
 
         mutation = MutationGenerator.create_strand(title=strand.title,
@@ -43,9 +43,9 @@ class TestCreateStrand:
                                                                })
 
     @pytest.mark.django_db
-    def test_invalid_owner(self, auth_client, strand_factory, user_factory, group_factory):
+    def test_invalid_owner(self, auth_client, strand_factory, user_factory, team_factory):
         original_poster = user_factory()
-        owner = group_factory()
+        owner = team_factory()
         strand = strand_factory.build()
 
         mutation = MutationGenerator.create_strand(title=strand.title,
@@ -63,9 +63,9 @@ class TestCreateStrand:
                                                                })
 
     @pytest.mark.django_db
-    def test_valid_add_existing_tags(self, auth_client, strand_factory, user_factory, group_factory, tag_factory):
+    def test_valid_add_existing_tags(self, auth_client, strand_factory, user_factory, team_factory, tag_factory):
         original_poster = user_factory()
-        owner = group_factory(members=[original_poster])
+        owner = team_factory(members=[original_poster])
         strand = strand_factory.build()
 
         mutation = MutationGenerator.create_strand(title=strand.title,
@@ -81,9 +81,9 @@ class TestCreateStrand:
         assert len(response.json()['data']['createStrand']['strand']['tags']) == 2
 
     @pytest.mark.django_db
-    def test_valid_create_new_tags(self, auth_client, strand_factory, user_factory, group_factory, tag_factory):
+    def test_valid_create_new_tags(self, auth_client, strand_factory, user_factory, team_factory, tag_factory):
         original_poster = user_factory()
-        owner = group_factory(members=[original_poster])
+        owner = team_factory(members=[original_poster])
         strand = strand_factory.build()
 
         mutation = MutationGenerator.create_strand(title=strand.title,
@@ -99,9 +99,9 @@ class TestCreateStrand:
         assert len(response.json()['data']['createStrand']['strand']['tags']) == 2
 
     @pytest.mark.django_db
-    def test_valid(self, auth_client, strand_factory, user_factory, group_factory):
+    def test_valid(self, auth_client, strand_factory, user_factory, team_factory):
         original_poster = user_factory()
-        owner = group_factory(members=[original_poster])
+        owner = team_factory(members=[original_poster])
         strand = strand_factory.build()
 
         mutation = MutationGenerator.create_strand(title=strand.title,

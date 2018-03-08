@@ -4,13 +4,13 @@ from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
 from tests.factories import (
-    GroupFactory,
+    TeamFactory,
     StrandFactory,
     TagFactory,
     UserFactory
 )
 
-register(GroupFactory)
+register(TeamFactory)
 register(StrandFactory)
 register(TagFactory)
 register(UserFactory)

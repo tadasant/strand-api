@@ -11,7 +11,7 @@ class UserType(DjangoObjectType):
 
     class Meta:
         model = User
-        only_fields = ('id', 'email', 'messages', 'replies', 'topics', 'groups')
+        only_fields = ('id', 'email', 'groups')
 
     @check_authorization
     def resolve_email(self, info):

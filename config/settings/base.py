@@ -43,14 +43,10 @@ INSTALLED_APPS = [
     'graphene_django',
     'rest_framework',
     'rest_framework.authtoken',
-    'django_fsm',
-    'fsm_admin',
     'corsheaders',
     'storages',
     'app.users',
     'app.groups',
-    'app.topics',
-    'app.dialogues',
     'raven.contrib.django.raven_compat',
 ]
 
@@ -146,6 +142,3 @@ if os.environ.get('RAVEN_DSN'):
         'dsn': os.environ['RAVEN_DSN'],
         'release': VERSION
     }
-
-# http://waffle.readthedocs.io/en/latest/starting/configuring.html
-WAFFLE_SWITCH_DEFAULT = False

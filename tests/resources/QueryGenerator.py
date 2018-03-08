@@ -1,51 +1,3 @@
-class DialoguesQueryGenerator:
-    @staticmethod
-    def get_message(message_id):
-        query = f'''
-          query {{
-            message(id: {message_id}) {{
-              text
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_messages():
-        query = '''
-          query {
-            messages {
-              text
-            }
-          }
-        '''
-        return query
-
-    @staticmethod
-    def get_reply(reply_id):
-        query = f'''
-          query {{
-            reply(id: {reply_id}) {{
-              message {{
-                text
-              }}
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_replies():
-        query = '''
-          query {
-            replies {
-              text
-            }
-          }
-        '''
-        return query
-
-
 class GroupsQueryGenerator:
     @staticmethod
     def get_group(group_name):
@@ -64,77 +16,6 @@ class GroupsQueryGenerator:
           query {
             groups {
               name
-            }
-          }
-        '''
-        return query
-
-
-class TopicsQueryGenerator:
-    @staticmethod
-    def get_discussion(discussion_id):
-        query = f'''
-          query {{
-            discussion(id: {discussion_id}) {{
-              status
-              topic {{
-                title
-              }}
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_discussions():
-        query = '''
-          query {
-            discussions {
-              id
-            }
-          }
-        '''
-        return query
-
-    @staticmethod
-    def get_tag(tag_name):
-        query = f'''
-          query {{
-            tag(name: "{tag_name}") {{
-              id
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_tags():
-        query = '''
-          query {
-            tags {
-              name
-            }
-          }
-        '''
-        return query
-
-    @staticmethod
-    def get_topic(topic_id):
-        query = f'''
-          query {{
-            topic(id: {topic_id}) {{
-              title
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_topics():
-        query = '''
-          query {
-            topics {
-              title
             }
           }
         '''
@@ -176,8 +57,6 @@ class UsersQueryGenerator:
         return query
 
 
-class QueryGenerator(DialoguesQueryGenerator,
-                     GroupsQueryGenerator,
-                     TopicsQueryGenerator,
+class QueryGenerator(GroupsQueryGenerator,
                      UsersQueryGenerator):
     pass

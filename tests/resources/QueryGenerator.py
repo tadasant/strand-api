@@ -1,9 +1,9 @@
-class GroupsQueryGenerator:
+class TeamsQueryGenerator:
     @staticmethod
-    def get_group(group_name):
+    def get_team(team_name):
         query = f'''
           query {{
-            group(name: "{group_name}") {{
+            team(name: "{team_name}") {{
               id
             }}
           }}
@@ -11,10 +11,10 @@ class GroupsQueryGenerator:
         return query
 
     @staticmethod
-    def get_groups():
+    def get_teams():
         query = '''
           query {
-            groups {
+            teams {
               name
             }
           }
@@ -123,7 +123,7 @@ class UsersQueryGenerator:
         return query
 
 
-class QueryGenerator(GroupsQueryGenerator,
+class QueryGenerator(TeamsQueryGenerator,
                      StrandsQueryGenerator,
                      UsersQueryGenerator):
     pass

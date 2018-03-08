@@ -1,7 +1,7 @@
 import factory.fuzzy
 from django.contrib.auth.hashers import make_password
 
-from app.groups.models import Group
+from app.teams.models import Team
 from app.users.models import User
 from app.strands.models import Strand, Tag
 
@@ -17,9 +17,9 @@ class UserFactory(factory.DjangoModelFactory):
     last_name = factory.Faker('last_name')
 
 
-class GroupFactory(factory.DjangoModelFactory):
+class TeamFactory(factory.DjangoModelFactory):
     class Meta:
-        model = Group
+        model = Team
 
     name = factory.Faker('company')
 
@@ -47,4 +47,4 @@ class StrandFactory(factory.DjangoModelFactory):
     title = factory.Faker('sentence')
     body = factory.Faker('sentence')
     original_poster = factory.SubFactory(UserFactory)
-    owner = factory.SubFactory(GroupFactory)
+    owner = factory.SubFactory(TeamFactory)

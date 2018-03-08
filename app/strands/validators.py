@@ -2,14 +2,14 @@
 
 from rest_framework import serializers
 
-from app.groups.models import Group
+from app.teams.models import Team
 from app.strands.models import Strand, Tag
 from app.users.models import User
 
 
 class StrandValidator(serializers.ModelSerializer):
     original_poster_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='original_poster')
-    owner_id = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all(), source='owner')
+    owner_id = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), source='owner')
     tags = serializers.ListField(required=False)
 
     class Meta:

@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'storages',
     'app.users',
-    'app.groups',
     'app.strands',
+    'app.teams',
     'raven.contrib.django.raven_compat',
 ]
 

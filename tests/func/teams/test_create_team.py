@@ -6,22 +6,22 @@ from tests.resources.MutationGenerator import MutationGenerator
 class TestCreateGroup:
 
     @pytest.mark.django_db
-    def test_unauthenticated(self, client, group_factory):
-        group = group_factory.build()
+    def test_unauthenticated(self, client, team_factory):
+        team = team_factory.build()
 
-        mutation = MutationGenerator.create_group(group.name)
+        mutation = MutationGenerator.create_team(team.name)
         response = client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200, response.content
-        assert response.json()['data']['createGroup'] is None
+        assert response.json()['data']['createTeam'] is None
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_valid(self, auth_client, group_factory):
-        group = group_factory.build()
+    def test_valid(self, auth_client, team_factory):
+        team = team_factory.build()
 
-        mutation = MutationGenerator.create_group(group.name)
+        mutation = MutationGenerator.create_team(team.name)
         response = auth_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200, response.content
-        assert response.json()['data']['createGroup']['group']['name'] == group.name
+        assert response.json()['data']['createTeam']['team']['name'] == team.name

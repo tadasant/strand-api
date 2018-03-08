@@ -2,10 +2,10 @@
 
 from rest_framework import serializers
 
-from app.groups.models import Group
+from app.teams.models import Team
 
 
-class GroupValidator(serializers.ModelSerializer):
+class TeamValidator(serializers.ModelSerializer):
     class Meta:
-        model = Group
+        model = Team
         fields = ('id', 'name')

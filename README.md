@@ -1,7 +1,5 @@
 # CodeClippy Portal
-
-[![CodeFactor](https://www.codefactor.io/repository/github/solutionloft/strand-api/badge)](https://www.codefactor.io/repository/github/solutionloft/code-clippy-portal)
-
+[![CodeFactor](https://www.codefactor.io/repository/github/strandhq/strand-api/badge)](https://www.codefactor.io/repository/github/strandhq/strand-api) [![CircleCI](https://circleci.com/gh/StrandHQ/strand-api/tree/develop.png?style=shield&circle-token=788ef88b46ecfd16d7610cbcec05d60a1fb8f725)](https://circleci.com/gh/StrandHQ/strand-api/tree/develop.svg?style=shield&circle-token=:circle-token)
 
 ## Getting Started
 
@@ -20,7 +18,7 @@ $ brew install postgres
 $ initdb -D ~/.postgres/DATABASE_NAME
 $ pg_ctl start -D ~/.postgres/DATABASE_NAME
 $ createdb DATABASE_NAME
-$ createuser --superuser --createdb --createrole --login --pwprompt --encrypted solutionloft
+$ createuser --superuser --createdb --createrole --login --pwprompt --encrypted USERNAME
 $ ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
 ```
 
@@ -33,7 +31,7 @@ and look like this:
 ```JSON
 {
   "NAME": "DATABASE_NAME",
-  "USER": "solutionloft",
+  "USER": "USERNAME",
   "PASSWORD": "PASSWORD",
   "HOST": "",
   "PORT": "5432"
@@ -87,58 +85,6 @@ When loading fixtures, keep in mind the relationships between them. Always load 
 integrity errors. As of commit `3b73a3b`, the order is *users*, *groups*, *topics*, *slack_integration*, and
 *dialogues*.
 
-## Task Management
-
-In the context of code-clippy-portal, we will have a number of tasks that need to run in the background, whether
-they are asynchronous tasks that take longer than the expected turnaround for a query or periodic tasks
-that we want to run in the background on a regular interval. To manage these tasks, we need three components: a task
-queue, the beat (which adds tasks to the queue), and workers which execute tasks from the queue.
-
-To do this, we use [Celery](http://docs.celeryproject.org/en/latest/getting-started/introduction.html#get-started),
-which since version 4 has native Django support. As the queue service, we use [Redis](https://redis.io/). We also use
-two Django extensions that increase the leverage we get from using Celery within Django. The first
-is `django-celery-results`, which provides result backends using the Django ORM. This means rather than storing
-results from jobs in Redis we can store them in Django! In Django Admin interface, the results are found under the 
-*DJANGO_CELERY_RESULTS* header. The second is `django-celery-beat` which allows us to
-construct periodic tasks and use the Django Admin interface to manage them. In the Django Admin interface, the
-tasks are found under the *PERIODIC TASKS* header. 
-
-### Configuring a local Redis instance
-
-The first step is to install Redis to your computer. There are a number of ways to do so. I found the easiest to be
-`$ brew install redis`. You can now set Redis to launch when your computer starts:
-`$ ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents`. The last step is to launch the server: 
-`$ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist`.
-
-To test that Redis has been installed, use the Redis CLI to ping the server: `$ redis-cli ping`.
-
-### Starting a Celery worker
-
-To start a Celery worker, open up another Terminal session. Using the Celery command line, you can run
-`$ celery -A app worker -l info`. The `-A` flag is for specifying an app by its name, which we've done in 
-`celery.py` within `app/api/`. If the project is properly configured, you should see the Celery logo along
-with Redis connection information that matches that in your `local.py` file.
-
-### Starting _the_ Beat
-
-To start the Celery beat, open up a third Terminal session. Using the Celery command line, you can run
-`$ celery -A app beat -l info`.
-
-### Clearing out the Queue
-
-If something goes awry, you can clear the task queue by running `$ celery -A app purge`.
-
-### Setting up Periodic Tasks
-
-We have two types of tasks at the moment. One is a periodic task, which runs every 5 minutes
-and marks discussions as stale if there has been no non-bot activity for over 30 minutes. Another is
-an asynchronous task that runs 5 minutes after a discussion has been marked as pending closed. If
-there is no new activity since it was marked as pending closed, then the task closes the discussion and
-the respective discussion.
-
-The periodic task needs to exist in the `django_celery_beat` table in order for the beat to populate
-it to the task queue every 5 minutes. To do this, we have a management command to create it if you haven't
-already done so. To execute it, run `$ python manage create_periodic_tasks`.
 
 ## Deploying to Staging
 
@@ -164,12 +110,6 @@ is started. These include `01_migrate`, which migrates the database to the same 
 
 In order to have access to the `STATIC_ROOT` directory, which we have set to be an S3 bucket, we use the instance role
 assigned to instances that run our application called `portal-elasticbeanstalk-staging-role`.
-
-To simulate production, we use an [ElasticCache](https://aws.amazon.com/elasticache/) Redis cluster. In staging, we're
-using security group rules for privacy (e.g. only allowing inbound requests from the application server). For the v 0.1,
-this is probably still completely fine. However, at some point we may want to start using encryption in-transport or
-encryption at-rest. To connect to the Redis cluster, you can use the `telnet` client from an instance in the same subnet
-with access to the cluster.
 
 ### Steps
 

@@ -13,7 +13,7 @@ class TestQueryUsers:
         response = client.post('/graphql', {'query': query})
 
         assert response.status_code == 200, response.content
-        assert not response.json()['data']['user']['slackUsers']
+        assert not response.json()['data']['user']
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
@@ -24,7 +24,7 @@ class TestQueryUsers:
         response = client.post('/graphql', {'query': query})
 
         assert response.status_code == 200, response.content
-        assert response.json()['data']['user']['alias'] == user.alias
+        assert response.json()['data']['user']['id'] == str(user.id)
 
     @pytest.mark.django_db
     def test_get_users_authorized_fields(self, auth_client, user_factory):

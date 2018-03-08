@@ -20,14 +20,6 @@ DATABASES = {
 ENABLE_GRAPHIQL = False
 CSRF_COOKIE_SECURE = False
 
-# Slack credentials
-SLACK_CLIENT_SECRET = '1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a'
-
-SLACK_APP_VERIFICATION_TOKEN = 'anoTH3rRANDoMCOmbo'
-SLACK_APP_STALE_DISCUSSION_ENDPOINT = 'http://slackapp.com/stalediscussions'
-SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT = 'http://slackapp.com/autocloseddiscussions'
-SLACK_APP_SLACK_AGENT_ENDPOINT = 'http://slackapp.com/slackagents'
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_URL = '/static/'

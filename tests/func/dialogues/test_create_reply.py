@@ -46,8 +46,8 @@ class TestCreateReply:
     @pytest.mark.django_db()
     def test_marks_discussion_as_open(self, auth_client, discussion_factory, user_factory,
                                       message_factory, reply_factory):
-        message_author = user_factory(is_bot=False)
-        reply_author = user_factory(is_bot=False)
+        message_author = user_factory()
+        reply_author = user_factory()
         discussion = discussion_factory(topic__is_private=False)
         message = message_factory(time=datetime.now(tz=pytz.UTC) - timedelta(minutes=31), discussion=discussion,
                                   author=message_author)

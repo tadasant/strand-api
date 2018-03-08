@@ -13,7 +13,6 @@ class TestCreateUserAndTopic:
 
         mutation = MutationGenerator.create_user_and_topic(email=user.email, username=user.username,
                                                            first_name=user.first_name, last_name=user.last_name,
-                                                           avatar_url=user.avatar_url, is_bot=str(user.is_bot).lower(),
                                                            groups=[group],
                                                            title=topic.title, description=topic.description,
                                                            is_private=str(topic.is_private).lower(),
@@ -32,7 +31,6 @@ class TestCreateUserAndTopic:
 
         mutation = MutationGenerator.create_user_and_topic(email=user.email, username=user.username,
                                                            first_name=user.first_name, last_name=user.last_name,
-                                                           avatar_url=user.avatar_url, is_bot=str(user.is_bot).lower(),
                                                            groups=[group],
                                                            title=topic.title, description=topic.description,
                                                            is_private=str(topic.is_private).lower(),
@@ -52,7 +50,6 @@ class TestCreateUserAndTopic:
 
         mutation = MutationGenerator.create_user_and_topic(email=user.email, username=user.username,
                                                            first_name=user.first_name, last_name=user.last_name,
-                                                           avatar_url=user.avatar_url, is_bot=str(user.is_bot).lower(),
                                                            groups=[group],
                                                            title=topic.title, description=topic.description,
                                                            is_private=str(topic.is_private).lower(),
@@ -72,7 +69,6 @@ class TestCreateUserAndTopic:
 
         mutation = MutationGenerator.create_user_and_topic(email=user.email, username=user.username,
                                                            first_name=user.first_name, last_name=user.last_name,
-                                                           avatar_url=user.avatar_url, is_bot=str(user.is_bot).lower(),
                                                            groups=[group],
                                                            title=topic.title, description=topic.description,
                                                            is_private=str(topic.is_private).lower(),

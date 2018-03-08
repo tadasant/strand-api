@@ -46,12 +46,10 @@ INSTALLED_APPS = [
     'django_fsm',
     'fsm_admin',
     'corsheaders',
-    'waffle',
     'storages',
     'app.users',
     'app.groups',
     'app.topics',
-    'app.slack_integration',
     'app.dialogues',
     'raven.contrib.django.raven_compat',
 ]

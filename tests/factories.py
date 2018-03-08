@@ -4,15 +4,6 @@ from django.contrib.auth.hashers import make_password
 
 from app.dialogues.models import Message, Reply
 from app.groups.models import Group
-from app.slack_integration.models import (
-    SlackAgent,
-    SlackAgentStatus,
-    SlackApplicationInstallation,
-    SlackChannel,
-    SlackEvent,
-    SlackUser,
-    SlackTeam
-)
 from app.topics.models import Topic, Discussion, Tag, DiscussionStatus
 from app.users.models import User
 
@@ -22,12 +13,10 @@ class UserFactory(factory.DjangoModelFactory):
         model = User
 
     email = factory.Faker('safe_email')
-    is_bot = factory.Faker('pybool')
     password = make_password('mypass123!')
     username = factory.Faker('user_name')
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')
-    alias = factory.Faker('user_name')
 
 
 class GroupFactory(factory.DjangoModelFactory):
@@ -111,70 +100,3 @@ class ReplyFactory(factory.DjangoModelFactory):
     message = factory.SubFactory(MessageFactory)
     author = factory.SubFactory(UserFactory)
     time = factory.Faker('date_time_this_decade', tzinfo=pytz.UTC)
-
-
-class SlackEventFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = SlackEvent
-
-    message = factory.SubFactory(MessageFactory)
-    ts = factory.Faker('unix_time')
-
-
-class SlackAgentFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = SlackAgent
-
-    group = factory.SubFactory(GroupFactory)
-    topic_channel_id = factory.Faker('md5')
-    status = SlackAgentStatus.INITIATED.value
-
-
-class SlackTeamFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = SlackTeam
-
-    id = factory.Faker('md5')
-    name = factory.Faker('name')
-    slack_agent = factory.SubFactory(SlackAgentFactory)
-
-
-class SlackChannelFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = SlackChannel
-
-    id = factory.Faker('md5')
-    name = factory.Faker('name')
-    slack_team = factory.SubFactory(SlackTeamFactory)
-    discussion = factory.SubFactory(DiscussionFactory)
-
-
-class SlackUserFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = SlackUser
-
-    id = factory.Faker('md5')
-    name = factory.Faker('user_name')
-    first_name = factory.Faker('first_name')
-    last_name = factory.Faker('last_name')
-    real_name = factory.LazyAttribute(lambda x: f'{x.first_name} {x.last_name}')
-    display_name = factory.Faker('user_name')
-    email = factory.Faker('safe_email')
-    image_72 = factory.Faker('image_url')
-    is_bot = factory.Faker('pybool')
-    is_admin = factory.Faker('pybool')
-
-    slack_team = factory.SubFactory(SlackTeamFactory)
-    user = factory.SubFactory(UserFactory)
-
-
-class SlackApplicationInstallationFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = SlackApplicationInstallation
-
-    slack_agent = factory.SubFactory(SlackAgentFactory)
-    access_token = factory.Faker('md5')
-    scope = factory.Faker('sentence')
-    installer = factory.SubFactory(SlackUserFactory)
-    bot_user_id = factory.Faker('md5')
-    bot_access_token = factory.Faker('md5')

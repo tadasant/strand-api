@@ -7,20 +7,13 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token
 
-from app.users.managers import CustomUserManager
-
 
 class User(AbstractUser):
     username_validator = UnicodeUsernameValidator()
     username = models.CharField(_('username'), max_length=150,
                                 help_text=_('150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
                                 validators=[username_validator])
-    email = models.EmailField(_('email address'), blank=True, null=True, unique=True)
-    avatar_url = models.CharField(max_length=255, blank=True, null=True)
-    is_bot = models.BooleanField(default=False)
-    alias = models.CharField(max_length=20, unique=True)
-
-    objects = CustomUserManager()
+    email = models.EmailField(_('email address'), unique=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

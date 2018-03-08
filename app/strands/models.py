@@ -23,5 +23,10 @@ class Strand(TimeStampedModel):
     owner = models.ForeignKey(to=Group, on_delete=models.SET_NULL, null=True, blank=True, related_name='strands')
     tags = models.ManyToManyField(to=Tag, related_name='strands')
 
+    def add_tags(self, tags):
+        for tag_to_add in tags:
+            tag, _ = Tag.objects.get_or_create(**tag_to_add)
+            self.tags.add(tag)
+
     def __str__(self):
         return self.title

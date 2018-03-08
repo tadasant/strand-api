@@ -7,6 +7,7 @@ from app.strands.types import (
     TagType,
     TagInputType,
 )
+from app.strands.validators import StrandValidator, TagValidator
 
 
 class CreateStrandMutation(graphene.Mutation):
@@ -17,7 +18,10 @@ class CreateStrandMutation(graphene.Mutation):
 
     @check_authorization
     def mutate(self, info, input):
-        return CreateStrandMutation(strand=None)
+        strand_validator = StrandValidator(data=input)
+        strand_validator.is_valid(raise_exception=True)
+        strand = strand_validator.save()
+        return CreateStrandMutation(strand=strand)
 
 
 class CreateTagMutation(graphene.Mutation):
@@ -28,7 +32,10 @@ class CreateTagMutation(graphene.Mutation):
 
     @check_authorization
     def mutate(self, info, input):
-        return CreateTagMutation(tag=None)
+        tag_validator = TagValidator(data=input)
+        tag_validator.is_valid(raise_exception=True)
+        tag = tag_validator.save()
+        return CreateTagMutation(tag=tag)
 
 
 class Mutation(graphene.ObjectType):

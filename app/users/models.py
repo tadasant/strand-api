@@ -21,6 +21,11 @@ class User(AbstractUser, GuardianUserMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+    class Meta:
+        permissions = (
+            ('view_user', 'View user'),  # add_user, change_user and delete_user are added by default
+        )
+
     def __str__(self):
         return self.email
 

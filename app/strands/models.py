@@ -16,7 +16,7 @@ class Tag(TimeStampedModel):
 class Strand(TimeStampedModel):
     title = models.CharField(max_length=255)
     body = models.TextField()
-    timestamp = models.DateTimeField(default=now())
+    timestamp = models.DateTimeField(default=now)
 
     original_poster = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, blank=True,
                                         related_name='strands')

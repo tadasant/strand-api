@@ -40,3 +40,8 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     """
     if created:
         Token.objects.create(user=instance)
+
+# TODO: Assign view permission to user
+# TODO: Assign change permission to user (pending account settings)
+# TODO: Assign delete permission to user (pending account settings)
+# TODO: Assign add permission to user (pending registration)

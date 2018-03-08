@@ -17,6 +17,9 @@ class Tag(TimeStampedModel):
     def __str__(self):
         return self.name
 
+# TODO: Assign view permission to all users
+# TODO: Assign add permission to all users
+
 
 class Strand(TimeStampedModel):
     title = models.CharField(max_length=255)
@@ -40,3 +43,8 @@ class Strand(TimeStampedModel):
         for tag_to_add in tags:
             tag, _ = Tag.objects.get_or_create(**tag_to_add)
             self.tags.add(tag)
+
+# TODO: Assign add permission to group of team
+# TODO: Assign delete permission to group of team
+# TODO: Assign change permission to group of team
+# TODO: Assign view permission to group of team

@@ -15,3 +15,7 @@ class Team(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+# TODO: Create group for team
+# TODO: Assign view permission to group
+# TODO: Add user to group when added to team

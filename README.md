@@ -1,4 +1,4 @@
-# CodeClippy Portal
+# Strand API
 [![CodeFactor](https://www.codefactor.io/repository/github/strandhq/strand-api/badge)](https://www.codefactor.io/repository/github/strandhq/strand-api) [![CircleCI](https://circleci.com/gh/StrandHQ/strand-api/tree/develop.png?style=shield&circle-token=788ef88b46ecfd16d7610cbcec05d60a1fb8f725)](https://circleci.com/gh/StrandHQ/strand-api/tree/develop.svg?style=shield&circle-token=:circle-token)
 
 ## Getting Started

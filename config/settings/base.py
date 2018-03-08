@@ -49,8 +49,6 @@ INSTALLED_APPS = [
     'storages',
     'app.users',
     'app.groups',
-    'app.topics',
-    'app.dialogues',
     'raven.contrib.django.raven_compat',
 ]
 

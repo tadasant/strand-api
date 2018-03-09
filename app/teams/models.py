@@ -52,17 +52,17 @@ def assign_permissions(sender, instance, created, **kwargs):
         assign_perm('view_team', instance.group, instance)
 
 
-@receiver(m2m_changed, sender=Team)
+@receiver(m2m_changed, sender=Team.members.through)
 def update_group(sender, instance, action, pk_set, **kwargs):
     """Update group membership based on team members"""
     members = User.objects.filter(pk__in=pk_set)
     if action == 'post_add':
         # Add new members to group
-        instance.group.user_set.add(members)
+        instance.group.user_set.add(*pk_set)
         assign_perm('view_user', instance.group, members)
     elif action == 'post_remove':
         # Remove old members from group
-        instance.group.user_set.remove(pk_set)
+        instance.group.user_set.remove(*pk_set)
         remove_perm('view_user', instance.group, members)
 
 # TODO: Receiver to delete orphans

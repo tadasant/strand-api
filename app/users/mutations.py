@@ -1,6 +1,6 @@
 import graphene
 
-from app.api.authorization import check_authorization
+from app.api.authorization import authorize
 from app.users.types import UserInputType, UserType
 from app.users.validators import UserValidator
 
@@ -11,7 +11,8 @@ class CreateUserMutation(graphene.Mutation):
 
     user = graphene.Field(UserType)
 
-    @check_authorization
+    # TODO: Move to authorization to model
+    @authorize(raise_exception=True)
     def mutate(self, info, input):
         user_validator = UserValidator(data=input)
         user_validator.is_valid(raise_exception=True)

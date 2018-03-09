@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -11,13 +12,21 @@ from app.users.models import User
 
 
 def validate_team_name(name):
-    """Public is the default group name"""
-    if name == 'public':
-        raise ValidationError(_('"public" is not a valid name.'))
+    """Prevent naming overlap with default group name.
+
+    We have a 1-1 relationship between teams and groups.
+    Each group is assigned the name of the team. Since
+    we need a default group for all users in order to
+    add permissions that everyone can access (e.g. 'view_tag'),
+    we need to reserve the name of that group to prevent
+    a unique constraint error on the user model.
+    """
+    if name == settings.DEFAULT_GROUP_NAME:
+        raise ValidationError(_(f'"{settings.DEFAULT_GROUP_NAME}" is not a valid name.'))
 
 
 class Team(TimeStampedModel):
-    name = models.CharField(max_length=80, unique=True, validators=validate_team_name)
+    name = models.CharField(max_length=80, unique=True, validators=[validate_team_name])
     members = models.ManyToManyField(to=User, related_name='teams')
     group = models.OneToOneField(to=Group, related_name='team', on_delete=models.CASCADE)
 
@@ -56,3 +65,6 @@ def update_group(sender, instance, action, pk_set, **kwargs):
         # Get group for team and remove old members from group
         group = Group.objects.get(name=instance.name)
         group.user_set.remove(pk_set)
+
+# TODO: Receiver to delete orphans
+# http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html

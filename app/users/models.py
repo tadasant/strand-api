@@ -38,9 +38,14 @@ def create_token_and_add_permissions(sender, instance=None, created=False, **kwa
         # Create token
         Token.objects.create(user=instance)
         # Add to public group
-        group = Group.objects.get(name='public')
-        group.user_set.add(instance)
+        if instance.username != settings.ANONYMOUS_USER_NAME:
+            print(instance.username, instance.email)
+            group = Group.objects.get(name=settings.DEFAULT_GROUP_NAME)
+            group.user_set.add(instance)
         # Assign permissions
         assign_perm('view_user', instance, instance)
         assign_perm('change_user', instance, instance)
         assign_perm('delete_user', instance, instance)
+
+# TODO: Receiver to delete orphans
+# http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html

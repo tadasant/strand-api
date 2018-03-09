@@ -154,3 +154,4 @@ AUTHENTICATION_BACKENDS = (
 GUARDIAN_RAISE_403 = True  # Raise PermissionDenied instead of returning HttpResponseForbidden
 ANONYMOUS_USER_NAME = 'anonymous-user+eng@trystrand.com'  # Email address for anonymous users
 GUARDIAN_MONKEY_PATCH = False  # See http://django-guardian.readthedocs.io/en/stable/userguide/custom-user-model.html
+DEFAULT_GROUP_NAME = 'public'

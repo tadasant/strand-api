@@ -1,5 +1,7 @@
+from django.conf import settings
+from django.contrib.auth.models import Group
 from django.db import models
-from django.db.models.signals import post_save, m2m_changed
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
@@ -24,13 +26,14 @@ class Tag(TimeStampedModel):
 
 @receiver(post_save, sender=Tag)
 def add_view_permissions(sender, instance, created, **kwargs):
+    """Add view_tag permissions to anonymous and authenticated users"""
     if created:
         anonymous_user = get_anonymous_user()
         assign_perm('view_tag', anonymous_user, instance)
-        # TODO: Add to default users group?
+        group = Group.objects.get(name=settings.DEFAULT_GROUP_NAME)
+        assign_perm('view_tag', group, instance)
 
 
-# TODO: Assign view permission to all users
 # TODO: Assign add permission to all users
 
 
@@ -57,7 +60,15 @@ class Strand(TimeStampedModel):
             tag, _ = Tag.objects.get_or_create(**tag_to_add)
             self.tags.add(tag)
 
-# TODO: Assign add permission to group of team
-# TODO: Assign delete permission to group of team
-# TODO: Assign change permission to group of team
-# TODO: Assign view permission to group of team
+
+@receiver(post_save, sender=Strand)
+def assign_permissions(sender, instance, created, **kwargs):
+    """Assign permissions to team group and user"""
+    if created:
+        assign_perm('view_strand', instance.owner.group, instance)
+        assign_perm('change_strand', instance.original_poster, instance)
+        assign_perm('delete_strand', instance.original_poster, instance)
+        assign_perm('view_strand', instance.original_poster, instance)
+
+# TODO: Receiver to delete orphans
+# http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html

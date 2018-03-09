@@ -28,8 +28,6 @@ class Tag(TimeStampedModel):
 def add_view_permissions(sender, instance, created, **kwargs):
     """Add view_tag permissions to anonymous and authenticated users"""
     if created:
-        anonymous_user = get_anonymous_user()
-        assign_perm('view_tag', anonymous_user, instance)
         group = Group.objects.get(name=settings.DEFAULT_GROUP_NAME)
         assign_perm('view_tag', group, instance)
 

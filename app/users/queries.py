@@ -13,9 +13,7 @@ class Query(graphene.ObjectType):
     def resolve_user(self, info, id=None):
         if id is not None:
             return User.objects.get(pk=id)
-
         return None
 
     def resolve_users(self, info):
-        # Django guardian needs an anonymous user to handle permissions
-        return User.objects.filter(~Q(email=settings.ANONYMOUS_USER_NAME)).all()
+        return User.objects.all()

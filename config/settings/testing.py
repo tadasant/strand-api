@@ -9,8 +9,8 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'solutionloft',
-        'USER': 'solutionloft',
+        'NAME': 'strand_api',
+        'USER': 'strand',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '5432'

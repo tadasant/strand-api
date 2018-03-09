@@ -49,7 +49,7 @@ def create_group(sender, instance, **kwargs):
 def assign_permissions(sender, instance, created, **kwargs):
     """Assign view_team permission to group"""
     if created:
-        assign_perm('view_team', instance.group, Team)
+        assign_perm('view_team', instance.group, instance)
 
 
 @receiver(m2m_changed, sender=Team)

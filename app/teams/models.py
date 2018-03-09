@@ -9,8 +9,9 @@ from app.users.models import User
 
 
 class Team(TimeStampedModel):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=80, unique=True)
     members = models.ManyToManyField(to=User, related_name='teams')
+    # TODO: Probably want to add a one-to-one relationship
 
     class Meta:
         permissions = (

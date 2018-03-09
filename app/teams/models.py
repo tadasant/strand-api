@@ -24,17 +24,23 @@ class Team(TimeStampedModel):
 @receiver(post_save, sender=Team)
 def create_group(sender, instance, created, **kwargs):
     if created:
+        # Create permissions group for team
         group = Group.objects.create(name=Team.name)
+        # Assign view_team permission to group
         assign_perm('view_team', group, Team)
 
 
 @receiver(m2m_changed, sender=Team)
 def update_group_membership(sender, instance, action, pk_set, **kwargs):
     if action == 'post_add':
+        # Get group for team
         group = Group.objects.get(name=instance.name)
-        group.user_set.remove(pk_set)
-    elif action == 'post_remove':
-        group = Group.objects.get(name=instance.name)
+        # Add new users to group
         group.user_set.add(pk_set)
+    elif action == 'post_remove':
+        # Get group for team
+        group = Group.objects.get(name=instance.name)
+        # Remove old users from group
+        group.user_set.remove(pk_set)
     else:
         pass

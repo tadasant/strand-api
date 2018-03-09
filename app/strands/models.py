@@ -1,5 +1,9 @@
 from django.db import models
+from django.db.models.signals import post_save, m2m_changed
+from django.dispatch import receiver
 from django.utils.timezone import now
+from guardian.shortcuts import assign_perm
+from guardian.utils import get_anonymous_user
 from model_utils.models import TimeStampedModel
 
 from app.teams.models import Team
@@ -16,6 +20,15 @@ class Tag(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+
+@receiver(post_save, sender=Tag)
+def add_view_permissions(sender, instance, created, **kwargs):
+    if created:
+        anonymous_user = get_anonymous_user()
+        assign_perm('view_tag', anonymous_user, instance)
+        # TODO: Add to default users group?
+
 
 # TODO: Assign view permission to all users
 # TODO: Assign add permission to all users

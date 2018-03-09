@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
+from guardian.shortcuts import assign_perm
 from rest_framework.authtoken.models import Token
 
 
@@ -40,8 +41,7 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     """
     if created:
         Token.objects.create(user=instance)
-
-# TODO: Assign view permission to user
-# TODO: Assign change permission to user (pending account settings)
-# TODO: Assign delete permission to user (pending account settings)
-# TODO: Assign add permission to user (pending registration)
+        # TODO: Assign to default group
+        assign_perm('view_user', instance, instance)
+        assign_perm('change_user', instance, instance)
+        assign_perm('delete_user', instance, instance)

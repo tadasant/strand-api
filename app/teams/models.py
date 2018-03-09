@@ -14,12 +14,10 @@ from app.users.models import User
 def validate_team_name(name):
     """Prevent naming overlap with default group name.
 
-    We have a 1-1 relationship between teams and groups.
-    Each group is assigned the name of the team. Since
-    we need a default group for all users in order to
-    add permissions that everyone can access (e.g. 'view_tag'),
-    we need to reserve the name of that group to prevent
-    a unique constraint error on the user model.
+    We have a 1-1 relationship between teams and groups. Each group is assigned the name of the team.
+    Since we need a default group for all users in order to add permissions that everyone can access
+    (e.g. 'view_tag'), we need to reserve the name of that group to prevent a unique constraint error
+    on the user model.
     """
     if name == settings.DEFAULT_GROUP_NAME:
         raise ValidationError(_(f'"{settings.DEFAULT_GROUP_NAME}" is not a valid name.'))
@@ -59,7 +57,7 @@ def update_group(sender, instance, action, pk_set, **kwargs):
     """Update group membership based on team members"""
     members = User.objects.filter(pk__in=pk_set)
     if action == 'post_add':
-        # Get group for team and add new members to group
+        # Add new members to group
         instance.group.user_set.add(members)
         assign_perm('view_user', instance.group, members)
     elif action == 'post_remove':
@@ -69,3 +67,6 @@ def update_group(sender, instance, action, pk_set, **kwargs):
 
 # TODO: Receiver to delete orphans
 # http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html
+
+# TODO: Migration to add "add_strand" and "add_tag" permissions to users
+# https://docs.djangoproject.com/en/2.0/topics/auth/default/#permissions-and-authorization

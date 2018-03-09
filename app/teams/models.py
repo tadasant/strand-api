@@ -5,7 +5,7 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save, m2m_changed
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, remove_perm
 from model_utils.models import TimeStampedModel
 
 from app.users.models import User
@@ -57,14 +57,15 @@ def assign_permissions(sender, instance, created, **kwargs):
 @receiver(m2m_changed, sender=Team)
 def update_group(sender, instance, action, pk_set, **kwargs):
     """Update group membership based on team members"""
+    members = User.objects.filter(pk__in=pk_set)
     if action == 'post_add':
         # Get group for team and add new members to group
-        group = Group.objects.get(name=instance.name)
-        group.user_set.add(pk_set)
+        instance.group.user_set.add(members)
+        assign_perm('view_user', instance.group, members)
     elif action == 'post_remove':
-        # Get group for team and remove old members from group
-        group = Group.objects.get(name=instance.name)
-        group.user_set.remove(pk_set)
+        # Remove old members from group
+        instance.group.user_set.remove(pk_set)
+        remove_perm('view_user', instance.group, members)
 
 # TODO: Receiver to delete orphans
 # http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html

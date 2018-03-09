@@ -34,9 +34,6 @@ def add_view_permissions(sender, instance, created, **kwargs):
         assign_perm('view_tag', group, instance)
 
 
-# TODO: Assign add permission to all users
-
-
 class Strand(TimeStampedModel):
     title = models.CharField(max_length=255)
     body = models.TextField()

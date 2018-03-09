@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.db.models.signals import post_save
@@ -32,16 +32,15 @@ class User(AbstractUser, GuardianUserMixin):
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    """Create auth token for new users.
-
-    Fires on post_save signal from users. Only creates
-    token if post_save is result of new user being created.
-    Note: Signal receivers must accept keyword arguments.
-    """
+def create_token_and_add_permissions(sender, instance=None, created=False, **kwargs):
+    """Create auth token, add to group and add appropriate permissions to new users."""
     if created:
+        # Create token
         Token.objects.create(user=instance)
-        # TODO: Assign to default group
+        # Add to public group
+        group = Group.objects.get(name='public')
+        group.user_set.add(instance)
+        # Assign permissions
         assign_perm('view_user', instance, instance)
         assign_perm('change_user', instance, instance)
         assign_perm('delete_user', instance, instance)

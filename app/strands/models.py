@@ -5,7 +5,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
-from guardian.utils import get_anonymous_user
 from model_utils.models import TimeStampedModel
 
 from app.teams.models import Team

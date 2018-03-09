@@ -1,6 +1,4 @@
 import graphene
-from django.db.models import Q
-from django.conf import settings
 
 from app.users.models import User
 from app.users.types import UserType

@@ -68,5 +68,5 @@ def update_group(sender, instance, action, pk_set, **kwargs):
 # TODO: Receiver to delete orphans
 # http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html
 
-# TODO: Migration to add "add_strand" and "add_tag" permissions to users
+# TODO: Migration to add "add_team" permission to users
 # https://docs.djangoproject.com/en/2.0/topics/auth/default/#permissions-and-authorization

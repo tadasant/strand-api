@@ -40,9 +40,9 @@ class Team(TimeStampedModel):
 @receiver(pre_save, sender=Team)
 def create_group(sender, instance, **kwargs):
     """Create group and assign to team"""
-    group = Group.objects.create(name=instance.name)
-    instance.group = group
-    return instance
+    if not instance.pk:
+        group = Group.objects.create(name=instance.name)
+        instance.group = group
 
 
 @receiver(post_save, sender=Team)

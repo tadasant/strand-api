@@ -8,7 +8,7 @@ class TestCreateStrand:
     @pytest.mark.django_db
     def test_unauthenticated(self, client, strand_factory, user_factory, team_factory):
         original_poster = user_factory()
-        owner = team_factory(members=[original_poster])
+        owner = team_factory()
         strand = strand_factory.build()
 
         mutation = MutationGenerator.create_strand(title=strand.title,

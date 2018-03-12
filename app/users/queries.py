@@ -11,7 +11,6 @@ class Query(graphene.ObjectType):
     def resolve_user(self, info, id=None):
         if id is not None:
             return User.objects.get(pk=id)
-
         return None
 
     def resolve_users(self, info):

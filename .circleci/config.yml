@@ -9,8 +9,8 @@ jobs:
 
       - image: circleci/postgres:9.4
         environment:
-          POSTGRES_USER: solutionloft
-          POSTGRES_DB: solutionloft
+          POSTGRES_USER: strand
+          POSTGRES_DB: strand_api
           POSTGRES_PASSWORD: ""
 
       - image: redis

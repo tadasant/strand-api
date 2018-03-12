@@ -11,10 +11,8 @@ class Query(graphene.ObjectType):
     def resolve_team(self, info, id=None, name=None):
         if id is not None:
             return Team.objects.get(pk=id)
-
         if name is not None:
             return Team.objects.get(name=name)
-
         return None
 
     def resolve_teams(self, info):

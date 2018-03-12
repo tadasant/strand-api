@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+    'guardian',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -87,7 +88,6 @@ AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -106,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -142,3 +141,17 @@ if os.environ.get('RAVEN_DSN'):
         'dsn': os.environ['RAVEN_DSN'],
         'release': VERSION
     }
+
+# Authentication
+# http://django-guardian.readthedocs.io/en/stable/configuration.html
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+# Django Guardian
+# http://django-guardian.readthedocs.io/en/stable/configuration.html#optional-settings
+GUARDIAN_RAISE_403 = True  # Raise PermissionDenied instead of returning HttpResponseForbidden
+ANONYMOUS_USER_NAME = None  # Not using guardian's anonymous user concept (mainly due to pytest issues)
+GUARDIAN_MONKEY_PATCH = False  # See http://django-guardian.readthedocs.io/en/stable/userguide/custom-user-model.html
+DEFAULT_GROUP_NAME = 'public'  # Name of group for all users

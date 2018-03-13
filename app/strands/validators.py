@@ -17,8 +17,16 @@ class StrandValidator(serializers.ModelSerializer):
         fields = ('title', 'body', 'timestamp', 'saver_id', 'owner_id', 'tags')
 
     def create(self, validated_data):
+        # TODO: Check add_strand permission
         tags = validated_data.pop('tags', [])
-        strand = Strand.objects.create(**validated_data)
+        strand = super().create(validated_data)
+        strand.add_tags(tags)
+        return strand
+
+    def update(self, instance, validated_data):
+        # TODO: Check change_strand permission
+        tags = validated_data.pop('tags', [])
+        strand = super().update(instance, validated_data)
         strand.add_tags(tags)
         return strand
 
@@ -27,3 +35,13 @@ class TagValidator(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('name', )
+
+    def create(self, validated_data):
+        # TODO: Check add_tag permission
+        tag = super().create(validated_data)
+        return tag
+
+    def update(self, instance, validated_data):
+        # TODO: Check change_tag permission
+        tag = super().update(instance, validated_data)
+        return tag

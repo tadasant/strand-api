@@ -11,5 +11,11 @@ class UserValidator(serializers.ModelSerializer):
         fields = ('email', 'username', 'first_name', 'last_name',)
 
     def create(self, validated_data):
-        user = User.objects.create(**validated_data)
+        # TODO: check add_user permissions
+        user = super().create(validated_data)
+        return user
+
+    def update(self, instance, validated_data):
+        # TODO: check change_user permission
+        user = super().update(instance, validated_data)
         return user

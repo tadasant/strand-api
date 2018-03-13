@@ -11,3 +11,13 @@ class TeamValidator(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = ('id', 'name')
+
+    def create(self, validated_data):
+        # TODO: Check add_team permission
+        team = super().create(**validated_data)
+        return team
+
+    def update(self, instance, validated_data):
+        # TODO: Check change_team permission
+        team = super().update(instance, validated_data)
+        return team

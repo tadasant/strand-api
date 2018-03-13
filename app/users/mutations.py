@@ -14,7 +14,7 @@ class CreateUserMutation(graphene.Mutation):
     # TODO: [API-153] Move to authorization to model
     @authorize(raise_exception=True)
     def mutate(self, info, input):
-        user_validator = UserValidator(data=input)
+        user_validator = UserValidator(data=input, context={'context': info.context})
         user_validator.is_valid(raise_exception=True)
         user = user_validator.save()
 

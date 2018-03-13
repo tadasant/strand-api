@@ -32,7 +32,7 @@ def add_view_permissions(sender, instance, created, **kwargs):
 
 
 class Strand(TimeStampedModel):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, null=True, blank=True)
     body = models.TextField()
     timestamp = models.DateTimeField(default=now)
 
@@ -46,7 +46,7 @@ class Strand(TimeStampedModel):
         )
 
     def __str__(self):
-        return self.title
+        return self.title or f'Strand by {self.saver.email} from {self.owner.name}'
 
     def add_tags(self, tags):
         for tag_to_add in tags:

@@ -100,12 +100,12 @@ class TestCreateStrand:
         assert len(response.json()['data']['createStrand']['strand']['tags']) == 2
 
     @pytest.mark.django_db
-    def test_valid(self, superuser_client, user_factory, team_factory, strand_factory):
+    def test_valid_no_title(self, superuser_client, user_factory, team_factory, strand_factory):
         jimmy = user_factory()
         owner = team_factory(members=[jimmy])
         strand = strand_factory.build()
 
-        mutation = MutationGenerator.create_strand(title=strand.title,
+        mutation = MutationGenerator.create_strand(title=None,
                                                    body=strand.body,
                                                    timestamp=strand.timestamp,
                                                    saver_id=jimmy.id,
@@ -113,4 +113,4 @@ class TestCreateStrand:
         response = superuser_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200, response.content
-        assert response.json()['data']['createStrand']['strand']['title']
+        assert response.json()['data']['createStrand']['strand']['body']

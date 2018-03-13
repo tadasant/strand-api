@@ -12,10 +12,12 @@ class UserValidator(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # TODO: check add_user permissions
+        print(self.context['request'].user)
         user = super().create(validated_data)
         return user
 
     def update(self, instance, validated_data):
         # TODO: check change_user permission
+        print(self.context['request'].user)
         user = super().update(instance, validated_data)
         return user

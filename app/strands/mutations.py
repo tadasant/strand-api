@@ -1,6 +1,6 @@
 import graphene
 
-from app.api.authorization import authorize
+from app.api.authorization import authenticate
 from app.strands.types import (
     StrandType,
     StrandInputType,
@@ -16,10 +16,9 @@ class CreateStrandMutation(graphene.Mutation):
 
     strand = graphene.Field(StrandType)
 
-    # TODO: [API-153] Move to authorization to model
-    @authorize(raise_exception=True)
+    @authenticate
     def mutate(self, info, input):
-        strand_validator = StrandValidator(data=input, context={'context': info.context})
+        strand_validator = StrandValidator(data=input, context={'request': info.context})
         strand_validator.is_valid(raise_exception=True)
         strand = strand_validator.save()
         return CreateStrandMutation(strand=strand)
@@ -31,10 +30,9 @@ class CreateTagMutation(graphene.Mutation):
 
     tag = graphene.Field(TagType)
 
-    # TODO: [API-153] Move to authorization to model
-    @authorize(raise_exception=True)
+    @authenticate
     def mutate(self, info, input):
-        tag_validator = TagValidator(data=input, context={'context': info.context})
+        tag_validator = TagValidator(data=input, context={'request': info.context})
         tag_validator.is_valid(raise_exception=True)
         tag = tag_validator.save()
         return CreateTagMutation(tag=tag)

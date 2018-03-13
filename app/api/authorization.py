@@ -14,6 +14,15 @@ def get_user(context):
     return user
 
 
+def authenticate(resolve_function):
+    def wrapper(self, info, **kwargs):
+        user = get_user(info.context)
+        setattr(info.context, 'user', user)
+
+        return resolve_function(self, info, **kwargs)
+    return wrapper
+
+
 def authorize(object_level=False, raise_exception=False):
     def check_authorization(resolve_function):
         """

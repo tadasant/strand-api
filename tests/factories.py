@@ -46,5 +46,5 @@ class StrandFactory(factory.DjangoModelFactory):
 
     title = factory.Faker('sentence')
     body = factory.Faker('sentence')
-    original_poster = factory.SubFactory(UserFactory)
+    saver = factory.SubFactory(UserFactory)
     owner = factory.SubFactory(TeamFactory)

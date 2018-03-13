@@ -36,8 +36,7 @@ class Strand(TimeStampedModel):
     body = models.TextField()
     timestamp = models.DateTimeField(default=now)
 
-    original_poster = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, blank=True,
-                                        related_name='strands')
+    saver = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, blank=True, related_name='strands')
     owner = models.ForeignKey(to=Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='strands')
     tags = models.ManyToManyField(to=Tag, related_name='strands')
 
@@ -60,9 +59,9 @@ def assign_permissions(sender, instance, created, **kwargs):
     """Assign permissions to team group and user"""
     if created:
         assign_perm('view_strand', instance.owner.group, instance)
-        assign_perm('change_strand', instance.original_poster, instance)
-        assign_perm('delete_strand', instance.original_poster, instance)
-        assign_perm('view_strand', instance.original_poster, instance)
+        assign_perm('change_strand', instance.saver, instance)
+        assign_perm('delete_strand', instance.saver, instance)
+        assign_perm('view_strand', instance.saver, instance)
 
 # TODO: [API-150] Receiver to delete orphans
 # http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html

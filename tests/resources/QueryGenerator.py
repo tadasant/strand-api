@@ -30,7 +30,7 @@ class StrandsQueryGenerator:
             strand(id: {strand_id}) {{
               title
               body
-              originalPoster {{
+              saver {{
                 email
               }}
               owner {{
@@ -51,7 +51,7 @@ class StrandsQueryGenerator:
             strands {
               title
               body
-              originalPoster {
+              saver {
                 email
               }
               owner {

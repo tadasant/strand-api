@@ -30,20 +30,20 @@ class UsersMutationGenerator:
 
 class StrandsMutationGenerator:
     @staticmethod
-    def create_strand(title, body, timestamp, original_poster_id, owner_id, tags=''):
+    def create_strand(title, body, timestamp, saver_id, owner_id, tags=''):
         mutation = f'''
           mutation {{
             createStrand(input: {{title: "{title}",
                                   body: "{body}",
                                   timestamp: "{timestamp}",
-                                  originalPosterId: {original_poster_id},
+                                  saverId: {saver_id},
                                   ownerId: {owner_id},
                                   tags: [{','.join([f'{{name: "{tag}"}}' for tag in tags]) if tags else ''}]}}) {{
               strand {{
                 title
                 body
                 timestamp
-                originalPoster {{
+                saver {{
                   email
                 }}
                 owner {{

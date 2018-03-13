@@ -14,7 +14,7 @@ from rest_framework.authtoken.models import Token
 class User(AbstractUser, GuardianUserMixin):
     email = models.EmailField(_('email address'),
                               unique=True)
-    password = models.CharField(_('password'), max_length=128, blank=True)
+    password = models.CharField(_('password'), max_length=128, null=True, blank=True)
     username_validator = UnicodeUsernameValidator()
     username = models.CharField(_('username'),
                                 max_length=150,

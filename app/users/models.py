@@ -12,16 +12,19 @@ from rest_framework.authtoken.models import Token
 
 
 class User(AbstractUser, GuardianUserMixin):
+    email = models.EmailField(_('email address'),
+                              unique=True)
+    password = models.CharField(_('password'), max_length=128, blank=True)
     username_validator = UnicodeUsernameValidator()
     username = models.CharField(_('username'),
                                 max_length=150,
                                 help_text=_('150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
-                                validators=[username_validator])
-    email = models.EmailField(_('email address'),
-                              unique=True)
+                                validators=[username_validator],
+                                null=True,
+                                blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = []
 
     class Meta:
         permissions = (
@@ -55,6 +58,7 @@ def set_random_password_and_send_email(sender, instance=None, created=False, **k
         # Generate random password
         password = User.objects.make_random_password(length=14)
         instance.set_password(password)
+        instance.save()
 
         # Send email with password
         send_mail(

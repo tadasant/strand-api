@@ -7,7 +7,7 @@ class TestQueryStrands:
     @pytest.mark.django_db
     def test_unauthenticated(self, client, user_factory, strand_factory):
         jimmy = user_factory()
-        strand = strand_factory(original_poster=jimmy)
+        strand = strand_factory(saver=jimmy)
 
         query = QueryGenerator.get_strand(strand_id=strand.id)
         response = client.post('/graphql', {'query': query})
@@ -18,7 +18,7 @@ class TestQueryStrands:
     @pytest.mark.django_db
     def test_get_user_strand(self, user_client, strand_factory):
         jimmy = user_client.user
-        strand = strand_factory(original_poster=jimmy)
+        strand = strand_factory(saver=jimmy)
 
         query = QueryGenerator.get_strand(strand_id=strand.id)
         response = user_client.post('/graphql', {'query': query})
@@ -31,7 +31,7 @@ class TestQueryStrands:
         jimmy = user_client.user
         bobby = user_factory()
         team = team_factory(members=[jimmy, bobby])
-        strand = strand_factory(original_poster=bobby, owner=team)
+        strand = strand_factory(saver=bobby, owner=team)
 
         query = QueryGenerator.get_strand(strand_id=strand.id)
         response = user_client.post('/graphql', {'query': query})
@@ -42,7 +42,7 @@ class TestQueryStrands:
     @pytest.mark.django_db
     def test_get_other_strand(self, user_client, user_factory, strand_factory):
         bobby = user_factory()
-        strand = strand_factory(original_poster=bobby)
+        strand = strand_factory(saver=bobby)
 
         query = QueryGenerator.get_strand(strand_id=strand.id)
         response = user_client.post('/graphql', {'query': query})
@@ -55,9 +55,9 @@ class TestQueryStrands:
         jimmy = user_client.user
         bobby = user_factory()
         team = team_factory(members=[jimmy, bobby])
-        strand_factory(original_poster=bobby, owner=team)  # Same team
-        strand_factory(original_poster=bobby)  # Different user, different team
-        strand_factory(original_poster=jimmy)  # Same user
+        strand_factory(saver=bobby, owner=team)  # Same team
+        strand_factory(saver=bobby)  # Different user, different team
+        strand_factory(saver=jimmy)  # Same user
 
         query = QueryGenerator.get_strands()
         response = user_client.post('/graphql', {'query': query})

@@ -5,7 +5,7 @@ class TestStrandPermissions:
     @pytest.mark.django_db
     def test_user_strands(self, user_factory, strand_factory):
         jimmy = user_factory()
-        strand = strand_factory(original_poster=jimmy)
+        strand = strand_factory(saver=jimmy)
 
         assert jimmy.has_perm('view_strand', strand)
         assert jimmy.has_perm('change_strand', strand)
@@ -16,7 +16,7 @@ class TestStrandPermissions:
         jimmy = user_factory()
         bobby = user_factory()
         same_team = team_factory(members=[jimmy, bobby])
-        strand = strand_factory(original_poster=bobby, owner=same_team)
+        strand = strand_factory(saver=bobby, owner=same_team)
 
         assert jimmy.has_perm('view_strand', strand)
         assert not jimmy.has_perm('change_strand', strand)
@@ -27,7 +27,7 @@ class TestStrandPermissions:
         jimmy = user_factory()
         bobby = user_factory()
         other_team = team_factory(members=[bobby])
-        strand = strand_factory(original_poster=bobby, owner=other_team)
+        strand = strand_factory(saver=bobby, owner=other_team)
 
         assert not jimmy.has_perm('view_strand', strand)
         assert not jimmy.has_perm('change_strand', strand)

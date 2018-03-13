@@ -8,14 +8,14 @@ class TestCreateStrand:
 
     @pytest.mark.django_db
     def test_unauthenticated(self, client, strand_factory, user_factory, team_factory):
-        original_poster = user_factory()
+        saver = user_factory()
         owner = team_factory()
         strand = strand_factory.build()
 
         mutation = MutationGenerator.create_strand(title=strand.title,
                                                    body=strand.body,
                                                    timestamp=strand.timestamp,
-                                                   original_poster_id=original_poster.id,
+                                                   saver_id=saver.id,
                                                    owner_id=owner.id)
         response = client.post('/graphql', {'query': mutation})
 
@@ -24,7 +24,7 @@ class TestCreateStrand:
         assert response.json()['errors'][0]['message'] == 'Unauthorized'
 
     @pytest.mark.django_db
-    def test_invalid_original_poster(self, superuser_client, user_factory, team_factory, strand_factory):
+    def test_invalid_saver(self, superuser_client, user_factory, team_factory, strand_factory):
         jimmy = user_factory()
         owner = team_factory(members=[jimmy])
         strand = strand_factory.build()
@@ -32,13 +32,13 @@ class TestCreateStrand:
         mutation = MutationGenerator.create_strand(title=strand.title,
                                                    body=strand.body,
                                                    timestamp=strand.timestamp,
-                                                   original_poster_id=jimmy.id + 1,
+                                                   saver_id=jimmy.id + 1,
                                                    owner_id=owner.id)
         response = superuser_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200, response.content
         assert not response.json()['data']['createStrand']
-        assert response.json()['errors'][0]['message'] == str({'original_poster_id':
+        assert response.json()['errors'][0]['message'] == str({'saver_id':
                                                                [f'Invalid pk "{jimmy.id + 1}" '
                                                                 f'- object does not exist.']
                                                                })
@@ -52,7 +52,7 @@ class TestCreateStrand:
         mutation = MutationGenerator.create_strand(title=strand.title,
                                                    body=strand.body,
                                                    timestamp=strand.timestamp,
-                                                   original_poster_id=jimmy.id,
+                                                   saver_id=jimmy.id,
                                                    owner_id=owner.id + 1)
         response = superuser_client.post('/graphql', {'query': mutation})
 
@@ -72,7 +72,7 @@ class TestCreateStrand:
         mutation = MutationGenerator.create_strand(title=strand.title,
                                                    body=strand.body,
                                                    timestamp=strand.timestamp,
-                                                   original_poster_id=jimmy.id,
+                                                   saver_id=jimmy.id,
                                                    owner_id=owner.id,
                                                    tags=[tag_factory().name, tag_factory().name])
         response = superuser_client.post('/graphql', {'query': mutation})
@@ -90,7 +90,7 @@ class TestCreateStrand:
         mutation = MutationGenerator.create_strand(title=strand.title,
                                                    body=strand.body,
                                                    timestamp=strand.timestamp,
-                                                   original_poster_id=jimmy.id,
+                                                   saver_id=jimmy.id,
                                                    owner_id=owner.id,
                                                    tags=[tag_factory.build().name, tag_factory.build().name])
         response = superuser_client.post('/graphql', {'query': mutation})
@@ -108,7 +108,7 @@ class TestCreateStrand:
         mutation = MutationGenerator.create_strand(title=strand.title,
                                                    body=strand.body,
                                                    timestamp=strand.timestamp,
-                                                   original_poster_id=jimmy.id,
+                                                   saver_id=jimmy.id,
                                                    owner_id=owner.id)
         response = superuser_client.post('/graphql', {'query': mutation})
 

@@ -6,7 +6,7 @@ from app.strands.models import Strand, Tag
 
 @admin.register(Strand)
 class StrandAdmin(GuardedModelAdmin):
-    list_display = ('title', 'original_poster', 'owner')
+    list_display = ('title', 'saver', 'owner')
 
 
 @admin.register(Tag)

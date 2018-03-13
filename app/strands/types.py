@@ -26,7 +26,7 @@ class TagType(DjangoObjectType):
 class StrandType(DjangoObjectType):
     class Meta:
         model = Strand
-        only_fields = ('id', 'title', 'body', 'timestamp', 'original_poster', 'owner', 'tags', )
+        only_fields = ('id', 'title', 'body', 'timestamp', 'saver', 'owner', 'tags', )
 
     @authorize(object_level=True)
     def resolve_id(self, info):
@@ -45,8 +45,8 @@ class StrandType(DjangoObjectType):
         return self.timestamp
 
     @authorize(object_level=True)
-    def resolve_original_poster(self, info):
-        return self.original_poster
+    def resolve_saver(self, info):
+        return self.saver
 
     @authorize(object_level=True)
     def resolve_owner(self, info):
@@ -65,6 +65,6 @@ class StrandInputType(graphene.InputObjectType):
     title = graphene.String(required=True)
     body = graphene.String(required=True)
     timestamp = graphene.String()
-    original_poster_id = graphene.Int(required=True)
+    saver_id = graphene.Int(required=True)
     owner_id = graphene.Int(required=True)
     tags = graphene.List(TagInputType)

@@ -6,7 +6,7 @@ from app.teams.models import Team
 
 
 class TeamValidator(serializers.ModelSerializer):
-    # TODO: FKs of users to include on creation
+    # TODO: [API-157] FKs of users to include on creation
 
     class Meta:
         model = Team

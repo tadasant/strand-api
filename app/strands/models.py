@@ -63,8 +63,8 @@ def assign_permissions(sender, instance, created, **kwargs):
         assign_perm('delete_strand', instance.saver, instance)
         assign_perm('view_strand', instance.saver, instance)
 
-# TODO: Receiver to delete orphans
+# TODO: [API-150] Receiver to delete orphans
 # http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html
 
-# TODO: Migration to add "add_strand" and "add_tag" permissions to users
+# TODO: [API-160] Migration to add "add_strand" and "add_tag" permissions to users
 # https://docs.djangoproject.com/en/2.0/topics/auth/default/#permissions-and-authorization

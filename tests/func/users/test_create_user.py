@@ -20,7 +20,7 @@ class TestCreateUser:
 
     @pytest.mark.django_db
     def test_valid(self, superuser_client, user_factory):
-        assert len(mail.outbox) == 0
+        assert not mail.outbox
         user = user_factory.build()
 
         mutation = MutationGenerator.create_user(email=user.email, username=user.username)

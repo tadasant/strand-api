@@ -17,7 +17,7 @@ register(UserFactory)
 
 
 @pytest.fixture()
-def auth_client(user_factory):
+def user_client(user_factory):
     """Pytest fixture for authenticated API client
 
     Most of our mutations require authentication. Rather than authenticate
@@ -28,4 +28,22 @@ def auth_client(user_factory):
     client = APIClient()
     token = Token.objects.get(user=user)
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+    setattr(client, 'user', user)
+    return client
+
+
+@pytest.fixture()
+def superuser_client(user_factory):
+    """Pytest fixture for authenticated API client
+
+    Most of our mutations require authentication. Rather than authenticate
+    with a mock user each time, this fixture allows us to use an already
+    authenticated api client. We use a superuser that represents the
+    permissions we would have when interacting with API from SLA.
+    """
+    user = user_factory(is_superuser=True)
+    client = APIClient()
+    token = Token.objects.get(user=user)
+    client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+    setattr(client, 'user', user)
     return client

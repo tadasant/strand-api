@@ -28,6 +28,8 @@ class Team(TimeStampedModel):
     members = models.ManyToManyField(to=User, related_name='teams')
     group = models.OneToOneField(to=Group, related_name='team', on_delete=models.CASCADE)
 
+    # TODO: [API-159] Should we have a role associated with team (e.g. creator)
+
     class Meta:
         permissions = (
             ('view_team', 'View team'),  # add_team, change_team and delete_team are added by default
@@ -65,8 +67,8 @@ def update_group(sender, instance, action, pk_set, **kwargs):
         instance.group.user_set.remove(*pk_set)
         remove_perm('view_user', instance.group, members)
 
-# TODO: Receiver to delete orphans
+# TODO: [API-150] Receiver to delete orphans
 # http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html
 
-# TODO: Migration to add "add_team" permission to users
+# TODO: [API-160] Migration to add "add_team" permission to users
 # https://docs.djangoproject.com/en/2.0/topics/auth/default/#permissions-and-authorization

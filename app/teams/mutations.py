@@ -11,7 +11,7 @@ class CreateTeamMutation(graphene.Mutation):
 
     team = graphene.Field(TeamType)
 
-    # TODO: Move to authorization to model
+    # TODO: [API-153] Move to authorization to model
     @authorize(raise_exception=True)
     def mutate(self, info, input):
         team_validator = TeamValidator(data=input)

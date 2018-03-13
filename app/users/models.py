@@ -46,5 +46,5 @@ def create_token_and_add_permissions(sender, instance=None, created=False, **kwa
         assign_perm('change_user', instance, instance)
         assign_perm('delete_user', instance, instance)
 
-# TODO: Receiver to delete orphans
+# TODO: [API-150] Receiver to delete orphans
 # http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html

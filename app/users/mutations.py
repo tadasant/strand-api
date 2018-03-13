@@ -11,7 +11,7 @@ class CreateUserMutation(graphene.Mutation):
 
     user = graphene.Field(UserType)
 
-    # TODO: Move to authorization to model
+    # TODO: [API-153] Move to authorization to model
     @authorize(raise_exception=True)
     def mutate(self, info, input):
         user_validator = UserValidator(data=input)

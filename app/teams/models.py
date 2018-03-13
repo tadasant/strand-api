@@ -28,6 +28,8 @@ class Team(TimeStampedModel):
     members = models.ManyToManyField(to=User, related_name='teams')
     group = models.OneToOneField(to=Group, related_name='team', on_delete=models.CASCADE)
 
+    # TODO: Should we have a role associated with team (e.g. creator)
+
     class Meta:
         permissions = (
             ('view_team', 'View team'),  # add_team, change_team and delete_team are added by default

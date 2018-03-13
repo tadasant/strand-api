@@ -28,4 +28,5 @@ class TeamType(DjangoObjectType):
 
 
 class TeamInputType(graphene.InputObjectType):
+    # TODO: FKs of users to include on creation
     name = graphene.String(required=True)

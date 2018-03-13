@@ -2,13 +2,10 @@ import graphene
 from graphene_django.types import DjangoObjectType
 
 from app.api.authorization import authorize
-from app.teams.types import TeamType
 from app.users.models import User
 
 
 class UserType(DjangoObjectType):
-    teams = graphene.List(TeamType)
-
     class Meta:
         model = User
         only_fields = ('id', 'email', 'first_name', 'last_name', 'teams', 'strands',)

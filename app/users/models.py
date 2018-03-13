@@ -50,6 +50,7 @@ def create_token_and_add_permissions(sender, instance=None, created=False, **kwa
         assign_perm('change_user', instance, instance)
         assign_perm('delete_user', instance, instance)
 
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def set_random_password_and_send_email(sender, instance=None, created=False, **kwargs):
     """Set random password and send user an email."""

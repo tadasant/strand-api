@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.mail import send_mail
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -45,6 +46,25 @@ def create_token_and_add_permissions(sender, instance=None, created=False, **kwa
         assign_perm('view_user', instance, instance)
         assign_perm('change_user', instance, instance)
         assign_perm('delete_user', instance, instance)
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def set_random_password_and_send_email(sender, instance=None, created=False, **kwargs):
+    """Set random password and send user an email."""
+    if created:
+        # Generate random password
+        password = User.objects.make_random_password(length=14)
+        instance.set_password(password)
+
+        # Send email with password
+        send_mail(
+            subject='Welcome to Strand',
+            message=f'Your password is {password}',
+            from_email='from@example.com',
+            recipient_list=[instance.email],
+            fail_silently=False,
+        )
+
 
 # TODO: Receiver to delete orphans
 # http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html

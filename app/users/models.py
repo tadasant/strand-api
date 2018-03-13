@@ -51,7 +51,7 @@ def create_token_and_add_permissions(sender, instance=None, created=False, **kwa
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def set_random_password_and_send_email(sender, instance=None, created=False, **kwargs):
     """Set random password and send user an email."""
-    if created:
+    if created and not instance.password:
         # Generate random password
         password = User.objects.make_random_password(length=14)
         instance.set_password(password)
@@ -59,7 +59,7 @@ def set_random_password_and_send_email(sender, instance=None, created=False, **k
         # Send email with password
         send_mail(
             subject='Welcome to Strand',
-            message=f'Your password is {password}',
+            message=f'Your password is "{password}"',
             from_email='from@example.com',
             recipient_list=[instance.email],
             fail_silently=False,

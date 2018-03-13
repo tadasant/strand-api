@@ -1,4 +1,5 @@
 import pytest
+from django.core import mail
 
 from tests.resources.MutationGenerator import MutationGenerator
 
@@ -19,6 +20,7 @@ class TestCreateUser:
 
     @pytest.mark.django_db
     def test_valid(self, superuser_client, user_factory):
+        assert len(mail.outbox) == 0
         user = user_factory.build()
 
         mutation = MutationGenerator.create_user(email=user.email, username=user.username)
@@ -26,3 +28,6 @@ class TestCreateUser:
 
         assert response.status_code == 200, response.content
         assert response.json()['data']['createUser']['user']['id']
+        assert mail.outbox[0].subject == 'Welcome to Strand'
+        assert mail.outbox[0].to == [user.email]
+        assert mail.outbox[0].body

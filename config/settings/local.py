@@ -38,8 +38,8 @@ CORS_PREFLIGHT_MAX_AGE = 0
 
 # Email
 # https://docs.djangoproject.com/en/2.0/topics/email/#module-django.core.mail
+# TODO: [API-161] Move from plain-text to SendGrid
 EMAIL_SETTINGS = json.load(open(os.path.join(BASE_DIR, 'email.config.json'), 'r'))
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = EMAIL_SETTINGS['EMAIL_USER']

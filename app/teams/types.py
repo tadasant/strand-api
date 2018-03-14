@@ -1,7 +1,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from app.api.authorization import authorize
+from app.api.authorization import check_view_permission
 from app.teams.models import Team
 
 
@@ -10,19 +10,19 @@ class TeamType(DjangoObjectType):
         model = Team
         only_fields = ('id', 'name', 'members', 'strands',)
 
-    @authorize(object_level=True)
+    @check_view_permission('view_team')
     def resolve_id(self, info):
         return self.id
 
-    @authorize(object_level=True)
+    @check_view_permission('view_team')
     def resolve_name(self, info):
         return self.name
 
-    @authorize(object_level=True)
+    @check_view_permission('view_team')
     def resolve_members(self, info):
         return self.members
 
-    @authorize(object_level=True)
+    @check_view_permission('view_team')
     def resolve_strands(self, info):
         return self.strands
 

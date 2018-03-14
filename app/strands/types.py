@@ -1,7 +1,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from app.api.authorization import authorize
+from app.api.authorization import check_view_permission
 from app.strands.models import Strand, Tag
 
 
@@ -10,15 +10,15 @@ class TagType(DjangoObjectType):
         model = Tag
         only_fields = ('id', 'name', 'strands',)
 
-    @authorize(object_level=True)
+    @check_view_permission('view_tag')
     def resolve_id(self, info):
         return self.id
 
-    @authorize(object_level=True)
+    @check_view_permission('view_tag')
     def resolve_name(self, info):
         return self.name
 
-    @authorize(object_level=True)
+    @check_view_permission('view_tag')
     def resolve_strands(self, info):
         return self.strands
 
@@ -28,31 +28,31 @@ class StrandType(DjangoObjectType):
         model = Strand
         only_fields = ('id', 'title', 'body', 'timestamp', 'saver', 'owner', 'tags', )
 
-    @authorize(object_level=True)
+    @check_view_permission('view_strand')
     def resolve_id(self, info):
         return self.id
 
-    @authorize(object_level=True)
+    @check_view_permission('view_strand')
     def resolve_title(self, info):
         return self.title
 
-    @authorize(object_level=True)
+    @check_view_permission('view_strand')
     def resolve_body(self, info):
         return self.body
 
-    @authorize(object_level=True)
+    @check_view_permission('view_strand')
     def resolve_timestamp(self, info):
         return self.timestamp
 
-    @authorize(object_level=True)
+    @check_view_permission('view_strand')
     def resolve_saver(self, info):
         return self.saver
 
-    @authorize(object_level=True)
+    @check_view_permission('view_strand')
     def resolve_owner(self, info):
         return self.owner
 
-    @authorize(object_level=True)
+    @check_view_permission('view_strand')
     def resolve_tags(self, info):
         return self.tags
 

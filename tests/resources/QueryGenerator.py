@@ -90,21 +90,11 @@ class StrandsQueryGenerator:
 
 class UsersQueryGenerator:
     @staticmethod
-    def get_user(user_id):
+    def get_user(user_id=None, email=None):
         query = f'''
           query {{
-            user(id: {user_id}) {{
+            user({'id: %s' % user_id if user_id else 'email: "%s"' % email}) {{
               id
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_user_authorized(user_id):
-        query = f'''
-          query {{
-            user(id: {user_id}) {{
               email
             }}
           }}
@@ -112,10 +102,11 @@ class UsersQueryGenerator:
         return query
 
     @staticmethod
-    def get_users_authorized():
+    def get_users():
         query = '''
           query {
             users {
+              id
               email
             }
           }

@@ -9,7 +9,7 @@ class TestQueryUsers:
     def test_get_user_unauthenticated(self, client, user_factory):
         user = user_factory()
 
-        query = QueryGenerator.get_user(user.id)
+        query = QueryGenerator.get_user(user_id=user.id)
         response = client.post('/graphql', {'query': query})
 
         assert response.status_code == 200, response.content

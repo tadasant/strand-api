@@ -23,7 +23,7 @@ def authenticate(resolve_function):
     return wrapper
 
 
-def check_permission(permission_name):
+def check_permission_for_validator(permission_name):
     def wrap_validator_function(validator_function):
         """
         Performs authorization checks with django-guardian on validator methods.
@@ -43,7 +43,7 @@ def check_permission(permission_name):
     return wrap_validator_function
 
 
-def check_view_permission(permission_name):
+def check_permission_for_resolver(permission_name):
     def wrap_resolve_function(resolve_function):
         """
         Performs authorization checks with django-guardian on resolver methods.

@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from app.api.authorization import check_permission
+from app.api.authorization import check_permission_for_validator
 from app.strands.models import Strand, Tag
 from app.teams.models import Team
 from app.users.models import User
@@ -17,14 +17,14 @@ class StrandValidator(serializers.ModelSerializer):
         model = Strand
         fields = ('title', 'body', 'timestamp', 'saver_id', 'owner_id', 'tags')
 
-    @check_permission('add_strand')
+    @check_permission_for_validator('add_strand')
     def create(self, validated_data):
         tags = validated_data.pop('tags', [])
         strand = super().create(validated_data)
         strand.add_tags(tags)
         return strand
 
-    @check_permission('change_strand')
+    @check_permission_for_validator('change_strand')
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags', [])
         strand = super().update(instance, validated_data)
@@ -37,12 +37,12 @@ class TagValidator(serializers.ModelSerializer):
         model = Tag
         fields = ('name', )
 
-    @check_permission('add_tag')
+    @check_permission_for_validator('add_tag')
     def create(self, validated_data):
         tag = super().create(validated_data)
         return tag
 
-    @check_permission('change_tag')
+    @check_permission_for_validator('change_tag')
     def update(self, instance, validated_data):
         tag = super().update(instance, validated_data)
         return tag

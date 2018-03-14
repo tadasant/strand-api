@@ -62,7 +62,7 @@ class TagInputType(graphene.InputObjectType):
 
 
 class StrandInputType(graphene.InputObjectType):
-    title = graphene.String(required=True)
+    title = graphene.String()
     body = graphene.String(required=True)
     timestamp = graphene.String()
     saver_id = graphene.Int(required=True)

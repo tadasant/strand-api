@@ -33,7 +33,7 @@ class StrandsMutationGenerator:
     def create_strand(title, body, timestamp, saver_id, owner_id, tags=''):
         mutation = f'''
           mutation {{
-            createStrand(input: {{title: "{title}",
+            createStrand(input: {{{'title: "%s",' % title if title else ''}
                                   body: "{body}",
                                   timestamp: "{timestamp}",
                                   saverId: {saver_id},

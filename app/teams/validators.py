@@ -2,6 +2,7 @@
 
 from rest_framework import serializers
 
+from app.api.authorization import check_permission_for_validator
 from app.teams.models import Team
 
 
@@ -11,3 +12,16 @@ class TeamValidator(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = ('id', 'name')
+
+    @check_permission_for_validator('add_team')
+    def create(self, validated_data):
+        team = super().create(validated_data)
+        return team
+
+    @check_permission_for_validator('change_team')
+    def update(self, instance, validated_data):
+        team = super().update(instance, validated_data)
+        return team
+
+
+# TODO: [API-164] Implement delete

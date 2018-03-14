@@ -1,7 +1,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from app.api.authorization import authorize
+from app.api.authorization import check_permission_for_resolver
 from app.users.models import User
 
 
@@ -10,23 +10,23 @@ class UserType(DjangoObjectType):
         model = User
         only_fields = ('id', 'email', 'first_name', 'last_name', 'teams', 'strands',)
 
-    @authorize(object_level=True)
+    @check_permission_for_resolver('view_user')
     def resolve_email(self, info):
         return self.email
 
-    @authorize(object_level=True)
+    @check_permission_for_resolver('view_user')
     def resolve_first_name(self, info):
         return self.first_name
 
-    @authorize(object_level=True)
+    @check_permission_for_resolver('view_user')
     def resolve_last_name(self, info):
         return self.last_name
 
-    @authorize(object_level=True)
+    @check_permission_for_resolver('view_user')
     def resolve_teams(self, info):
         return self.teams.all()
 
-    @authorize(object_level=True)
+    @check_permission_for_resolver('view_user')
     def resolve_strands(self, info):
         return self.strands.all()
 

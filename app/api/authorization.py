@@ -1,6 +1,6 @@
+import inspect
+
 from rest_framework.authentication import TokenAuthentication
-from django.db import models
-from guardian.shortcuts import get_perms
 
 
 def get_user(context):
@@ -14,27 +14,49 @@ def get_user(context):
     return user
 
 
-def authorize(object_level=False, raise_exception=False):
-    def check_authorization(resolve_function):
-        """
-        Performs authorization checks with django-guardian.
+def authenticate(resolve_function):
+    def wrapper(self, info, **kwargs):
+        user = get_user(info.context)
+        setattr(info.context, 'user', user)
 
-        Checks to see if the user is authenticated and has
-        view permissions for the object requested.
+        return resolve_function(self, info, **kwargs)
+    return wrapper
+
+
+def check_permission_for_validator(permission_name):
+    def wrap_validator_function(validator_function):
+        """
+        Performs authorization checks with django-guardian on validator methods.
+
+        Checks to see if the user is authenticated and has add/change/delete
+        permissions for the model or object.
+        """
+        def wrapper(self, *args):
+            user = self.context['request'].user
+            param_dict = dict(zip(list(inspect.signature(validator_function).parameters.keys()), args))
+
+            if user and user.is_authenticated and user.has_perm(permission_name, param_dict.get('instance')):
+                return validator_function(self, *args)
+
+            raise Exception('Unauthorized')
+        return wrapper
+    return wrap_validator_function
+
+
+def check_permission_for_resolver(permission_name):
+    def wrap_resolve_function(resolve_function):
+        """
+        Performs authorization checks with django-guardian on resolver methods.
+
+        Checks to see if the user is authenticated and has view permissions
+        for the object requested.
         """
         def wrapper(self, info, **kwargs):
             user = get_user(info.context)
 
-            if user and user.is_authenticated:
-                if object_level and issubclass(self.__class__, models.Model):
-                    if any('view_' in perm for perm in get_perms(user, self)):
-                        return resolve_function(self, info, **kwargs)
-                else:
-                    return resolve_function(self, info, **kwargs)
+            if user and user.is_authenticated and user.has_perm(permission_name, self):
+                return resolve_function(self, info, **kwargs)
 
-            if raise_exception:
-                raise Exception('Unauthorized')
-
-            return None
+            raise Exception('Unauthorized')
         return wrapper
-    return check_authorization
+    return wrap_resolve_function

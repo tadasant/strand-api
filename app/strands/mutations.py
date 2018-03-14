@@ -1,9 +1,11 @@
 import graphene
 
 from app.api.authorization import authenticate
+from app.strands.models import Strand
 from app.strands.types import (
     StrandType,
     StrandInputType,
+    UpdateStrandInputType,
     TagType,
     TagInputType,
 )
@@ -24,6 +26,21 @@ class CreateStrandMutation(graphene.Mutation):
         return CreateStrandMutation(strand=strand)
 
 
+class UpdateStrandMutation(graphene.Mutation):
+    class Arguments:
+        input = UpdateStrandInputType(required=True)
+
+    strand = graphene.Field(StrandType)
+
+    @authenticate
+    def mutate(self, info, input):
+        strand = Strand.objects.get(id=input.pop('id'))
+        strand_validator = StrandValidator(instance=strand, data=input, context={'request': info.context}, partial=True)
+        strand_validator.is_valid(raise_exception=True)
+        strand = strand_validator.save()
+        return UpdateStrandMutation(strand=strand)
+
+
 class CreateTagMutation(graphene.Mutation):
     class Arguments:
         input = TagInputType(required=True)
@@ -40,4 +57,5 @@ class CreateTagMutation(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_strand = CreateStrandMutation.Field()
+    update_strand = UpdateStrandMutation.Field()
     create_tag = CreateTagMutation.Field()

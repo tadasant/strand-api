@@ -23,3 +23,12 @@ CSRF_COOKIE_SECURE = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_URL = '/static/'
+
+# Email
+# https://docs.djangoproject.com/en/2.0/topics/email/#module-django.core.mail
+# TODO: [API-161] Move from plain-text to SendGrid
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'username'
+EMAIL_HOST_PASSWORD = 'rAnDoMp@ssW0RD'
+EMAIL_PORT = 587

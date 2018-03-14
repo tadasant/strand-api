@@ -4,6 +4,7 @@ workspace.xml
 misc.xml
 *.iml
 db.config.json
+email.config.json
 .cache/
 .coverage
 .pytest_cache

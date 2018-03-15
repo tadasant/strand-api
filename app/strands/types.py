@@ -68,3 +68,9 @@ class StrandInputType(graphene.InputObjectType):
     saver_id = graphene.Int(required=True)
     owner_id = graphene.Int(required=True)
     tags = graphene.List(TagInputType)
+
+
+class UpdateStrandInputType(graphene.InputObjectType):
+    id = graphene.Int(required=True)
+    title = graphene.String()
+    tags = graphene.List(TagInputType)

@@ -21,14 +21,14 @@ class StrandValidator(serializers.ModelSerializer):
     def create(self, validated_data):
         tags = validated_data.pop('tags', [])
         strand = super().create(validated_data)
-        strand.add_tags(tags)
+        strand.set_tags(tags)
         return strand
 
     @check_permission_for_validator('change_strand')
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags', [])
         strand = super().update(instance, validated_data)
-        strand.add_tags(tags)
+        strand.set_tags(tags)
         return strand
 
 

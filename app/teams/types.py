@@ -30,3 +30,8 @@ class TeamType(DjangoObjectType):
 class TeamInputType(graphene.InputObjectType):
     # TODO: [API-157] FKs of users to include on creation
     name = graphene.String(required=True)
+
+
+class AddMembersToTeamInputType(graphene.InputObjectType):
+    id = graphene.Int(required=True)
+    member_ids = graphene.List(graphene.Int, required=True)

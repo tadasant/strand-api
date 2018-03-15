@@ -26,7 +26,7 @@ class TeamsMutationGenerator:
                   email
                 }}
               }}
-            }} 
+            }}
           }}
         '''
         return mutation

@@ -1,3 +1,5 @@
+algoliasearch==1.15.3
+algoliasearch-django==1.5.5
 amqp==2.2.2
 apipkg==1.4
 attrs==17.4.0

@@ -102,3 +102,11 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.environ['EMAIL_USER']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
 EMAIL_PORT = 587
+
+# Algolia
+# https://github.com/algolia/algoliasearch-django#install
+ALGOLIA = {
+    'APPLICATION_ID': os.environ['ALGOLIA_APPLICATION_ID'],
+    'API_KEY': os.environ['ALGOLIA_API_KEY'],
+    'INDEX_PREFIX': 'prod',
+}

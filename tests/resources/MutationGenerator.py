@@ -5,14 +5,30 @@ class TeamsMutationGenerator:
     @staticmethod
     def create_team(team_name):
         mutation = f'''
-              mutation {{
-                createTeam(input: {{name: "{team_name}"}}) {{
-                  team {{
-                    name
-                  }}
+          mutation {{
+            createTeam(input: {{name: "{team_name}"}}) {{
+              team {{
+                name
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
+    @staticmethod
+    def add_members_to_team(id, member_ids):
+        mutation = f'''
+          mutation {{
+            addMembersToTeam(input: {{id: {id}, memberIds: {[member_id for member_id in member_ids]}}}) {{
+              team {{
+                name
+                members {{
+                  email
                 }}
               }}
-            '''
+            }}
+          }}
+        '''
         return mutation
 
 

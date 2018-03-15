@@ -46,6 +46,23 @@ class UsersMutationGenerator:
         '''
         return mutation
 
+    @staticmethod
+    def create_user_with_teams(email, username, team_ids):
+        mutation = f'''
+          mutation {{
+            createUserWithTeams(input: {{email: "{email}", username: "{username}",
+                                         teamIds: {[team_id for team_id in team_ids]}}}) {{
+              user {{
+                email
+                teams {{
+                  name
+                }}
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
 
 class StrandsMutationGenerator:
     @staticmethod

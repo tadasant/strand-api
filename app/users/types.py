@@ -36,3 +36,11 @@ class UserInputType(graphene.InputObjectType):
     username = graphene.String(required=True)
     first_name = graphene.String()
     last_name = graphene.String()
+
+
+class UserWithTeamsInputType(graphene.InputObjectType):
+    email = graphene.String()
+    username = graphene.String(required=True)
+    first_name = graphene.String()
+    last_name = graphene.String()
+    team_ids = graphene.List(graphene.Int, required=True)

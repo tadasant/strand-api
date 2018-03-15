@@ -20,7 +20,7 @@ class CreateStrandMutation(graphene.Mutation):
 
     @authenticate
     def mutate(self, info, input):
-        strand_validator = StrandValidator(data=input, context={'request': info.context})
+        strand_validator = StrandValidator(data=input, context=dict(request=info.context))
         strand_validator.is_valid(raise_exception=True)
         strand = strand_validator.save()
         return CreateStrandMutation(strand=strand)
@@ -35,7 +35,8 @@ class UpdateStrandMutation(graphene.Mutation):
     @authenticate
     def mutate(self, info, input):
         strand = Strand.objects.get(id=input.pop('id'))
-        strand_validator = StrandValidator(instance=strand, data=input, context={'request': info.context}, partial=True)
+        strand_validator = StrandValidator(instance=strand, data=input, context=dict(request=info.context),
+                                           partial=True)
         strand_validator.is_valid(raise_exception=True)
         strand = strand_validator.save()
         return UpdateStrandMutation(strand=strand)
@@ -49,7 +50,7 @@ class CreateTagMutation(graphene.Mutation):
 
     @authenticate
     def mutate(self, info, input):
-        tag_validator = TagValidator(data=input, context={'request': info.context})
+        tag_validator = TagValidator(data=input, context=dict(request=info.context))
         tag_validator.is_valid(raise_exception=True)
         tag = tag_validator.save()
         return CreateTagMutation(tag=tag)

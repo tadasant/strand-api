@@ -18,7 +18,7 @@ class CreateTeamMutation(graphene.Mutation):
 
     @authenticate
     def mutate(self, info, input):
-        team_validator = TeamValidator(data=input, context={'request': info.context})
+        team_validator = TeamValidator(data=input, context=dict(request=info.context))
         team_validator.is_valid(raise_exception=True)
         team = team_validator.save()
 
@@ -34,8 +34,8 @@ class AddMembersToTeamMutation(graphene.Mutation):
     @authenticate
     def mutate(self, info, input):
         team = Team.objects.get(id=input.pop('id'))
-        team_validator = TeamValidator(instance=team, data=input, context={'request': info.context,
-                                                                           'member_operation': 'add'}, partial=True)
+        team_validator = TeamValidator(instance=team, data=input, context=dict(request=info.context,
+                                                                               member_operation='add'), partial=True)
         team_validator.is_valid(raise_exception=True)
         team = team_validator.save()
 

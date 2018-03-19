@@ -66,6 +66,23 @@ class StrandsQueryGenerator:
         return query
 
     @staticmethod
+    def search(query, page=0, size=100):
+        query = f'''
+          query {{
+            search(query: "{query}",
+                   page: {page},
+                   size: {size}) {{
+              title
+              body
+              tags {{
+                name
+              }}
+            }}
+          }}
+        '''
+        return query
+
+    @staticmethod
     def get_tag(tag_name):
         query = f'''
           query {{

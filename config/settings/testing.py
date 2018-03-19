@@ -38,6 +38,6 @@ EMAIL_PORT = 587
 ALGOLIA = {
     'APPLICATION_ID': 'TEST_ID',
     'API_KEY': 'TEST_KEY',
-    'AUTO_INDEXING': False,
+    'AUTO_INDEXING': True,
     'INDEX_PREFIX': 'test',
 }

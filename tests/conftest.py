@@ -52,7 +52,7 @@ def superuser_client(user_factory):
     return client
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True)
 def algolia(mocker):
     request_mock = responses.RequestsMock(assert_all_requests_are_fired=False)
     request_mock.start()

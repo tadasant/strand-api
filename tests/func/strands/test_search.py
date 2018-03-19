@@ -1,5 +1,4 @@
 import pytest
-import responses
 
 from tests.resources.QueryGenerator import QueryGenerator
 

@@ -1,3 +1,5 @@
+algoliasearch==1.15.3
+algoliasearch-django==1.5.5
 amqp==2.2.2
 apipkg==1.4
 attrs==17.4.0
@@ -54,6 +56,7 @@ pytz==2017.3
 raven==6.5.0
 redis==2.10.6
 requests==2.18.4
+responses==0.8.1
 Rx==1.6.0
 s3transfer==0.1.12
 singledispatch==3.4.0.3

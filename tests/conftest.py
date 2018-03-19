@@ -1,4 +1,7 @@
+import re
+
 import pytest
+import responses
 from pytest_factoryboy.fixture import register
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
@@ -47,3 +50,23 @@ def superuser_client(user_factory):
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
     setattr(client, 'user', user)
     return client
+
+
+@pytest.fixture(autouse=True)
+def algolia(mocker):
+    request_mock = responses.RequestsMock(assert_all_requests_are_fired=False)
+    request_mock.start()
+
+    # Mock indexing
+    request_mock.add(method=responses.PUT, url=re.compile(r'https://(.*?)/1/indexes/test_strands/\d+'),
+                     json={})
+
+    # Mock searching
+    request_mock.add(method=responses.POST,
+                     url=re.compile(r'https://(.*?)/1/indexes/test_strands/query'),
+                     json={'hits': []})
+
+    yield request_mock
+
+    request_mock.stop()
+    request_mock.reset()

@@ -11,6 +11,10 @@ class UserType(DjangoObjectType):
         only_fields = ('id', 'email', 'first_name', 'last_name', 'teams', 'strands',)
 
     @check_permission_for_resolver('view_user')
+    def resolve_id(self, info):
+        return self.id
+
+    @check_permission_for_resolver('view_user')
     def resolve_email(self, info):
         return self.email
 

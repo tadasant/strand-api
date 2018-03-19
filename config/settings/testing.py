@@ -32,3 +32,12 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'username'
 EMAIL_HOST_PASSWORD = 'rAnDoMp@ssW0RD'
 EMAIL_PORT = 587
+
+# Algolia
+# https://github.com/algolia/algoliasearch-django#install
+ALGOLIA = {
+    'APPLICATION_ID': 'TEST_ID',
+    'API_KEY': 'TEST_KEY',
+    'AUTO_INDEXING': True,
+    'INDEX_PREFIX': 'test',
+}

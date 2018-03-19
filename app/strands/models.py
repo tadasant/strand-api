@@ -48,6 +48,9 @@ class Strand(TimeStampedModel):
     def __str__(self):
         return self.title or f'Strand by {self.saver.email} from {self.owner.name}'
 
+    def tag_names(self):
+        return [tag.name for tag in self.tags.all()]
+
     def set_tags(self, tags):
         self.tags.clear()
 

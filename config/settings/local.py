@@ -36,16 +36,6 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_PREFLIGHT_MAX_AGE = 0
 
-# Email
-# https://docs.djangoproject.com/en/2.0/topics/email/#module-django.core.mail
-# TODO: [API-161] Move from plain-text to SendGrid
-EMAIL_SETTINGS = json.load(open(os.path.join(BASE_DIR, 'email.config.json'), 'r'))
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = EMAIL_SETTINGS['EMAIL_USER']
-EMAIL_HOST_PASSWORD = EMAIL_SETTINGS['EMAIL_PASSWORD']
-EMAIL_PORT = 587
-
 # Algolia
 # https://github.com/algolia/algoliasearch-django#install
 ALGOLIA = {
@@ -53,3 +43,9 @@ ALGOLIA = {
     'API_KEY': '489c23c36cbf1ee045b4f3c2cfe2f8b5',
     'INDEX_PREFIX': 'dev',
 }
+
+# Sendgrid
+# https://github.com/elbuo8/sendgrid-django
+EMAIL_SETTINGS = json.load(open(os.path.join(BASE_DIR, 'email.config.json'), 'r'))
+SENDGRID_API_KEY = EMAIL_SETTINGS['SENDGRID_API_KEY']
+NEW_ACCOUNT_TEMPLATE_ID = EMAIL_SETTINGS['NEW_ACCOUNT_TEMPLATE_ID']

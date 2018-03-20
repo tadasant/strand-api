@@ -93,15 +93,6 @@ LOGGING = {
     },
 }
 
-# Email
-# https://docs.djangoproject.com/en/2.0/topics/email/#module-django.core.mail
-# TODO: [API-161] Move from plain-text to SendGrid
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ['EMAIL_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
-EMAIL_PORT = 587
-
 # Algolia
 # https://github.com/algolia/algoliasearch-django#install
 ALGOLIA = {
@@ -109,3 +100,8 @@ ALGOLIA = {
     'API_KEY': os.environ['ALGOLIA_API_KEY'],
     'INDEX_PREFIX': 'staging',
 }
+
+# Sendgrid
+# https://github.com/elbuo8/sendgrid-django
+SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
+NEW_ACCOUNT_TEMPLATE_ID = os.environ['NEW_ACCOUNT_TEMPLATE_ID']

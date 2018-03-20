@@ -156,3 +156,7 @@ GUARDIAN_RAISE_403 = True  # Raise PermissionDenied instead of returning HttpRes
 ANONYMOUS_USER_NAME = None  # Not using guardian's anonymous user concept (mainly due to pytest issues)
 GUARDIAN_MONKEY_PATCH = False  # See http://django-guardian.readthedocs.io/en/stable/userguide/custom-user-model.html
 DEFAULT_GROUP_NAME = 'public'  # Name of group for all users
+
+# Sendgrid
+# https://github.com/elbuo8/sendgrid-django
+EMAIL_BACKEND = 'sgbackend.SendGridBackend'

@@ -24,14 +24,6 @@ CSRF_COOKIE_SECURE = False
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_URL = '/static/'
 
-# Email
-# https://docs.djangoproject.com/en/2.0/topics/email/#module-django.core.mail
-# TODO: [API-161] Move from plain-text to SendGrid
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'username'
-EMAIL_HOST_PASSWORD = 'rAnDoMp@ssW0RD'
-EMAIL_PORT = 587
 
 # Algolia
 # https://github.com/algolia/algoliasearch-django#install
@@ -41,3 +33,8 @@ ALGOLIA = {
     'AUTO_INDEXING': True,
     'INDEX_PREFIX': 'test',
 }
+
+# Sendgrid
+# https://github.com/elbuo8/sendgrid-django
+SENDGRID_API_KEY = 'SENDGRID_API_KEY'
+NEW_ACCOUNT_TEMPLATE_ID = '100100ABC'

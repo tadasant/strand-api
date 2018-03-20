@@ -1,4 +1,5 @@
 import pytest
+from django.conf import settings
 from django.core import mail
 
 from tests.resources.MutationGenerator import MutationGenerator
@@ -31,3 +32,4 @@ class TestCreateUser:
         assert mail.outbox[0].subject == 'Welcome to Strand'
         assert mail.outbox[0].to == [user.email]
         assert mail.outbox[0].body
+        assert mail.outbox[0].template_id == settings.NEW_ACCOUNT_TEMPLATE_ID

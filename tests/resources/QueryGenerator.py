@@ -107,6 +107,18 @@ class StrandsQueryGenerator:
 
 class UsersQueryGenerator:
     @staticmethod
+    def get_me():
+        query = '''
+          query {
+            me {
+              id
+              email
+            }
+          }
+        '''
+        return query
+
+    @staticmethod
     def get_user(user_id=None, email=None):
         query = f'''
           query {{

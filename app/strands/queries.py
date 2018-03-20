@@ -7,12 +7,10 @@ from app.strands.types import StrandType, TagType
 
 class Query(graphene.ObjectType):
     strand = graphene.Field(StrandType, id=graphene.Int())
-    strands = graphene.List(StrandType)
-
-    search = graphene.List(StrandType,
-                           query=graphene.String(required=True),
-                           size=graphene.Int(required=False),
-                           page=graphene.Int(required=False))
+    strands = graphene.List(StrandType,
+                            query=graphene.String(required=False),
+                            size=graphene.Int(required=False),
+                            page=graphene.Int(required=False))
 
     tag = graphene.Field(TagType, name=graphene.String())
     tags = graphene.List(TagType)
@@ -22,13 +20,12 @@ class Query(graphene.ObjectType):
             return Strand.objects.get(pk=id)
         return None
 
-    def resolve_strands(self, info):
+    def resolve_strands(self, info, query='', size=100, page=0):
+        if query:
+            # TODO: Incorporate permissions into indices for efficiency
+            results = raw_search(Strand, query=query, params={'hitsPerPage': size, 'page': page})
+            return Strand.objects.filter(id__in=map(lambda x: x['objectID'], results['hits'])).all()
         return Strand.objects.all()
-
-    def resolve_search(self, info, query, size=100, page=0):
-        # TODO: Incorporate permissions into indices for efficiency
-        results = raw_search(Strand, query=query, params={'hitsPerPage': size, 'page': page})
-        return Strand.objects.filter(id__in=map(lambda x: x['objectID'], results['hits'])).all()
 
     def resolve_tag(self, info, name=None):
         if name:

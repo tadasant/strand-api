@@ -4,6 +4,21 @@ from tests.resources.QueryGenerator import QueryGenerator
 
 
 class TestQueryUsers:
+    @pytest.mark.django_db
+    def test_get_me_unauthenticated(self, client, user_factory):
+        query = QueryGenerator.get_me()
+        response = client.post('/graphql', {'query': query})
+
+        assert response.status_code == 200, response.content
+        assert not response.json()['data']['me']
+
+    @pytest.mark.django_db
+    def test_get_me(self, user_client):
+        query = QueryGenerator.get_me()
+        response = user_client.post('/graphql', {'query': query})
+
+        assert response.status_code == 200, response.content
+        assert response.json()['data']['me']['email'] == user_client.user.email
 
     @pytest.mark.django_db
     def test_get_user_unauthenticated(self, client, user_factory):
@@ -36,7 +51,7 @@ class TestQueryUsers:
         assert response.json()['data']['user']['email'] == jimmy.email
 
     @pytest.mark.django_db
-    def test_get_users_authorized_fields(self, user_client, user_factory, team_factory):
+    def test_get_users(self, user_client, user_factory, team_factory):
         jimmy = user_client.user
         bobby = user_factory()  # User in team
         user_factory()  # User not in team

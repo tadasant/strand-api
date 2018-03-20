@@ -45,35 +45,18 @@ class StrandsQueryGenerator:
         return query
 
     @staticmethod
-    def get_strands():
-        query = '''
-          query {
-            strands {
-              title
-              body
-              saver {
-                email
-              }
-              owner {
-                name
-              }
-              tags {
-                name
-              }
-            }
-          }
-        '''
-        return query
-
-    @staticmethod
-    def search(query, page=0, size=100):
+    def get_strands(query=''):
         query = f'''
           query {{
-            search(query: "{query}",
-                   page: {page},
-                   size: {size}) {{
+            strands(query: "{query}") {{
               title
               body
+              saver {{
+                email
+              }}
+              owner {{
+                name
+              }}
               tags {{
                 name
               }}

@@ -14,6 +14,7 @@ class UserValidator(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('email', 'username', 'first_name', 'last_name', 'team_ids')
+        required_fields = ('email',)
 
     @check_permission_for_validator('add_user')
     def create(self, validated_data):

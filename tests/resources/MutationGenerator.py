@@ -34,10 +34,13 @@ class TeamsMutationGenerator:
 
 class UsersMutationGenerator:
     @staticmethod
-    def create_user(email, username):
+    def create_user(email, username=None, first_name=None, last_name=None):
         mutation = f'''
           mutation {{
-            createUser(input: {{email: "{email}", username: "{username}"}}) {{
+            createUser(input: {{email: "{email}",
+                                {'username: "%s",' % username if username else ''}
+                                {'firstName: "%s",' % first_name if first_name else ''}
+                                {'lastName: "%s",' % last_name if last_name else ''}}}) {{
               user {{
                 id
               }}

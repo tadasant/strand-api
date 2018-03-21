@@ -24,7 +24,7 @@ class TestCreateUser:
         assert not mail.outbox
         user = user_factory.build()
 
-        mutation = MutationGenerator.create_user(email=user.email, username=user.username)
+        mutation = MutationGenerator.create_user(email=user.email)
         response = superuser_client.post('/graphql', {'query': mutation})
 
         assert response.status_code == 200, response.content

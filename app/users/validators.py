@@ -2,20 +2,38 @@
 
 from rest_framework import serializers
 
-from app.groups.models import Group
+from app.api.authorization import check_permission_for_validator
 from app.users.models import User
+from app.teams.models import Team
+from app.teams.validators import TeamValidator
 
 
 class UserValidator(serializers.ModelSerializer):
-    group_ids = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all(), many=True, required=False)
+    team_ids = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), many=True, required=False)
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'avatar_url', 'is_bot', 'first_name', 'last_name', 'group_ids')
+        fields = ('email', 'username', 'first_name', 'last_name', 'team_ids')
+        required_fields = ('email',)
 
+    @check_permission_for_validator('add_user')
     def create(self, validated_data):
-        alias = User.objects.generate_random_alias(4)
-        group_ids = validated_data.pop('group_ids', [])
-        user = User.objects.create(**validated_data, alias=alias)
-        user.add_to_groups(group_ids)
+        teams = validated_data.pop('team_ids', [])
+        user = super().create(validated_data)
+
+        for team in teams:
+            # Use team validator to handle permission checks
+            team_validator = TeamValidator(instance=team, data=dict(member_ids=[user.id]),
+                                           context=dict(request=self.context['request'], member_operation='add'),
+                                           partial=True)
+            team_validator.is_valid(raise_exception=True)
+            team_validator.save()
         return user
+
+    @check_permission_for_validator('change_user')
+    def update(self, instance, validated_data):
+        user = super().update(instance, validated_data)
+        return user
+
+
+# TODO: [API-164] Implement delete

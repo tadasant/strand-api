@@ -30,22 +30,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
 CSRF_COOKIE_SECURE = True
 
-# Slack credentials
-SLACK_CLIENT_SECRET = os.environ['SLACK_CLIENT_SECRET']
-
-# Celery
-CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
-
-# Discussion settings
-MIN_UNTIL_STALE = float(os.environ['MIN_UNTIL_STALE'])
-AUTO_CLOSE_DELAY = int(os.environ['AUTO_CLOSE_DELAY'])
-
-# Slack App Verification Token
-SLACK_APP_VERIFICATION_TOKEN = os.environ['SLACK_APP_VERIFICATION_TOKEN']
-SLACK_APP_STALE_DISCUSSION_ENDPOINT = os.environ['SLACK_APP_STALE_DISCUSSION_ENDPOINT']
-SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT = os.environ['SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT']
-SLACK_APP_SLACK_AGENT_ENDPOINT = os.environ['SLACK_APP_SLACK_AGENT_ENDPOINT']
-
 # django-storages
 # http://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
@@ -109,3 +93,16 @@ LOGGING = {
         },
     },
 }
+
+# Algolia
+# https://github.com/algolia/algoliasearch-django#install
+ALGOLIA = {
+    'APPLICATION_ID': os.environ['ALGOLIA_APPLICATION_ID'],
+    'API_KEY': os.environ['ALGOLIA_API_KEY'],
+    'INDEX_PREFIX': 'prod',
+}
+
+# Sendgrid
+# https://github.com/elbuo8/sendgrid-django
+SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
+NEW_ACCOUNT_TEMPLATE_ID = os.environ['NEW_ACCOUNT_TEMPLATE_ID']

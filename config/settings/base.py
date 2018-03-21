@@ -24,7 +24,7 @@ else:
     from config.settings.local import *
 
 # Release version
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,27 +40,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_beat',
-    'django_celery_results',
+    'algoliasearch_django',
     'graphene_django',
+    'guardian',
     'rest_framework',
     'rest_framework.authtoken',
-    'django_fsm',
-    'fsm_admin',
     'corsheaders',
-    'waffle',
     'storages',
     'app.users',
-    'app.groups',
-    'app.topics',
-    'app.slack_integration',
-    'app.dialogues',
+    'app.strands',
+    'app.teams',
     'raven.contrib.django.raven_compat',
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'waffle.middleware.WaffleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -95,7 +89,6 @@ AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -114,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -143,16 +135,6 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
-# Celery
-# http://docs.celeryproject.org/en/latest/userguide/configuration.html
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
-CELERY_ENABLE_UTC = True
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
 # Sentry
 # https://docs.sentry.io/clients/python/integrations/django/#setup
 if os.environ.get('RAVEN_DSN'):
@@ -161,5 +143,20 @@ if os.environ.get('RAVEN_DSN'):
         'release': VERSION
     }
 
-# http://waffle.readthedocs.io/en/latest/starting/configuring.html
-WAFFLE_SWITCH_DEFAULT = False
+# Authentication
+# http://django-guardian.readthedocs.io/en/stable/configuration.html
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+# Django Guardian
+# http://django-guardian.readthedocs.io/en/stable/configuration.html#optional-settings
+GUARDIAN_RAISE_403 = True  # Raise PermissionDenied instead of returning HttpResponseForbidden
+ANONYMOUS_USER_NAME = None  # Not using guardian's anonymous user concept (mainly due to pytest issues)
+GUARDIAN_MONKEY_PATCH = False  # See http://django-guardian.readthedocs.io/en/stable/userguide/custom-user-model.html
+DEFAULT_GROUP_NAME = 'public'  # Name of group for all users
+
+# Sendgrid
+# https://github.com/elbuo8/sendgrid-django
+EMAIL_BACKEND = 'sgbackend.SendGridBackend'

@@ -1,6 +1,6 @@
+import inspect
+
 from rest_framework.authentication import TokenAuthentication
-from app.topics.models import Topic, Discussion
-from app.dialogues.models import Message, Reply
 
 
 def get_user(context):
@@ -14,40 +14,49 @@ def get_user(context):
     return user
 
 
-def check_authorization(resolve_function):
-    """
-    Performs authorization checks for type fields.
-
-    Checks to see if info.context.user.is_authenticated
-    is true. If so, the resolve function is called. If
-    false, an exception is raised.
-    """
+def authenticate(resolve_function):
     def wrapper(self, info, **kwargs):
         user = get_user(info.context)
-        if user and user.is_authenticated:
-            return resolve_function(self, info, **kwargs)
-        else:
+        setattr(info.context, 'user', user)
+
+        return resolve_function(self, info, **kwargs)
+    return wrapper
+
+
+def check_permission_for_validator(permission_name):
+    def wrap_validator_function(validator_function):
+        """
+        Performs authorization checks with django-guardian on validator methods.
+
+        Checks to see if the user is authenticated and has add/change/delete
+        permissions for the model or object.
+        """
+        def wrapper(self, *args):
+            user = self.context['request'].user
+            param_dict = dict(zip(list(inspect.signature(validator_function).parameters.keys()), args))
+
+            if user and user.is_authenticated and user.has_perm(permission_name, param_dict.get('instance')):
+                return validator_function(self, *args)
+
             raise Exception('Unauthorized')
-    return wrapper
+        return wrapper
+    return wrap_validator_function
 
 
-def check_topic_authorization(resolve_function):
-    """
-    Performs authorization checks for topics.
-    """
-    def wrapper(self, info, **kwargs):
-        user = get_user(info.context)
+def check_permission_for_resolver(permission_name):
+    def wrap_resolve_function(resolve_function):
+        """
+        Performs authorization checks with django-guardian on resolver methods.
 
-        if isinstance(self, Topic) and not self.is_private:
-            return resolve_function(self, info, **kwargs)
-        elif isinstance(self, Discussion) and not self.topic.is_private:
-            return resolve_function(self, info, **kwargs)
-        elif isinstance(self, Message) and not self.discussion.topic.is_private:
-            return resolve_function(self, info, **kwargs)
-        elif isinstance(self, Reply) and not self.message.discussion.topic.is_private:
-            return resolve_function(self, info, **kwargs)
-        elif user and user.is_superuser:
-            return resolve_function(self, info, **kwargs)
-        else:
-            return None
-    return wrapper
+        Checks to see if the user is authenticated and has view permissions
+        for the object requested.
+        """
+        def wrapper(self, info, **kwargs):
+            user = get_user(info.context)
+
+            if user and user.is_authenticated and user.has_perm(permission_name, self):
+                return resolve_function(self, info, **kwargs)
+
+            raise Exception('Unauthorized')
+        return wrapper
+    return wrap_resolve_function

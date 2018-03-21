@@ -1,33 +1,50 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from app.api.authorization import check_authorization
-from app.groups.types import GroupType
+from app.api.authorization import check_permission_for_resolver
 from app.users.models import User
 
 
 class UserType(DjangoObjectType):
-    groups = graphene.List(GroupType)
-
     class Meta:
         model = User
-        only_fields = ('id', 'alias', 'slack_users',
-                       'messages', 'replies', 'topics',
-                       'groups')
+        only_fields = ('id', 'email', 'first_name', 'last_name', 'teams', 'strands',)
 
-    @check_authorization
-    def resolve_slack_users(self, info):
-        return self.slack_users
+    @check_permission_for_resolver('view_user')
+    def resolve_id(self, info):
+        return self.id
 
-    def resolve_groups(self, info):
-        return self.strand_groups.all()
+    @check_permission_for_resolver('view_user')
+    def resolve_email(self, info):
+        return self.email
+
+    @check_permission_for_resolver('view_user')
+    def resolve_first_name(self, info):
+        return self.first_name
+
+    @check_permission_for_resolver('view_user')
+    def resolve_last_name(self, info):
+        return self.last_name
+
+    @check_permission_for_resolver('view_user')
+    def resolve_teams(self, info):
+        return self.teams.all()
+
+    @check_permission_for_resolver('view_user')
+    def resolve_strands(self, info):
+        return self.strands.all()
 
 
 class UserInputType(graphene.InputObjectType):
-    email = graphene.String()
-    username = graphene.String(required=True)
+    email = graphene.String(required=True)
+    username = graphene.String()
     first_name = graphene.String()
     last_name = graphene.String()
-    avatar_url = graphene.String()
-    is_bot = graphene.Boolean()
-    group_ids = graphene.List(graphene.Int)
+
+
+class UserWithTeamsInputType(graphene.InputObjectType):
+    email = graphene.String(required=True)
+    username = graphene.String()
+    first_name = graphene.String()
+    last_name = graphene.String()
+    team_ids = graphene.List(graphene.Int, required=True)

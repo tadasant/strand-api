@@ -29,22 +29,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
 CSRF_COOKIE_SECURE = True
 
-# Slack credentials
-SLACK_CLIENT_SECRET = os.environ['SLACK_CLIENT_SECRET']
-
-# Celery
-CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
-
-# Discussion Auto-Close Delay
-MIN_UNTIL_STALE = float(os.environ['MIN_UNTIL_STALE'])
-AUTO_CLOSE_DELAY = int(os.environ['AUTO_CLOSE_DELAY'])
-
-# Slack App Verification Token
-SLACK_APP_VERIFICATION_TOKEN = os.environ['SLACK_APP_VERIFICATION_TOKEN']
-SLACK_APP_STALE_DISCUSSION_ENDPOINT = os.environ['SLACK_APP_STALE_DISCUSSION_ENDPOINT']
-SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT = os.environ['SLACK_APP_AUTO_CLOSED_DISCUSSION_ENDPOINT']
-SLACK_APP_SLACK_AGENT_ENDPOINT = os.environ['SLACK_APP_SLACK_AGENT_ENDPOINT']
-
 # django-storages
 # http://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
@@ -56,7 +40,6 @@ AWS_LOCATION = 'static'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
@@ -64,3 +47,16 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # https://github.com/ottoyiu/django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_PREFLIGHT_MAX_AGE = 0
+
+# Algolia
+# https://github.com/algolia/algoliasearch-django#install
+ALGOLIA = {
+    'APPLICATION_ID': 'E384DX3TAQ',
+    'API_KEY': '489c23c36cbf1ee045b4f3c2cfe2f8b5',
+    'INDEX_PREFIX': 'dev',
+}
+
+# Sendgrid
+# https://github.com/elbuo8/sendgrid-django
+SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
+NEW_ACCOUNT_TEMPLATE_ID = os.environ['NEW_ACCOUNT_TEMPLATE_ID']

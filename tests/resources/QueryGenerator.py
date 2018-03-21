@@ -1,33 +1,43 @@
-class DialoguesQueryGenerator:
+class TeamsQueryGenerator:
     @staticmethod
-    def get_message(message_id):
+    def get_team(team_name):
         query = f'''
           query {{
-            message(id: {message_id}) {{
-              text
+            team(name: "{team_name}") {{
+              id
             }}
           }}
         '''
         return query
 
     @staticmethod
-    def get_messages():
+    def get_teams():
         query = '''
           query {
-            messages {
-              text
+            teams {
+              name
             }
           }
         '''
         return query
 
+
+class StrandsQueryGenerator:
     @staticmethod
-    def get_reply(reply_id):
+    def get_strand(strand_id):
         query = f'''
           query {{
-            reply(id: {reply_id}) {{
-              message {{
-                text
+            strand(id: {strand_id}) {{
+              title
+              body
+              saver {{
+                email
+              }}
+              owner {{
+                name
+              }}
+              tags {{
+                name
               }}
             }}
           }}
@@ -35,172 +45,23 @@ class DialoguesQueryGenerator:
         return query
 
     @staticmethod
-    def get_replies():
-        query = '''
-          query {
-            replies {
-              text
-            }
-          }
-        '''
-        return query
-
-
-class GroupsQueryGenerator:
-    @staticmethod
-    def get_group(group_name):
+    def get_strands(query=''):
         query = f'''
           query {{
-            group(name: "{group_name}") {{
-              id
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_groups():
-        query = '''
-          query {
-            groups {
-              name
-            }
-          }
-        '''
-        return query
-
-
-class SlackIntegrationQueryGenerator:
-    @staticmethod
-    def get_slack_application_installation(slack_application_installation_id):
-        query = f'''
-          query {{
-            slackApplicationInstallation(id: {slack_application_installation_id}) {{
-              botAccessToken
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_slack_application_installations():
-        query = '''
-          query {
-            slackApplicationInstallations {
-              botAccessToken
-            }
-          }
-        '''
-        return query
-
-    @staticmethod
-    def get_active_slack_application_installations():
-        query = '''
-          query {
-            slackApplicationInstallations (agentStatus: "ACTIVE") {
-              botAccessToken
-            }
-          }
-        '''
-        return query
-
-    @staticmethod
-    def get_slack_channel(slack_channel_id):
-        query = f'''
-          query {{
-            slackChannel(id: "{slack_channel_id}") {{
-              name
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_slack_channels():
-        query = '''
-          query {
-            slackChannels {
-              name
-            }
-          }
-        '''
-        return query
-
-    @staticmethod
-    def get_slack_team(slack_team_id):
-        query = f'''
-          query {{
-            slackTeam(id: "{slack_team_id}") {{
-              name
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_slack_teams():
-        query = '''
-          query {
-            slackTeams {
-              slackAgent {
-                group {
-                  name
-                }
-              }
-            }
-          }
-        '''
-        return query
-
-    @staticmethod
-    def get_slack_user(slack_user_id):
-        query = f'''
-          query {{
-            slackUser(id: "{slack_user_id}") {{
-              displayName
-              id
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_slack_users():
-        query = '''
-          query {
-            slackUsers {
-              user {
-                id
-              }
-            }
-          }
-        '''
-        return query
-
-
-class TopicsQueryGenerator:
-    @staticmethod
-    def get_discussion(discussion_id):
-        query = f'''
-          query {{
-            discussion(id: {discussion_id}) {{
-              status
-              topic {{
-                title
+            strands(query: "{query}") {{
+              title
+              body
+              saver {{
+                email
+              }}
+              owner {{
+                name
+              }}
+              tags {{
+                name
               }}
             }}
           }}
-        '''
-        return query
-
-    @staticmethod
-    def get_discussions():
-        query = '''
-          query {
-            discussions {
-              id
-            }
-          }
         '''
         return query
 
@@ -209,7 +70,7 @@ class TopicsQueryGenerator:
         query = f'''
           query {{
             tag(name: "{tag_name}") {{
-              id
+              name
             }}
           }}
         '''
@@ -226,71 +87,46 @@ class TopicsQueryGenerator:
         '''
         return query
 
-    @staticmethod
-    def get_topic(topic_id):
-        query = f'''
-          query {{
-            topic(id: {topic_id}) {{
-              title
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_topics():
-        query = '''
-          query {
-            topics {
-              title
-            }
-          }
-        '''
-        return query
-
 
 class UsersQueryGenerator:
     @staticmethod
-    def get_user(user_id):
+    def get_me():
+        query = '''
+          query {
+            me {
+              id
+              email
+            }
+          }
+        '''
+        return query
+
+    @staticmethod
+    def get_user(user_id=None, email=None):
         query = f'''
           query {{
-            user(id: {user_id}) {{
-              alias
+            user({'id: %s' % user_id if user_id else 'email: "%s"' % email}) {{
+              id
+              email
             }}
           }}
         '''
         return query
 
     @staticmethod
-    def get_user_authorized(user_id):
-        query = f'''
-          query {{
-            user(id: {user_id}) {{
-              slackUsers {{
-                id
-              }}
-            }}
-          }}
-        '''
-        return query
-
-    @staticmethod
-    def get_users_authorized():
+    def get_users():
         query = '''
           query {
             users {
-              slackUsers {
-                id
-              }
+              id
+              email
             }
           }
         '''
         return query
 
 
-class QueryGenerator(DialoguesQueryGenerator,
-                     GroupsQueryGenerator,
-                     SlackIntegrationQueryGenerator,
-                     TopicsQueryGenerator,
+class QueryGenerator(TeamsQueryGenerator,
+                     StrandsQueryGenerator,
                      UsersQueryGenerator):
     pass

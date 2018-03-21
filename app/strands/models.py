@@ -1,7 +1,8 @@
+import algoliasearch_django
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
@@ -67,6 +68,12 @@ def assign_permissions(sender, instance, created, **kwargs):
         assign_perm('change_strand', instance.saver, instance)
         assign_perm('delete_strand', instance.saver, instance)
         assign_perm('view_strand', instance.saver, instance)
+
+
+@receiver(m2m_changed, sender=Strand.tags.through)
+def update_algolia_index(sender, instance, **kwargs):
+    algoliasearch_django.save_record(instance)
+
 
 # TODO: [API-150] Receiver to delete orphans
 # http://django-guardian.readthedocs.io/en/stable/userguide/caveats.html

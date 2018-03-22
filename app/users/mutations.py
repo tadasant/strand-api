@@ -1,6 +1,7 @@
 import graphene
 
 from app.api.authorization import authenticate
+from app.users.models import User
 from app.users.types import (
     UserType,
     UserInputType,
@@ -29,7 +30,23 @@ class ChangePasswordMutation(graphene.Mutation):
     class Arguments:
         input = ChangePasswordInputType(required=True)
 
-    pass
+    user = graphene.Field(UserType)
+
+    @authenticate
+    def mutate(self, info, input):
+        old_password, new_password = input.pop('old_password'), input.pop('new_password')
+
+        user = User.objects.get(pk=input['id'])
+        user_validator = UserValidator(instance=user, data=input, context=dict(request=info.context), partial=True)
+        user_validator.is_valid(raise_exception=True)
+        user = user_validator.save()
+
+        if not user.check_password(old_password):
+            raise Exception({'old_password': ['Wrong password.']})
+
+        user.set_password(new_password)
+        user.save()
+        return ChangePasswordMutation(user=user)
 
 
 class CreateUserWithTeamsMutation(graphene.Mutation):

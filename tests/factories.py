@@ -48,12 +48,3 @@ class StrandFactory(factory.DjangoModelFactory):
     body = factory.Faker('sentence')
     saver = factory.SubFactory(UserFactory)
     owner = factory.SubFactory(TeamFactory)
-
-    @factory.post_generation
-    def tags(self, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if extracted:
-            for tag in extracted:
-                self.tags.add(tag)

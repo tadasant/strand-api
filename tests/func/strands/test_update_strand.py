@@ -38,7 +38,8 @@ class TestUpdateStrand:
     @pytest.mark.django_db
     def test_update_tags(self, superuser_client, strand_factory, tag_factory):
         old_tag = tag_factory()
-        strand = strand_factory(tags=[old_tag])
+        strand = strand_factory()
+        strand.tags.add(old_tag)  # Using post_generation decorator causes unnecessary saves
         new_tag = tag_factory.build()
 
         # Assert that old_tag exists

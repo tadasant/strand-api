@@ -17,6 +17,8 @@ class StrandValidator(serializers.ModelSerializer):
         model = Strand
         fields = ('title', 'body', 'timestamp', 'saver_id', 'owner_id', 'tags')
 
+    # TODO: Should probably check if user has view_team permissions
+    # for the owner team before allowing him/her to add a strand
     @check_permission_for_validator('add_strand')
     def create(self, validated_data):
         tags = validated_data.pop('tags', [])
@@ -24,6 +26,8 @@ class StrandValidator(serializers.ModelSerializer):
         strand.set_tags(tags)
         return strand
 
+    # TODO: Should probably check if user has view_team permissions
+    # for the new owner team before allowing him/her to change a strand
     @check_permission_for_validator('change_strand')
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags', [])

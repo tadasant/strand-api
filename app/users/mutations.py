@@ -4,7 +4,8 @@ from app.api.authorization import authenticate
 from app.users.types import (
     UserType,
     UserInputType,
-    UserWithTeamsInputType
+    UserWithTeamsInputType,
+    ChangePasswordInputType,
 )
 from app.users.validators import UserValidator
 
@@ -24,6 +25,13 @@ class CreateUserMutation(graphene.Mutation):
         return CreateUserMutation(user=user)
 
 
+class ChangePasswordMutation(graphene.Mutation):
+    class Arguments:
+        input = ChangePasswordInputType(required=True)
+
+    pass
+
+
 class CreateUserWithTeamsMutation(graphene.Mutation):
     class Arguments:
         input = UserWithTeamsInputType(required=True)
@@ -41,3 +49,4 @@ class CreateUserWithTeamsMutation(graphene.Mutation):
 class Mutation(graphene.ObjectType):
     create_user = CreateUserMutation.Field()
     create_user_with_teams = CreateUserWithTeamsMutation.Field()
+    change_password = ChangePasswordMutation.Field()

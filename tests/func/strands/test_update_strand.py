@@ -65,4 +65,3 @@ class TestUpdateStrand:
         assert response.status_code == 200, response.content
         assert len(response.json()['data']['tags']) == 1
         assert response.json()['data']['tags'][0]['name'] == new_tag.name
-

@@ -2,11 +2,17 @@
 
 from django.conf import settings
 from django.contrib.auth.models import Group, Permission
+from django.core.management.sql import emit_post_migrate_signal
 from django.db import migrations
 
 
 def set_default_group_permissions(apps, schema_editor):
     """Get or create the default group"""
+    # Emit post migrate signal to create ContentTypes
+    # https://stackoverflow.com/questions/37697215/django-pytest-database-access-for-data-migration
+    db_alias = schema_editor.connection.alias
+    emit_post_migrate_signal(2, False, db_alias)
+
     default_group = Group.objects.get(name=settings.DEFAULT_GROUP_NAME)
 
     default_perm_names = [

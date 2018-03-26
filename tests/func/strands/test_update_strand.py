@@ -1,6 +1,7 @@
 import pytest
 
 from tests.resources.MutationGenerator import MutationGenerator
+from tests.resources.QueryGenerator import QueryGenerator
 
 
 class TestUpdateStrand:
@@ -36,8 +37,18 @@ class TestUpdateStrand:
 
     @pytest.mark.django_db
     def test_update_tags(self, superuser_client, strand_factory, tag_factory):
+        old_tag = tag_factory()
         strand = strand_factory()
-        new_tag = tag_factory()
+        strand.tags.add(old_tag)  # Using post_generation decorator causes unnecessary saves
+        new_tag = tag_factory.build()
+
+        # Assert that old_tag exists
+        query = QueryGenerator.get_tags()
+        response = superuser_client.post('/graphql', {'query': query})
+
+        assert response.status_code == 200, response.content
+        assert len(response.json()['data']['tags']) == 1
+        assert response.json()['data']['tags'][0]['name'] == old_tag.name
 
         mutation = MutationGenerator.update_strand(strand_id=strand.id,
                                                    tags=[new_tag.name])
@@ -47,3 +58,11 @@ class TestUpdateStrand:
         assert response.json()['data']['updateStrand']['strand']['title'] == strand.title
         assert response.json()['data']['updateStrand']['strand']['body'] == strand.body
         assert response.json()['data']['updateStrand']['strand']['tags'][0]['name'] == new_tag.name
+
+        # Assert that old_tag was orphaned and deleted
+        query = QueryGenerator.get_tags()
+        response = superuser_client.post('/graphql', {'query': query})
+
+        assert response.status_code == 200, response.content
+        assert len(response.json()['data']['tags']) == 1
+        assert response.json()['data']['tags'][0]['name'] == new_tag.name

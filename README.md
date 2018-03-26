@@ -46,11 +46,11 @@ the latest schema.
 ### Creating a Superuser
 
 To access Django admin, you need to create a local admin user. Create a superuser by running
-`$ python manage.py createsuperuser --username USERNAME`.
+`$ python manage.py createsuperuser`.
 
 ## Running Tests
 
-The test suite for CodeClippy Portal uses `pytest`, `factory-boy`, `flake8`, and `pep8`. To run
+The test suite for the Strand API uses `pytest`, `factory-boy`, `flake8`, and `pep8`. To run
 tests, use the `pytest` command from the root directory. To test with `flake8` and `pep8` (which
 you'll need to do before pushing to a remote branch), add them as flags to your `pytest` command.
 
@@ -81,23 +81,19 @@ the path to the fixture, which will override this behavior.
 
 `$ python manage.py loaddata fixture_name`
 
-When loading fixtures, keep in mind the relationships between them. Always load them from top down, so as not to have
-integrity errors. As of commit `3b73a3b`, the order is *users*, *groups*, *topics*, *slack_integration*, and
-*dialogues*.
-
 
 ## Deploying to Staging
 
 ### How it works
 
-We deploy the portal to a staging environment using AWS's [Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/)
+We deploy the API to a staging environment using AWS's [Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/)
 service. This takes care of creating a web server. The web server then uses our WSGI application to respond
 to requests.
 
 After initial setup, the application can be deployed at any time by running `eb deploy`. This assumes
 you've already run `eb init`, etc. The `deploy` command makes use of git by taking the last commit from the
 current branch your on. The code in that commit is zipped and uploaded to an s3 bucket. From there
-the code is pulled onto one of the servers in the Elastic Beanstalk environment (called `portal-staging`).
+the code is pulled onto one of the servers in the Elastic Beanstalk environment (called `api-staging`).
 What's great about Elastic Beanstalk is that it supports load balancing, auto-scaling and more. In the deployment
 phase, this means we can roll out a new version to only 30% of the servers before the entire fleet.
 
@@ -109,13 +105,13 @@ is started. These include `01_migrate`, which migrates the database to the same 
 `02_collectstatic`, which copies all files from the static folder into the `STATIC_ROOT` directory.
 
 In order to have access to the `STATIC_ROOT` directory, which we have set to be an S3 bucket, we use the instance role
-assigned to instances that run our application called `portal-elasticbeanstalk-staging-role`.
+assigned to instances that run our application.
 
 ### Steps
 
 1. Install the Elastic Beanstalk command line interface - instructions [here](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html).
 
-2. Run `eb init` to initialize the repository on your local machine. You should be able to select `portal` as
-the application and `portal-staging` as the environment.
+2. Run `eb init` to initialize the repository on your local machine. You should be able to select `Strand API` as
+the application and `api-staging` as the environment.
 
 3. Run `eb deploy` to deploy the application to staging.

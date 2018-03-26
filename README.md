@@ -115,3 +115,33 @@ assigned to instances that run our application.
 the application and `api-staging` as the environment.
 
 3. Run `eb deploy` to deploy the application to staging.
+
+
+## Design Comments
+
+The API marries GraphQL and the Django REST framework due to the early nature of GraphQL support across Python and Django.
+We use the REST framework for authentication of users and validation of our models. We use GraphQL to surface queries
+and mutations. Each module of the application is structured as a Django "app" and noted in the `config/settings/base.py`
+file under `INSTALLED_APPS`. The general structure is as follows:
+- `admin.py` - This file defines the models that we want to expose in Django admin. We subclass the `GuardedModelAdmin` 
+class from Django Guardian, so that we can control object-level permissions from Django admin.
+- `apps.py` - This file contains any behavior we want to customize on app startup. The only module that has this file at
+the moment is the strands module, where we want to register the Strand index on startup.
+- `indices.py` - This file contains any Algolia indices that we need to define. The only module that has this file at 
+the moment is the strands module.
+- `models.py` - This file contains any models and receivers we want to define. We use Django's `TimeStampedModel` to give 
+us access to `date_created` and `date_modified` fields for each model. In the models' meta classes, we define an 
+additional view permission. Lastly, we add receivers to handle assigning / revoking permissions and other cleanup exercises
+that are dependent upon save / delete behavior.
+- `mutations.py` - This file contains any mutations we want to define. If we were thinking of a typical CRUD model, this
+would be all actions outside of READ. Before we persist an action, we use the validators file to ensure the information
+is valid and the user has the appropriate permissions to perform the action.
+- `queries.py` - This file contains any queries we want to define.
+- `types.py` - This file defines the input and output types for the module's GraphQL schema. All output types are subclasses
+of `DjangoObjectType`, which abstracts away some of the work for resolving fields. For these types, we perform authorization
+on the type itself, so we return `None` for every field if a user does not have access. Otherwise, we return the appropriate
+value. We also restrict the possible set of fields by defining the `only_fields` property. All input types are subclasses
+of `InputObjectType` - these are the input types for mutations (e.g. the information we need to create / update / etc).
+- `validators.py` - In the validators files, we use Django REST's serializers to help us validate that the information from
+input types is valid (e.g. that FK's are correct) and that the requesting user has the appropriate permissions (e.g. that
+the user has `change_strand` permission when he/she is trying to update a strand).

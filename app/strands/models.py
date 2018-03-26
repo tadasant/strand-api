@@ -71,8 +71,13 @@ def assign_permissions(sender, instance, created, **kwargs):
 
 
 @receiver(m2m_changed, sender=Strand.tags.through)
-def update_algolia_index(sender, instance, **kwargs):
+def update_algolia_index(sender, instance, action, **kwargs):
     algoliasearch_django.save_record(instance)
+
+    if action == 'post_clear':
+        # Delete orphaned tags
+        qs = Tag.objects.exclude(pk__in=Strand.tags.through.objects.values('tag'))
+        qs.delete()
 
 
 # TODO: [API-150] Receiver to delete orphans

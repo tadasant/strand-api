@@ -66,6 +66,19 @@ class UsersMutationGenerator:
         '''
         return mutation
 
+    @staticmethod
+    def change_password(user_id, old_password, new_password):
+        mutation = f'''
+          mutation {{
+            changePassword(input: {{id: {user_id}, oldPassword: "{old_password}", newPassword: "{new_password}"}}) {{
+              user {{
+                email
+              }}
+            }}
+          }}
+        '''
+        return mutation
+
 
 class StrandsMutationGenerator:
     @staticmethod

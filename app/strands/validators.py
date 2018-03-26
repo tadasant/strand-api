@@ -46,6 +46,9 @@ class TagValidator(serializers.ModelSerializer):
         tag = super().create(validated_data)
         return tag
 
+    # TODO: We probably don't want to allow people to change tags
+    # unless we add an owner field and make them non-public. This
+    # isn't an issue right now because no-one has change_tag permissions.
     @check_permission_for_validator('change_tag')
     def update(self, instance, validated_data):
         tag = super().update(instance, validated_data)

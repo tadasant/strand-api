@@ -8,5 +8,5 @@ class StrandsAppConfig(AppConfig):
     name = 'app.strands'
 
     def ready(self):
-        from app.strands.models import Strand
-        algoliasearch.register(Strand, StrandIndex)
+        from app.strands.models import Strand  # Must import Strand model after the app is ready
+        algoliasearch.register(Strand, StrandIndex)  # Registers the Strand model with algolia search

@@ -6,4 +6,4 @@ from app.users.models import User
 
 @admin.register(User)
 class UserAdmin(GuardedModelAdmin):
-    list_display = ('username', 'email')
+    list_display = ('username', 'email')  # Columns to display for User list on Django Admin

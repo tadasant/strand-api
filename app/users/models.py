@@ -99,7 +99,7 @@ def set_random_password_and_send_email(sender, instance=None, created=False, **k
             to=[instance.email],
             headers={},
         )
-        mail.template_id = settings.NEW_ACCOUNT_TEMPLATE_ID
+        mail.template_id = settings.NEW_ACCOUNT_TEMPLATE_ID  # Template ID from Sendgrid
         mail.substitutions = {'%email%': instance.email,
                               '%password%': password}
         mail.attach_alternative(

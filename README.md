@@ -6,7 +6,6 @@ This web application was built using:
 * Django 2.0.2
 * Python 3.6
 * Graphene (GraphQL) 2.0
-* Apollo (GraphQL)
 * pytest 3.4
 
 This app was hosted using Amazon Elastic Beanstalk.

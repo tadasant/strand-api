@@ -46,11 +46,11 @@ the latest schema.
 ### Creating a Superuser
 
 To access Django admin, you need to create a local admin user. Create a superuser by running
-`$ python manage.py createsuperuser --username USERNAME`.
+`$ python manage.py createsuperuser`.
 
 ## Running Tests
 
-The test suite for CodeClippy Portal uses `pytest`, `factory-boy`, `flake8`, and `pep8`. To run
+The test suite for the Strand API uses `pytest`, `factory-boy`, `flake8`, and `pep8`. To run
 tests, use the `pytest` command from the root directory. To test with `flake8` and `pep8` (which
 you'll need to do before pushing to a remote branch), add them as flags to your `pytest` command.
 
@@ -81,23 +81,19 @@ the path to the fixture, which will override this behavior.
 
 `$ python manage.py loaddata fixture_name`
 
-When loading fixtures, keep in mind the relationships between them. Always load them from top down, so as not to have
-integrity errors. As of commit `3b73a3b`, the order is *users*, *groups*, *topics*, *slack_integration*, and
-*dialogues*.
-
 
 ## Deploying to Staging
 
 ### How it works
 
-We deploy the portal to a staging environment using AWS's [Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/)
+We deploy the API to a staging environment using AWS's [Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/)
 service. This takes care of creating a web server. The web server then uses our WSGI application to respond
 to requests.
 
 After initial setup, the application can be deployed at any time by running `eb deploy`. This assumes
 you've already run `eb init`, etc. The `deploy` command makes use of git by taking the last commit from the
 current branch your on. The code in that commit is zipped and uploaded to an s3 bucket. From there
-the code is pulled onto one of the servers in the Elastic Beanstalk environment (called `portal-staging`).
+the code is pulled onto one of the servers in the Elastic Beanstalk environment (called `api-staging`).
 What's great about Elastic Beanstalk is that it supports load balancing, auto-scaling and more. In the deployment
 phase, this means we can roll out a new version to only 30% of the servers before the entire fleet.
 
@@ -109,13 +105,43 @@ is started. These include `01_migrate`, which migrates the database to the same 
 `02_collectstatic`, which copies all files from the static folder into the `STATIC_ROOT` directory.
 
 In order to have access to the `STATIC_ROOT` directory, which we have set to be an S3 bucket, we use the instance role
-assigned to instances that run our application called `portal-elasticbeanstalk-staging-role`.
+assigned to instances that run our application.
 
 ### Steps
 
 1. Install the Elastic Beanstalk command line interface - instructions [here](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html).
 
-2. Run `eb init` to initialize the repository on your local machine. You should be able to select `portal` as
-the application and `portal-staging` as the environment.
+2. Run `eb init` to initialize the repository on your local machine. You should be able to select `Strand API` as
+the application and `api-staging` as the environment.
 
 3. Run `eb deploy` to deploy the application to staging.
+
+
+## Design Comments
+
+The API marries GraphQL and the Django REST framework due to the early nature of GraphQL support across Python and Django.
+We use the REST framework for authentication of users and validation of our models. We use GraphQL to surface queries
+and mutations. Each module of the application is structured as a Django "app" and noted in the `config/settings/base.py`
+file under `INSTALLED_APPS`. The general structure is as follows:
+- `admin.py` - This file defines the models that we want to expose in Django admin. We subclass the `GuardedModelAdmin` 
+class from Django Guardian, so that we can control object-level permissions from Django admin.
+- `apps.py` - This file contains any behavior we want to customize on app startup. The only module that has this file at
+the moment is the strands module, where we want to register the Strand index on startup.
+- `indices.py` - This file contains any Algolia indices that we need to define. The only module that has this file at 
+the moment is the strands module.
+- `models.py` - This file contains any models and receivers we want to define. We use Django's `TimeStampedModel` to give 
+us access to `date_created` and `date_modified` fields for each model. In the models' meta classes, we define an 
+additional view permission. Lastly, we add receivers to handle assigning / revoking permissions and other cleanup exercises
+that are dependent upon save / delete behavior.
+- `mutations.py` - This file contains any mutations we want to define. If we were thinking of a typical CRUD model, this
+would be all actions outside of READ. Before we persist an action, we use the validators file to ensure the information
+is valid and the user has the appropriate permissions to perform the action.
+- `queries.py` - This file contains any queries we want to define.
+- `types.py` - This file defines the input and output types for the module's GraphQL schema. All output types are subclasses
+of `DjangoObjectType`, which abstracts away some of the work for resolving fields. For these types, we perform authorization
+on the type itself, so we return `None` for every field if a user does not have access. Otherwise, we return the appropriate
+value. We also restrict the possible set of fields by defining the `only_fields` property. All input types are subclasses
+of `InputObjectType` - these are the input types for mutations (e.g. the information we need to create / update / etc).
+- `validators.py` - In the validators files, we use Django REST's serializers to help us validate that the information from
+input types is valid (e.g. that FK's are correct) and that the requesting user has the appropriate permissions (e.g. that
+the user has `change_strand` permission when he/she is trying to update a strand).

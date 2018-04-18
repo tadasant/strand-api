@@ -26,7 +26,7 @@ class Tag(TimeStampedModel):
 
 @receiver(post_save, sender=Tag)
 def add_view_permissions(sender, instance, created, **kwargs):
-    """Add view_tag permissions to anonymous and authenticated users"""
+    """Add view_tag permissions to the default group"""
     if created:
         group = Group.objects.get(name=settings.DEFAULT_GROUP_NAME)
         assign_perm('view_tag', group, instance)
@@ -72,6 +72,7 @@ def assign_permissions(sender, instance, created, **kwargs):
 
 @receiver(m2m_changed, sender=Strand.tags.through)
 def update_algolia_index(sender, instance, action, **kwargs):
+    """Force index to save record when tags are added or removed"""
     algoliasearch_django.save_record(instance)
 
     if action == 'post_clear':

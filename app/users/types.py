@@ -48,3 +48,9 @@ class UserWithTeamsInputType(graphene.InputObjectType):
     first_name = graphene.String()
     last_name = graphene.String()
     team_ids = graphene.List(graphene.Int, required=True)
+
+
+class ChangePasswordInputType(graphene.InputObjectType):
+    id = graphene.Int(required=True)
+    old_password = graphene.String(required=True)
+    new_password = graphene.String(required=True)

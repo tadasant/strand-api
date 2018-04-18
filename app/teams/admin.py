@@ -6,4 +6,4 @@ from app.teams.models import Team
 
 @admin.register(Team)
 class TeamAdmin(GuardedModelAdmin):
-    list_display = ('name',)
+    list_display = ('name',)  # Columns to display for Team list on Django Admin

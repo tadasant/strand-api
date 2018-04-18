@@ -4,6 +4,11 @@ from rest_framework.authentication import TokenAuthentication
 
 
 def get_user(context):
+    """Gets the user based on the Authorization header.
+
+    Takes the Authorization header and extracts the token.
+    Uses the token to identify which user is making the request.
+    """
     try:
         token_authentication = TokenAuthentication()
         # Will return None and raise TypeError if no auth header present
@@ -15,6 +20,11 @@ def get_user(context):
 
 
 def authenticate(resolve_function):
+    """Authenticates a user given the GraphQL context.
+
+    This is a decorator that is used on mutation methods.
+    It allows us to access the user from the context parameter.
+    """
     def wrapper(self, info, **kwargs):
         user = get_user(info.context)
         setattr(info.context, 'user', user)

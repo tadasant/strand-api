@@ -1,5 +1,22 @@
-# Strand API
-[![CodeFactor](https://www.codefactor.io/repository/github/strandhq/strand-api/badge)](https://www.codefactor.io/repository/github/strandhq/strand-api) [![CircleCI](https://circleci.com/gh/StrandHQ/strand-api/tree/develop.png?style=shield&circle-token=788ef88b46ecfd16d7610cbcec05d60a1fb8f725)](https://circleci.com/gh/StrandHQ/strand-api/tree/develop.svg?style=shield&circle-token=:circle-token)
+# This project is retired. No further development or maintenance is planned. Feel free to fork and re-use.
+
+## Overview
+
+This web application was built using:
+* Django 2.0.2
+* Python 3.6
+* Graphene (GraphQL) 2.0
+* Apollo (GraphQL)
+* pytest 3.4
+
+This app was hosted using Amazon Elastic Beanstalk.
+
+[strand-slack](https://github.com/tadasant/strand-slack) was the companion Slack Integration
+[strand-ui](https://github.com/tadasant/strand-ui) was the companion Web UI
+
+Contributors: [@Audace](https://github.com/audace) and [@tadasant](https://github.com/tadasant)
+
+![screenshot](https://raw.githubusercontent.com/Audace/strand-api/master/media/Domain.png)
 
 ## Getting Started
 

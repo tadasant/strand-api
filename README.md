@@ -12,6 +12,7 @@ This web application was built using:
 This app was hosted using Amazon Elastic Beanstalk.
 
 [strand-slack](https://github.com/tadasant/strand-slack) was the companion Slack Integration
+
 [strand-ui](https://github.com/tadasant/strand-ui) was the companion Web UI
 
 Contributors: [@Audace](https://github.com/audace) and [@tadasant](https://github.com/tadasant)

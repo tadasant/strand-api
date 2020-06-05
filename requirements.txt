@@ -10,7 +10,7 @@ certifi==2017.11.5
 chardet==3.0.4
 cookies==2.2.1
 coverage==4.4.2
-Django==2.0.2
+Django==2.2.13
 django-cors-headers==2.1.0
 django-guardian==1.4.9
 django-model-utils==3.1.1

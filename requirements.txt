@@ -15,7 +15,7 @@ django-cors-headers==2.1.0
 django-guardian==1.4.9
 django-model-utils==3.1.1
 django-storages==1.6.5
-djangorestframework==3.7.7
+djangorestframework==3.11.2
 docutils==0.14
 ephem==3.7.6.0
 execnet==1.5.0
